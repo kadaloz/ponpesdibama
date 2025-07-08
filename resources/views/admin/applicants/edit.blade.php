@@ -92,25 +92,59 @@
                     @error('parent_occupation')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
                 </div>
 
-                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Informasi Alamat</h3>
-                <div>
-                    <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                    <textarea name="address" id="address" rows="3" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" required>{{ old('address', $applicant->address) }}</textarea>
-                    @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                </div>
+<h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Informasi Alamat</h3>
 
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="city" class="block text-sm font-medium text-gray-700">Kota</label>
-                        <input type="text" name="city" id="city" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('city', $applicant->city) }}">
-                        @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                    </div>
-                    <div>
-                        <label for="province" class="block text-sm font-medium text-gray-700">Provinsi</label>
-                        <input type="text" name="province" id="province" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('province', $applicant->province) }}">
-                        @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                    </div>
-                </div>
+{{-- Alamat Lengkap --}}
+<div class="mb-4">
+    <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap</label>
+    <textarea name="address" id="address" rows="3" required
+        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+        placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel">{{ old('address', $applicant->address ?? '') }}</textarea>
+    @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+</div>
+
+{{-- Wilayah --}}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {{-- Provinsi --}}
+    <div>
+        <label for="province" class="block text-sm font-semibold text-gray-700 mb-1">Provinsi</label>
+        <select name="province" id="province" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            <option value="">Pilih Provinsi</option>
+        </select>
+        @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kota/Kabupaten --}}
+    <div>
+        <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota</label>
+        <select name="city" id="city" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            <option value="">Pilih Kabupaten/Kota</option>
+        </select>
+        @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kecamatan --}}
+    <div>
+        <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan</label>
+        <select name="district" id="district" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            <option value="">Pilih Kecamatan</option>
+        </select>
+        @error('district')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kelurahan --}}
+    <div>
+        <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa</label>
+        <select name="village" id="village" required
+            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            <option value="">Pilih Kelurahan/Desa</option>
+        </select>
+        @error('village')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+</div>
 
                 <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Pilihan Program & Tipe Santri</h3>
                 <div>
@@ -237,6 +271,87 @@
         document.addEventListener('DOMContentLoaded', function() {
             toggleHalaqohPeriod(); // Panggil fungsi saat DOMContentLoaded
         });
+
+        // Fungsi untuk mengisi dropdown wilayah
+        document.addEventListener('DOMContentLoaded', function () {
+    const provinsiSelect = document.getElementById('province');
+    const kabupatenSelect = document.getElementById('city');
+    const kecamatanSelect = document.getElementById('district');
+    const kelurahanSelect = document.getElementById('village');
+
+    const selectedProv = "{{ old('province', $applicant->province ?? '') }}";
+    const selectedKab = "{{ old('city', $applicant->city ?? '') }}";
+    const selectedKec = "{{ old('district', $applicant->district ?? '') }}";
+    const selectedKel = "{{ old('village', $applicant->village ?? '') }}";
+
+    // Load provinsi
+    fetch('/api/provinces')
+        .then(res => res.json())
+        .then(provinces => {
+            provinces.forEach(prov => {
+                const option = new Option(prov, prov, false, prov === selectedProv);
+                provinsiSelect.appendChild(option);
+            });
+            if (selectedProv) updateCities(selectedProv);
+        })
+        .catch(() => alert('❌ Gagal memuat data provinsi.'));
+
+    provinsiSelect.addEventListener('change', function () {
+        updateCities(this.value);
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+    });
+
+    kabupatenSelect.addEventListener('change', function () {
+        updateDistricts(provinsiSelect.value, this.value);
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+    });
+
+    kecamatanSelect.addEventListener('change', function () {
+        updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
+    });
+
+    function updateCities(provinsi) {
+        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+        fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
+            .then(res => res.json())
+            .then(cities => {
+                cities.forEach(kab => {
+                    const option = new Option(kab, kab, false, kab === selectedKab);
+                    kabupatenSelect.appendChild(option);
+                });
+                if (selectedKab) updateDistricts(provinsi, selectedKab);
+            })
+            .catch(() => alert('❌ Gagal memuat data kota/kabupaten.'));
+    }
+
+    function updateDistricts(provinsi, kota) {
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
+            .then(res => res.json())
+            .then(districts => {
+                districts.forEach(kec => {
+                    const option = new Option(kec, kec, false, kec === selectedKec);
+                    kecamatanSelect.appendChild(option);
+                });
+                if (selectedKec) updateVillages(provinsi, kota, selectedKec);
+            })
+            .catch(() => alert('❌ Gagal memuat data kecamatan.'));
+    }
+
+    function updateVillages(provinsi, kota, kecamatan) {
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+        fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
+            .then(res => res.json())
+            .then(villages => {
+                villages.forEach(kel => {
+                    const option = new Option(kel, kel, false, kel === selectedKel);
+                    kelurahanSelect.appendChild(option);
+                });
+            })
+            .catch(() => alert('❌ Gagal memuat data kelurahan.'));
+    }
+})
     </script>
     @endpush
 @endsection
