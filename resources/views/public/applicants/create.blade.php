@@ -159,7 +159,6 @@
     const selectedKec = "{{ old('district', $applicant->district ?? '') }}";
     const selectedKel = "{{ old('village', $applicant->village ?? '') }}";
 
-    // Load provinsi
     fetch('/api/provinces')
         .then(res => res.json())
         .then(provinces => {
@@ -169,7 +168,7 @@
             });
             if (selectedProv) updateCities(selectedProv);
         })
-        .catch(() => alert('Gagal memuat data provinsi.'));
+        .catch(() => alert('❌ Gagal memuat data provinsi.'));
 
     provinsiSelect.addEventListener('change', function () {
         updateCities(this.value);
@@ -197,7 +196,7 @@
                 });
                 if (selectedKab) updateDistricts(provinsi, selectedKab);
             })
-            .catch(() => alert('Gagal memuat data kota/kabupaten.'));
+            .catch(() => alert('❌ Gagal memuat data kota/kabupaten.'));
     }
 
     function updateDistricts(provinsi, kota) {
@@ -211,7 +210,7 @@
                 });
                 if (selectedKec) updateVillages(provinsi, kota, selectedKec);
             })
-            .catch(() => alert('Gagal memuat data kecamatan.'));
+            .catch(() => alert('❌ Gagal memuat data kecamatan.'));
     }
 
     function updateVillages(provinsi, kota, kecamatan) {
@@ -224,7 +223,7 @@
                     kelurahanSelect.appendChild(option);
                 });
             })
-            .catch(() => alert('Gagal memuat data kelurahan.'));
+            .catch(() => alert('❌ Gagal memuat data kelurahan.'));
     }
 
 });

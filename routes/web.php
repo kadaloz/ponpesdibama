@@ -14,6 +14,7 @@ use App\Http\Controllers\Admin\GalleryController; // NEW: Import Admin GalleryCo
 use App\Http\Controllers\Admin\TeacherController; // NEW: Import TeacherController
 use App\Http\Controllers\Admin\HalaqohController; // NEW: Import HalaqohController
 use App\Http\Controllers\Public\GalleryPublicController; // NEW: Import Public GalleryPublicController
+use App\Http\Controllers\Public\ApplicantPrintController; // NEW: Import ApplicantPrintController
 use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbRequirementController
 use App\Models\News;
 use App\Models\Setting;
@@ -85,6 +86,8 @@ Route::prefix('galeri')->name('public.galleries.')->group(function () {
     Route::get('/{gallery:slug}', [GalleryPublicController::class, 'show'])->name('show');
 });
 
+// --- NEW: Rute Cetak Pendaftar Publik ---
+Route::get('/applicant/print/{registrationNumber}', [ApplicantPrintController::class, 'show'])->name('applicant.print');
 
 
 
