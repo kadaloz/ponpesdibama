@@ -98,7 +98,7 @@
 <div class="mb-4">
     <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap</label>
     <textarea name="address" id="address" rows="3" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+        class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"
         placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel">{{ old('address', $applicant->address ?? '') }}</textarea>
     @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
 </div>
@@ -109,7 +109,7 @@
     <div>
         <label for="province" class="block text-sm font-semibold text-gray-700 mb-1">Provinsi</label>
         <select name="province" id="province" required
-            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
             <option value="">Pilih Provinsi</option>
         </select>
         @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
@@ -119,7 +119,7 @@
     <div>
         <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota</label>
         <select name="city" id="city" required
-            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
             <option value="">Pilih Kabupaten/Kota</option>
         </select>
         @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
@@ -129,7 +129,7 @@
     <div>
         <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan</label>
         <select name="district" id="district" required
-            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
             <option value="">Pilih Kecamatan</option>
         </select>
         @error('district')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
@@ -139,12 +139,13 @@
     <div>
         <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa</label>
         <select name="village" id="village" required
-            class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
             <option value="">Pilih Kelurahan/Desa</option>
         </select>
         @error('village')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
     </div>
 </div>
+
 
                 <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Pilihan Program & Tipe Santri</h3>
                 <div>
