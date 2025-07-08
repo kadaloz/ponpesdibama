@@ -1,30 +1,34 @@
 @props([
-    'label' => '',
-    'name' => '',
+    'label',
+    'name',
     'type' => 'text',
-    'value' => '',
+    'as' => 'input', // input, textarea, select
     'required' => false,
-    'icon' => null,
+    'rows' => 3,
 ])
 
-<div>
-    <label for="{{ $name }}" class="block text-sm font-medium text-gray-700">
-        @if($icon)
-            <x-dynamic-component :component="'heroicon-o.' . $icon" class="w-4 h-4 inline mr-1 text-teal-500" />
-        @endif
-        {{ $label }}
-        @if($required)
-            <span class="text-red-500">*</span>
-        @endif
+<div class="mb-4">
+    <label for="{{ $name }}" class="block text-sm font-semibold text-gray-700 mb-1">
+        {{ $label }}{{ $required ? ' *' : '' }}
     </label>
-    <input
-        type="{{ $type }}"
-        name="{{ $name }}"
-        id="{{ $name }}"
-        value="{{ $value }}"
-        {{ $required ? 'required' : '' }}
-        {{ $attributes->merge(['class' => 'mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm']) }}
-    >
+
+    @if ($as === 'textarea')
+        <textarea name="{{ $name }}" id="{{ $name }}" rows="{{ $rows }}"
+            {{ $required ? 'required' : '' }}
+            {{ $attributes->merge(['class' => 'w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500']) }}>{{ old($name) }}</textarea>
+    @elseif ($as === 'select')
+        <select name="{{ $name }}" id="{{ $name }}"
+            {{ $required ? 'required' : '' }}
+            {{ $attributes->merge(['class' => 'w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500']) }}>
+            {{ $slot }}
+        </select>
+    @else
+        <input type="{{ $type }}" name="{{ $name }}" id="{{ $name }}"
+            value="{{ old($name) }}"
+            {{ $required ? 'required' : '' }}
+            {{ $attributes->merge(['class' => 'w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500']) }}>
+    @endif
+
     @error($name)
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
