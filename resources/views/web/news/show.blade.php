@@ -1,4 +1,4 @@
--- resources/views/web/news/show.blade.php --
+{{-- resources/views/web/news/show.blade.php --}}
 @extends('web.apps')
 
 @section('title', $news->title . ' - Berita PonpesDIBAMA')
