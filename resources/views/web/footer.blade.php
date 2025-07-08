@@ -16,7 +16,7 @@
             <div>
                 <h5 class="text-lg font-semibold mb-3">Tautan Penting</h5>
                 <ul class="space-y-2 text-sm">
-                    <li><a href="{{ url('/ppdb') }}" class="hover:underline text-gray-300 hover:text-white transition">Pendaftaran PPDB</a></li>
+                    <li><a href="{{ url('/ppdb/daftar') }}" class="hover:underline text-gray-300 hover:text-white transition">Pendaftaran PPDB</a></li>
                     <li><a href="#" class="hover:underline text-gray-300 hover:text-white transition">Kebijakan Privasi</a></li>
                     <li><a href="#" class="hover:underline text-gray-300 hover:text-white transition">Syarat & Ketentuan</a></li>
                 </ul>
@@ -28,15 +28,15 @@
                 <div class="space-y-3">
                     <a href="https://facebook.com/DiniyahBaitulMakmur" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
                         <x-icons.facebook class="w-5 h-5" />
-                        <span class="text-sm">@DiniyahBaitulMakmur</span>
+                        <span class="text-sm">@Bait El Makmur Aikmel</span>
                     </a>
                     <a href="https://instagram.com/DiniyahBaitulMakmur" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
                         <x-icons.instagram class="w-5 h-5" />
                         <span class="text-sm">@DiniyahBaitulMakmur</span>
                     </a>
-                    <a href="https://youtube.com/@DiniyahBaitulMakmur" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
+                    <a href="https://youtube.com/@diniyahbaitulmakmuraikmel670" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
                         <x-icons.youtube class="w-5 h-5" />
-                        <span class="text-sm">@DiniyahBaitulMakmur</span>
+                        <span class="text-sm">@diniyahbaitulmakmuraikmel670</span>
                     </a>
                 </div>
             </div>
@@ -44,7 +44,7 @@
 
         <!-- Divider -->
         <div class="border-t border-teal-700 mt-10 pt-6 text-center text-xs text-teal-300">
-            Dibangun oleh Team IT PonpesDibama untuk pendidikan Islam | Laravel + Tailwind CSS
+            Dibangun oleh Team IT PonpesDIBAMA untuk pendidikan Islam | Laravel + Tailwind CSS
         </div>
     </div>
 </footer>

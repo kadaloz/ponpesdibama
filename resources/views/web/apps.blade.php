@@ -80,6 +80,16 @@
         section[id] {
             scroll-margin-top: 150px; /* Sesuaikan nilai ini jika masih terpotong */
         }
+
+        .nav-link {
+             @apply block px-4 py-2 rounded-full transition-colors duration-200 
+             hover:bg-teal-100 hover:text-teal-900 
+             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400;
+        }
+        
+        .nav-link.active {
+             @apply bg-teal-600 text-white shadow-md;
+        }
     </style>
     @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
 </head>

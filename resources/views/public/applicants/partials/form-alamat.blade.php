@@ -3,7 +3,9 @@
     <x-textarea label="Alamat Lengkap" name="address" required />
 
     <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-        <x-input label="Kota" name="city" />
-        <x-input label="Provinsi" name="province" />
+        <x-select label="Provinsi" name="province" id="province" required />
+        <x-select label="Kota/Kabupaten" name="city" id="city" required />
+        <x-select label="Kecamatan" name="district" id="district" required />
+        <x-select label="Kelurahan/Desa" name="village" id="village" required />
     </div>
 </div>

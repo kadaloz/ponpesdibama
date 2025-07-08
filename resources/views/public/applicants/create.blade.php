@@ -151,11 +151,15 @@
     document.addEventListener('DOMContentLoaded', function () {
     const provinsiSelect = document.getElementById('province');
     const kabupatenSelect = document.getElementById('city');
+    const kecamatanSelect = document.getElementById('district');
+    const kelurahanSelect = document.getElementById('village');
 
     const selectedProv = "{{ old('province', $applicant->province ?? '') }}";
     const selectedKab = "{{ old('city', $applicant->city ?? '') }}";
+    const selectedKec = "{{ old('district', $applicant->district ?? '') }}";
+    const selectedKel = "{{ old('village', $applicant->village ?? '') }}";
 
-    // 1. Load provinsi
+    // Load provinsi
     fetch('/api/provinces')
         .then(res => res.json())
         .then(provinces => {
@@ -163,21 +167,27 @@
                 const option = new Option(prov, prov, false, prov === selectedProv);
                 provinsiSelect.appendChild(option);
             });
+            if (selectedProv) updateCities(selectedProv);
+        })
+        .catch(() => alert('Gagal memuat data provinsi.'));
 
-            if (selectedProv) {
-                updateCities(selectedProv);
-            }
-        });
-
-    // 2. Jika provinsi berubah, load kabupaten
     provinsiSelect.addEventListener('change', function () {
         updateCities(this.value);
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
     });
 
-    // 3. Fungsi update kabupaten
+    kabupatenSelect.addEventListener('change', function () {
+        updateDistricts(provinsiSelect.value, this.value);
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+    });
+
+    kecamatanSelect.addEventListener('change', function () {
+        updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
+    });
+
     function updateCities(provinsi) {
         kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-
         fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
             .then(res => res.json())
             .then(cities => {
@@ -185,8 +195,38 @@
                     const option = new Option(kab, kab, false, kab === selectedKab);
                     kabupatenSelect.appendChild(option);
                 });
-            });
+                if (selectedKab) updateDistricts(provinsi, selectedKab);
+            })
+            .catch(() => alert('Gagal memuat data kota/kabupaten.'));
     }
+
+    function updateDistricts(provinsi, kota) {
+        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
+            .then(res => res.json())
+            .then(districts => {
+                districts.forEach(kec => {
+                    const option = new Option(kec, kec, false, kec === selectedKec);
+                    kecamatanSelect.appendChild(option);
+                });
+                if (selectedKec) updateVillages(provinsi, kota, selectedKec);
+            })
+            .catch(() => alert('Gagal memuat data kecamatan.'));
+    }
+
+    function updateVillages(provinsi, kota, kecamatan) {
+        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+        fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
+            .then(res => res.json())
+            .then(villages => {
+                villages.forEach(kel => {
+                    const option = new Option(kel, kel, false, kel === selectedKel);
+                    kelurahanSelect.appendChild(option);
+                });
+            })
+            .catch(() => alert('Gagal memuat data kelurahan.'));
+    }
+
 });
 </script>
 @endpush

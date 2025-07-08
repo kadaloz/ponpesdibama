@@ -42,22 +42,22 @@
 
 
 
-    <!-- Floating Navigation -->
-    <nav class="sticky top-[80px] bg-white bg-opacity-95 backdrop-blur-md shadow-xl p-3 rounded-full mx-auto max-w-fit mt-6 z-40 transform transition-all duration-300 border border-gray-200"> {{-- Opacity, blur, shadow, border lebih menonjol --}}
-        <ul class="flex flex-wrap justify-center space-x-3 md:space-x-5 text-base md:text-lg font-semibold text-teal-800">
-            <li><a href="#beranda" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Beranda</a></li>
-            <li><a href="#tentang" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Tentang Kami</a></li>
-            <li><a href="#program" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Program</a></li>
-            <li><a href="#nasihat-harian" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Nasihat Harian</a></li>
-            <li><a href="#berita" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Berita</a></li>
-            {{-- Link Pendaftaran hanya jika PPDB aktif --}}
-            @if ($isPpdbOpen)
-                <li><a href="#pendaftaran" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Pendaftaran</a></li>
-            @endif
-            <li><a href="#galeri" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Galeri</a></li>
-            <li><a href="#kontak" class="block py-2 px-4 rounded-full hover:bg-teal-100 hover:text-teal-900 transition-colors duration-200">Kontak</a></li>
-        </ul>
-    </nav>
+<!-- Floating Navigation -->
+<nav class="sticky top-[80px] z-40 mx-auto mt-6 max-w-fit px-4 py-3 bg-white/90 backdrop-blur-md border border-gray-200 shadow-xl rounded-full transition-all duration-300">
+    <ul class="flex flex-wrap justify-center gap-2 md:gap-4 text-sm md:text-base font-semibold text-teal-800">
+        <li><a href="#beranda" class="nav-link">Beranda</a></li>
+        <li><a href="#tentang" class="nav-link">Tentang Kami</a></li>
+        <li><a href="#program" class="nav-link">Program</a></li>
+        <li><a href="#nasihat-harian" class="nav-link">Nasihat Harian</a></li>
+        <li><a href="#berita" class="nav-link">Berita</a></li>
+        @if ($isPpdbOpen)
+            <li><a href="#pendaftaran" class="nav-link">Pendaftaran</a></li>
+        @endif
+        <li><a href="#galeri" class="nav-link">Galeri</a></li>
+        <li><a href="#kontak" class="nav-link">Kontak</a></li>
+    </ul>
+</nav>
+
 
 <!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
@@ -422,8 +422,9 @@
 @endsection
 
 @push('scripts')
-    <script>
-        // DOM Elements
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // === DOM ELEMENTS ===
         const getDailyAdviceBtn = document.getElementById('getDailyAdviceBtn');
         const dailyAdviceOutput = document.getElementById('dailyAdviceOutput');
         const dailyAdviceSpinner = document.getElementById('dailyAdviceSpinner');
@@ -433,14 +434,14 @@
         const activityIdeaContent = document.getElementById('activityIdeaContent');
         const activityModalSpinner = document.getElementById('activityModalSpinner');
 
-        // Smooth scrolling for internal links
+        // === SMOOTH SCROLLING FOR INTERNAL LINKS ===
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
             anchor.addEventListener('click', function (e) {
                 e.preventDefault();
-                // Dapatkan offset dari elemen sticky header dan floating nav
-                const headerHeight = document.querySelector('header').offsetHeight;
-                const floatingNavHeight = document.querySelector('nav.sticky').offsetHeight;
-                const offset = headerHeight + floatingNavHeight + 30; // Tambah buffer
+
+                const headerHeight = document.querySelector('header')?.offsetHeight || 0;
+                const floatingNavHeight = document.querySelector('nav.sticky')?.offsetHeight || 0;
+                const offset = headerHeight + floatingNavHeight + 30;
 
                 const targetId = this.getAttribute('href');
                 const targetElement = document.querySelector(targetId);
@@ -454,21 +455,42 @@
             });
         });
 
+        // === SCROLLSPY: Highlight Active Navigation Link ===
+        const sections = document.querySelectorAll("section[id]");
+        const navLinks = document.querySelectorAll(".nav-link");
 
-        // --- Daily Advice Feature (LLM) ---
-        getDailyAdviceBtn.addEventListener('click', async () => {
-            dailyAdviceOutput.textContent = ''; // Clear previous content
-            dailyAdviceSpinner.classList.remove('hidden'); // Show spinner
-            getDailyAdviceBtn.disabled = true; // Disable button during fetch
+        function activateLink() {
+            const scrollY = window.pageYOffset;
+
+            sections.forEach((section) => {
+                const sectionTop = section.offsetTop - 160;
+                const sectionHeight = section.offsetHeight;
+                const sectionId = section.getAttribute("id");
+
+                if (scrollY >= sectionTop && scrollY < sectionTop + sectionHeight) {
+                    navLinks.forEach((link) => {
+                        link.classList.remove("active");
+                        if (link.getAttribute("href") === `#${sectionId}`) {
+                            link.classList.add("active");
+                        }
+                    });
+                }
+            });
+        }
+
+        window.addEventListener("scroll", activateLink);
+
+        // === DAILY ADVICE FEATURE ===
+        getDailyAdviceBtn?.addEventListener('click', async () => {
+            dailyAdviceOutput.textContent = '';
+            dailyAdviceSpinner.classList.remove('hidden');
+            getDailyAdviceBtn.disabled = true;
 
             try {
                 const prompt = "Berikan satu nasihat singkat Islami atau kutipan Al-Quran/Hadits beserta terjemahan/maknanya dalam bahasa Indonesia. Batasi hingga 500 karakter.";
-                let chatHistory = [];
-                chatHistory.push({ role: "user", parts: [{ text: prompt }] });
-
+                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
                 const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyDxC3Qv2HIKFtg3wVI5Cbr9jVZacVwI7YI"; // Canvas will provide this automatically
-
+                const apiKey = "AIzaSyDxC3Qv2HIKFtg3wVI5Cbr9jVZacVwI7YI";
                 const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
 
                 const response = await fetch(apiUrl, {
@@ -479,17 +501,13 @@
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    console.error('API Error:', errorData);
                     throw new Error(`Error API: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
                 }
 
                 const result = await response.json();
-                console.log('Gemini API response:', result); // Log the full response
+                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
 
-                if (result.candidates && result.candidates.length > 0 &&
-                    result.candidates[0].content && result.candidates[0].content.parts &&
-                    result.candidates[0].content.parts.length > 0) {
-                    const text = result.candidates[0].content.parts[0].text;
+                if (text) {
                     dailyAdviceOutput.textContent = text;
                 } else {
                     dailyAdviceOutput.textContent = 'Gagal mendapatkan nasihat. Silakan coba lagi.';
@@ -499,22 +517,21 @@
                 console.error('Error generating daily advice:', error);
                 dailyAdviceOutput.textContent = 'Terjadi kesalahan saat mengambil nasihat: ' + error.message;
             } finally {
-                dailyAdviceSpinner.classList.add('hidden'); // Hide spinner
-                getDailyAdviceBtn.disabled = false; // Re-enable button
+                dailyAdviceSpinner.classList.add('hidden');
+                getDailyAdviceBtn.disabled = false;
             }
         });
 
-
-        // Close modal when close button is clicked
-        closeActivityModal.addEventListener('click', () => {
+        // === MODAL HANDLING ===
+        closeActivityModal?.addEventListener('click', () => {
             activityModal.style.display = 'none';
         });
 
-        // Close modal when clicking outside of the modal content
         window.addEventListener('click', (event) => {
-            if (event.target == activityModal) {
+            if (event.target === activityModal) {
                 activityModal.style.display = 'none';
             }
         });
-    </script>
+    });
+</script>
 @endpush

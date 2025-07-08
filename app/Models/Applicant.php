@@ -35,6 +35,9 @@ class Applicant extends Model
         'document_photo_path',
         'status',
         'admin_notes',
+        'district',
+        'village',
+
     ];
 
     protected $casts = [
