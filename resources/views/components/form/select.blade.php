@@ -1,5 +1,5 @@
 @props([
-    'id',
+    'id' => null,
     'name',
     'label',
     'options' => [],
@@ -7,6 +7,10 @@
     'placeholder' => '',
     'required' => false,
 ])
+
+@php
+    $id = $id ?? $name;
+@endphp
 
 <div class="mb-4 {{ $attributes->get('class') }}">
     <label for="{{ $id }}" class="block text-sm font-semibold text-gray-700 mb-1">
