@@ -75,7 +75,8 @@
             Provinsi
         </label>
         <select id="province" name="province" required
-            class="w-full tom-select" data-old="{{ old('province', $applicant->province ?? '') }}">
+            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+            data-old="{{ old('province', $applicant->province ?? '') }}">
             <option value="">⏳ Memuat Provinsi...</option>
         </select>
         @error('province')
@@ -89,7 +90,8 @@
             Kabupaten/Kota
         </label>
         <select id="city" name="city" required disabled
-            class="w-full tom-select" data-old="{{ old('city', $applicant->city ?? '') }}">
+            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+            data-old="{{ old('city', $applicant->city ?? '') }}">
             <option value="">Pilih Kabupaten/Kota</option>
         </select>
         @error('city')
@@ -103,7 +105,8 @@
             Kecamatan
         </label>
         <select id="district" name="district" required disabled
-            class="w-full tom-select" data-old="{{ old('district', $applicant->district ?? '') }}">
+            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+            data-old="{{ old('district', $applicant->district ?? '') }}">
             <option value="">Pilih Kecamatan</option>
         </select>
         @error('district')
@@ -117,7 +120,8 @@
             Kelurahan/Desa
         </label>
         <select id="village" name="village" required disabled
-            class="w-full tom-select" data-old="{{ old('village', $applicant->village ?? '') }}">
+            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+            data-old="{{ old('village', $applicant->village ?? '') }}">
             <option value="">Pilih Kelurahan/Desa</option>
         </select>
         @error('village')
