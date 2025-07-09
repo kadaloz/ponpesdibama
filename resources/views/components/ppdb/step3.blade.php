@@ -14,11 +14,12 @@
 {{-- Tipe Pendaftaran --}}
 <x-form.group name="ppdb_type" label="Tipe Pendaftaran">
     <x-form.enum-radio
-        name="ppdb_type"
-        enum="\App\Enums\PpdbType"
-        :checked="old('ppdb_type', $applicant->ppdb_type ?? '')"
-        x-on:change="handlePpdbTypeChange"
+    name="ppdb_type"
+    label="Tipe Pendaftaran"
+    enum="\App\Enums\PpdbType"
+    :checked="old('ppdb_type', $applicant->ppdb_type ?? '')"
     />
+
 </x-form.group>
 
 {{-- Periode Halaqoh --}}

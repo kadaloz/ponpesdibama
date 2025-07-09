@@ -12,7 +12,7 @@ class EnumRadio extends Component
     public ?string $checked;
     public array $options;
 
-    public function __construct(string $name, string $label, string $enum, ?string $checked = null)
+public function __construct(string $name, string $enum, string $label = '', ?string $checked = null)
     {
         $this->name = $name;
         $this->label = $label;
