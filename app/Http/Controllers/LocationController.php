@@ -58,22 +58,31 @@ class LocationController extends Controller
         return response()->json(array_keys($data[$province][$city]));
     }
 
-    public function getVillages(Request $request)
-    {
-        $province = $request->query('province');
-        $city = $request->query('city');
-        $district = $request->query('district');
+public function getVillages(Request $request)
+{
+    $province = trim($request->query('province'));
+    $city = trim($request->query('city'));
+    $district = trim($request->query('district'));
 
-        if (!file_exists($this->filePath)) {
-            return response()->json(['error' => 'File not found'], 404);
-        }
-
-        $data = json_decode(file_get_contents($this->filePath), true);
-
-        if (!isset($data[$province][$city][$district])) {
-            return response()->json(['error' => 'District not found in city'], 404);
-        }
-
-        return response()->json($data[$province][$city][$district]);
+    if (!file_exists($this->filePath)) {
+        return response()->json(['error' => 'File not found'], 404);
     }
+
+    $data = json_decode(file_get_contents($this->filePath), true);
+
+    if (!isset($data[$province][$city][$district])) {
+        return response()->json([
+            'error' => 'District not found in city',
+            'debug' => [
+                'province' => $province,
+                'city' => $city,
+                'district' => $district,
+                'available' => array_keys($data[$province][$city] ?? [])
+            ]
+        ], 422);
+    }
+
+    return response()->json($data[$province][$city][$district]);
+}
+
 }

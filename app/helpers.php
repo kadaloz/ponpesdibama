@@ -1,12 +1,5 @@
 <?php
 
-
-/**
- * Ambil semua nilai dari enum PHP
- *
- * @param class-string<UnitEnum> $enumClass
- * @return array
- */
 function enum_values(string $enumClass): array
 {
     if (!enum_exists($enumClass)) {
