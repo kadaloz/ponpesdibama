@@ -1,4 +1,3 @@
-{{-- resources/views/public/applicants/create.blade.php --}}
 @extends('web.apps')
 
 @section('title', 'Pendaftaran PPDB Online - PonpesDIBAMA')
@@ -12,6 +11,7 @@
                 Isi data diri calon santri dan wali, serta unggah dokumen yang diperlukan.
             </p>
         </div>
+
         <div class="bg-white p-6 md:p-10 rounded-2xl shadow-xl max-w-4xl mx-auto">
             @includeIf('components.ppdb.requirements')
 
@@ -110,104 +110,9 @@
         showStep(currentStep);
     }
 
-    // Lokasi dinamis
-    function setupLocationDropdowns() {
-        const provinsiSelect = document.getElementById('province');
-        const kabupatenSelect = document.getElementById('city');
-        const kecamatanSelect = document.getElementById('district');
-        const kelurahanSelect = document.getElementById('village');
-
-        const selectedProv = "{{ old('province', $applicant->province ?? '') }}";
-        const selectedKab = "{{ old('city', $applicant->city ?? '') }}";
-        const selectedKec = "{{ old('district', $applicant->district ?? '') }}";
-        const selectedKel = "{{ old('village', $applicant->village ?? '') }}";
-
-        fetch('/api/provinces')
-            .then(res => res.json())
-            .then(provinces => {
-                provinces.forEach(prov => {
-                    provinsiSelect?.appendChild(new Option(prov, prov, false, prov === selectedProv));
-                });
-                if (selectedProv) {
-                    updateCities(selectedProv, selectedKab, selectedKec, selectedKel);
-                }
-            })
-            .catch(err => {
-                console.error('❌ Error memuat provinsi:', err);
-                alert('❌ Gagal memuat data provinsi.');
-            });
-
-        provinsiSelect?.addEventListener('change', function () {
-            updateCities(this.value);
-            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        });
-
-        kabupatenSelect?.addEventListener('change', function () {
-            updateDistricts(provinsiSelect.value, this.value);
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        });
-
-        kecamatanSelect?.addEventListener('change', function () {
-            updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
-        });
-
-        function updateCities(provinsi, prefillKab = null, prefillKec = null, prefillKel = null) {
-            kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-            fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
-                .then(res => res.json())
-                .then(cities => {
-                    cities.forEach(kab => {
-                        kabupatenSelect.appendChild(new Option(kab, kab, false, kab === prefillKab));
-                    });
-                    if (prefillKab) {
-                        updateDistricts(provinsi, prefillKab, prefillKec, prefillKel);
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ Error memuat kota/kabupaten:', err);
-                    alert('❌ Gagal memuat data kota/kabupaten.');
-                });
-        }
-
-        function updateDistricts(provinsi, kota, prefillKec = null, prefillKel = null) {
-            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
-                .then(res => res.json())
-                .then(districts => {
-                    districts.forEach(kec => {
-                        kecamatanSelect.appendChild(new Option(kec, kec, false, kec === prefillKec));
-                    });
-                    if (prefillKec) {
-                        updateVillages(provinsi, kota, prefillKec, prefillKel);
-                    }
-                })
-                .catch(err => {
-                    console.error('❌ Error memuat kecamatan:', err);
-                    alert('❌ Gagal memuat data kecamatan.');
-                });
-        }
-
-        function updateVillages(provinsi, kota, kecamatan, prefillKel = null) {
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-            fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
-                .then(res => res.json())
-                .then(villages => {
-                    villages.forEach(kel => {
-                        kelurahanSelect.appendChild(new Option(kel, kel, false, kel === prefillKel));
-                    });
-                })
-                .catch(err => {
-                    console.error('❌ Error memuat kelurahan:', err);
-                    alert('❌ Gagal memuat data kelurahan.');
-                });
-        }
-    }
-
     document.addEventListener('DOMContentLoaded', function () {
         showStep(currentStep);
         toggleHalaqohPeriod();
-        setupLocationDropdowns();
 
         const form = document.getElementById('ppdbForm');
         if (form) {
