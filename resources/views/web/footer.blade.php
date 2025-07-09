@@ -34,7 +34,7 @@
                         <x-icons.instagram class="w-5 h-5" />
                         <span class="text-sm">@DiniyahBaitulMakmur</span>
                     </a>
-                    <a href="https://youtube.com/@diniyahbaitulmakmuraikmel670" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
+                    <a href="https://youtube.com/@diniyaßhbaitulmakmuraikmel670" target="_blank" class="flex items-center space-x-2 text-gray-300 hover:text-white transition">
                         <x-icons.youtube class="w-5 h-5" />
                         <span class="text-sm">@diniyahbaitulmakmuraikmel670</span>
                     </a>

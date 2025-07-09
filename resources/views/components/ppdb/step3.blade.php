@@ -1,17 +1,22 @@
 <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2">Program & Dokumen</h3>
 
 {{-- Pilih Program --}}
-<x-form.group label="Pilih Program" name="chosen_program" as="select">
-    <option value="">Pilih Program</option>
-    @foreach ($programs as $program)
-        <option value="{{ $program->name }}" {{ old('chosen_program') == $program->name ? 'selected' : '' }}>
-            {{ $program->name }}
-        </option>
-    @endforeach
-</x-form.group>
+<div class="mb-4">
+    <label for="chosen_program" class="block text-sm font-semibold text-gray-700 mb-1">Pilih Program</label>
+    <select name="chosen_program" id="chosen_program"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500">
+        <option value="">Pilih Program</option>
+        @foreach ($programs as $program)
+            <option value="{{ $program->name }}" {{ old('chosen_program') == $program->name ? 'selected' : '' }}>
+                {{ $program->name }}
+            </option>
+        @endforeach
+    </select>
+    @error('chosen_program')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+</div>
 
 {{-- Tipe Pendaftaran --}}
-<div class="mt-4">
+<div class="mb-4">
     <label class="block text-sm font-semibold text-gray-700 mb-2">Tipe Pendaftaran</label>
     <div class="space-x-4">
         <label>
@@ -29,12 +34,15 @@
 </div>
 
 {{-- Periode Halaqoh --}}
-<div class="mt-4 hidden" id="halaqoh-period-group">
-    <x-form.group label="Periode Ngaji" name="halaqoh_period" as="select">
+<div class="mb-4 hidden" id="halaqoh-period-group">
+    <label for="halaqoh_period" class="block text-sm font-semibold text-gray-700 mb-1">Periode Ngaji</label>
+    <select name="halaqoh_period" id="halaqoh_period"
+        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500">
         <option value="">Pilih Periode</option>
         <option value="Sore" {{ old('halaqoh_period') == 'Sore' ? 'selected' : '' }}>Halaqoh Sore</option>
         <option value="Malam" {{ old('halaqoh_period') == 'Malam' ? 'selected' : '' }}>Halaqoh Malam</option>
-    </x-form.group>
+    </select>
+    @error('halaqoh_period')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
 </div>
 
 {{-- Dokumen Upload --}}

@@ -42,19 +42,37 @@
 
 
 
-<!-- Floating Navigation -->
-<nav class="sticky top-[80px] z-40 mx-auto mt-6 max-w-fit px-4 py-3 bg-white/90 backdrop-blur-md border border-gray-200 shadow-xl rounded-full transition-all duration-300">
-    <ul class="flex flex-wrap justify-center gap-2 md:gap-4 text-sm md:text-base font-semibold text-teal-800">
-        <li><a href="#beranda" class="nav-link">Beranda</a></li>
-        <li><a href="#tentang" class="nav-link">Tentang Kami</a></li>
-        <li><a href="#program" class="nav-link">Program</a></li>
-        <li><a href="#nasihat-harian" class="nav-link">Nasihat Harian</a></li>
-        <li><a href="#berita" class="nav-link">Berita</a></li>
+<!-- Redesigned Floating Navigation -->
+<nav class="sticky top-[80px] z-40 mx-auto mt-6 max-w-max px-6 py-3 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full transition-all duration-300 hover:shadow-xl">
+    <ul class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-sm md:text-base font-medium text-teal-800">
+        <li>
+            <a href="#beranda" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Beranda</a>
+        </li>
+        <li>
+            <a href="#tentang" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Tentang Kami</a>
+        </li>
+        <li>
+            <a href="#program" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Program</a>
+        </li>
+        <li>
+            <a href="#nasihat-harian" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Nasihat Harian</a>
+        </li>
+        <li>
+            <a href="#berita" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Berita</a>
+        </li>
         @if ($isPpdbOpen)
-            <li><a href="#pendaftaran" class="nav-link">Pendaftaran</a></li>
+            <li>
+                <a href="#pendaftaran" class="nav-link px-3 py-1.5 rounded-full bg-teal-600 text-white hover:bg-teal-700 transition">
+                    Pendaftaran
+                </a>
+            </li>
         @endif
-        <li><a href="#galeri" class="nav-link">Galeri</a></li>
-        <li><a href="#kontak" class="nav-link">Kontak</a></li>
+        <li>
+            <a href="#galeri" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Galeri</a>
+        </li>
+        <li>
+            <a href="#kontak" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Kontak</a>
+        </li>
     </ul>
 </nav>
 
