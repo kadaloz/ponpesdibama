@@ -3,6 +3,18 @@ export default function ppdbForm() {
         step: 1,
         showHalaqoh: false,
 
+        init() {
+            this.updateHalaqohVisibility();
+
+            document
+                .querySelectorAll('input[name="ppdb_type"]')
+                .forEach((el) => {
+                    el.addEventListener("change", () => {
+                        this.updateHalaqohVisibility();
+                    });
+                });
+        },
+
         nextStep() {
             if (this.validateStep()) {
                 this.step++;
@@ -14,44 +26,42 @@ export default function ppdbForm() {
             this.step--;
         },
 
-        toggleHalaqoh() {
-            const asrama = document.querySelector(
-                'input[name="ppdb_type"][value="Asrama"]'
-            );
-            const group = document.getElementById("halaqoh-period-group");
-            if (asrama && group) {
-                const isAsrama = asrama.checked;
-                group.classList.toggle("hidden", isAsrama);
-                this.showHalaqoh = !isAsrama;
-            }
-        },
-
         updateHalaqohVisibility() {
             const selected = document.querySelector(
                 'input[name="ppdb_type"]:checked'
             );
             this.showHalaqoh = selected?.value === "Pulang-Pergi";
-            const group = document.getElementById("halaqoh-period-group");
-            if (group) {
-                group.classList.toggle("hidden", !this.showHalaqoh);
-            }
         },
-
         validateStep() {
             const current = document.querySelector(`#step-${this.step}`);
-            const required = current.querySelectorAll("[required]");
+            const required = current.querySelectorAll(
+                "[required], [data-required-if]"
+            );
             let valid = true;
 
             required.forEach((field) => {
+                let isRequired = field.hasAttribute("required");
+
+                // Cek kondisi dinamis
+                const condition = field.dataset.requiredIf;
+                if (condition) {
+                    const [targetName, expectedValue] = condition.split(":");
+                    const target = document.querySelector(
+                        `[name="${targetName}"]:checked`
+                    );
+                    isRequired = target?.value === expectedValue;
+                }
+
                 const value = field.value.trim();
                 const isValid =
-                    field.name === "parent_email"
+                    !isRequired ||
+                    (field.name === "parent_email"
                         ? /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
                         : field.name === "parent_phone"
                         ? /^\+?[0-9]{10,15}$/.test(value)
                         : field.name === "nisn"
                         ? /^[0-9]{10}$/.test(value)
-                        : !!value;
+                        : !!value);
 
                 field.classList.toggle("border-red-500", !isValid);
                 if (!isValid) valid = false;
@@ -60,7 +70,6 @@ export default function ppdbForm() {
             if (!valid) alert("Mohon lengkapi semua data yang wajib diisi.");
             return valid;
         },
-
         handleSubmit() {
             grecaptcha.ready(() => {
                 grecaptcha
