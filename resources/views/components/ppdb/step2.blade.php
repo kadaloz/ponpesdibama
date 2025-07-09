@@ -68,7 +68,7 @@
     @enderror
 </div>
 
-{{-- Wilayah (Dropdown Otomatis) --}}
+{{-- Wilayah --}}
 <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
     {{-- Provinsi --}}
     <div>
@@ -86,7 +86,7 @@
     {{-- Kabupaten/Kota --}}
     <div>
         <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota</label>
-        <select id="city" name="city" required disabled
+        <select id="city" name="city" required
             class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
             data-old="{{ old('city', $applicant->city ?? '') }}">
             <option value="">Pilih Kabupaten/Kota</option>
@@ -99,7 +99,7 @@
     {{-- Kecamatan --}}
     <div>
         <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan</label>
-        <select id="district" name="district" required disabled
+        <select id="district" name="district" required
             class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
             data-old="{{ old('district', $applicant->district ?? '') }}">
             <option value="">Pilih Kecamatan</option>
@@ -112,7 +112,7 @@
     {{-- Kelurahan/Desa --}}
     <div>
         <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa</label>
-        <select id="village" name="village" required disabled
+        <select id="village" name="village" required
             class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
             data-old="{{ old('village', $applicant->village ?? '') }}">
             <option value="">Pilih Kelurahan/Desa</option>
@@ -122,5 +122,3 @@
         @enderror
     </div>
 </div>
-
-
