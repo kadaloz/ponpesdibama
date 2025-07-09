@@ -46,129 +46,29 @@
 </section>
 
 @push('scripts')
-<script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 <script>
-    let currentStep = 1;
-    const totalSteps = 3;
-
-    function showStep(step) {
-        for (let i = 1; i <= totalSteps; i++) {
-            document.getElementById('step-' + i).classList.add('hidden');
-        }
-        document.getElementById('step-' + step).classList.remove('hidden');
-
-        document.getElementById('prevBtn').classList.toggle('hidden', step === 1);
-        document.getElementById('nextBtn').classList.toggle('hidden', step === totalSteps);
-        document.getElementById('submitBtn').classList.toggle('hidden', step !== totalSteps);
-          if (step === 3) {
-        toggleHalaqohPeriod();
-    }
-    }
-    function toggleHalaqohPeriod() {
-        const asramaRadio = document.querySelector('input[name="ppdb_type"][value="Asrama"]');
-        const group = document.getElementById('halaqoh-period-group');
-
-        if (asramaRadio.checked) {
-            group.classList.add('hidden');
-        } else {
-            group.classList.remove('hidden');
-        }
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        toggleHalaqohPeriod(); // Jalankan saat halaman pertama kali dimuat
-    });
-
-    function validateInput(input) {
-        const name = input.getAttribute('name');
-        const value = input.value;
-
-        if (!value.trim()) return false;
-
-        if (name === 'parent_email' && value !== '') {
-            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-            return emailRegex.test(value);
-        }
-
-        if (name === 'parent_phone') {
-            const phoneRegex = /^\+?[0-9]{10,15}$/;
-            return phoneRegex.test(value);
-        }
-
-        if (name === 'nisn' && value !== '') {
-            const nisnRegex = /^[0-9]{10}$/;
-            return nisnRegex.test(value);
-        }
-
-        return true;
-    }
-
-    function nextPrev(n) {
-        const currentStepDiv = document.getElementById('step-' + currentStep);
-        const requiredFields = currentStepDiv.querySelectorAll('[required]');
-        let allValid = true;
-
-        requiredFields.forEach(field => {
-            const isValid = validateInput(field);
-            if (!isValid) {
-                allValid = false;
-                field.classList.add('border-red-500');
-            } else {
-                field.classList.remove('border-red-500');
-            }
-        });
-
-        if (!allValid && n === 1) {
-            alert('Mohon lengkapi dan isi dengan benar semua data yang wajib diisi.');
-            return;
-        }
-
-        currentStep += n;
-        if (currentStep < 1) currentStep = 1;
-        if (currentStep > totalSteps) currentStep = totalSteps;
-        showStep(currentStep);
-    }
-
-    document.addEventListener('DOMContentLoaded', function () {
-        showStep(currentStep);
-
-        // Google reCAPTCHA v3 bind
-        const form = document.getElementById('ppdbForm');
-        form.addEventListener('submit', function (e) {
-            e.preventDefault();
-            grecaptcha.ready(function () {
-                grecaptcha.execute("{{ config('services.recaptcha.site_key') }}", {action: 'ppdb_form'}).then(function (token) {
-                    const input = document.createElement('input');
-                    input.setAttribute('type', 'hidden');
-                    input.setAttribute('name', 'g-recaptcha-response');
-                    input.setAttribute('value', token);
-                    form.appendChild(input);
-                    form.submit();
-                });
-            });
-        });
-    });
-    document.addEventListener('DOMContentLoaded', function () {
+document.addEventListener('DOMContentLoaded', function () {
     const provinsiSelect = document.getElementById('province');
     const kabupatenSelect = document.getElementById('city');
     const kecamatanSelect = document.getElementById('district');
     const kelurahanSelect = document.getElementById('village');
 
-    const selectedProv = "{{ old('province', $applicant->province ?? '') }}";
-    const selectedKab = "{{ old('city', $applicant->city ?? '') }}";
-    const selectedKec = "{{ old('district', $applicant->district ?? '') }}";
-    const selectedKel = "{{ old('village', $applicant->village ?? '') }}";
+    const selectedProv = @json(old('province', $applicant->province ?? ''));
+    const selectedKab = @json(old('city', $applicant->city ?? ''));
+    const selectedKec = @json(old('district', $applicant->district ?? ''));
+    const selectedKel = @json(old('village', $applicant->village ?? ''));
 
+    // Load provinsi awal
     fetch('/api/provinces')
         .then(res => res.json())
         .then(provinces => {
+            provinsiSelect.innerHTML = '<option value="">Pilih Provinsi</option>';
             provinces.forEach(prov => {
                 const option = new Option(prov, prov, false, prov === selectedProv);
                 provinsiSelect.appendChild(option);
             });
             if (selectedProv) updateCities(selectedProv);
-        })
-        .catch(() => alert('❌ Gagal memuat data provinsi.'));
+        });
 
     provinsiSelect.addEventListener('change', function () {
         updateCities(this.value);
@@ -186,47 +86,47 @@
     });
 
     function updateCities(provinsi) {
-        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
+        kabupatenSelect.innerHTML = '<option value="">Memuat...</option>';
         fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
             .then(res => res.json())
             .then(cities => {
+                kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
                 cities.forEach(kab => {
                     const option = new Option(kab, kab, false, kab === selectedKab);
                     kabupatenSelect.appendChild(option);
                 });
                 if (selectedKab) updateDistricts(provinsi, selectedKab);
-            })
-            .catch(() => alert('❌ Gagal memuat data kota/kabupaten.'));
+            });
     }
 
     function updateDistricts(provinsi, kota) {
-        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        kecamatanSelect.innerHTML = '<option value="">Memuat...</option>';
         fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
             .then(res => res.json())
             .then(districts => {
+                kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
                 districts.forEach(kec => {
                     const option = new Option(kec, kec, false, kec === selectedKec);
                     kecamatanSelect.appendChild(option);
                 });
                 if (selectedKec) updateVillages(provinsi, kota, selectedKec);
-            })
-            .catch(() => alert('❌ Gagal memuat data kecamatan.'));
+            });
     }
 
     function updateVillages(provinsi, kota, kecamatan) {
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+        kelurahanSelect.innerHTML = '<option value="">Memuat...</option>';
         fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
             .then(res => res.json())
             .then(villages => {
+                kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
                 villages.forEach(kel => {
                     const option = new Option(kel, kel, false, kel === selectedKel);
                     kelurahanSelect.appendChild(option);
                 });
-            })
-            .catch(() => alert('❌ Gagal memuat data kelurahan.'));
+            });
     }
-
 });
 </script>
 @endpush
+
 @endsection
