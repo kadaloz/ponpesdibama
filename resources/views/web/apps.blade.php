@@ -88,7 +88,7 @@
         }
         
         .nav-link.active {
-             @apply bg-teal-600 text-white shadow-md;
+             @apply bg-yellow-600 text-white shadow-md;
         }
     </style>
     @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
