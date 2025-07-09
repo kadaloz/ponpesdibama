@@ -27,6 +27,8 @@ class SettingController extends Controller
             'pondok_photo' => null, // Default: tidak ada foto
             'location_map_url' => null, // Default: tidak ada URL peta
             'is_ppdb_open' => false, // Default PPDB tertutup
+            'ppdb_asrama_open' => false,  // Default PPDB Asrama tertutup
+            'ppdb_pulang_pergi_open' => false,  // Default Pulang Pergi tertutup
             'ppdb_academic_year' => date('Y') . '/' . (date('Y') + 1), // Default tahun ajaran PPDB
             'cta_enrollment_heading' => 'Siapkan Masa Depan Gemilang Putra/Putri Anda Bersama Yayasan Ponpes DIBAMA!', // NEW: Teks CTA Pendaftaran
             // Tambahkan kunci pengaturan default lainnya di sini
@@ -36,9 +38,10 @@ class SettingController extends Controller
         foreach ($defaultSettings as $key => $defaultValue) {
             if (array_key_exists($key, $settings)) {
                 // Untuk boolean, pastikan nilai string '0'/'1' diubah ke boolean
-                if ($key === 'is_ppdb_open') {
-                    $settings[$key] = filter_var($settings[$key], FILTER_VALIDATE_BOOLEAN);
-                }
+                if (in_array($key, ['is_ppdb_open', 'ppdb_asrama_open', 'ppdb_pulang_pergi_open'])) {
+                $settings[$key] = filter_var($settings[$key], FILTER_VALIDATE_BOOLEAN);
+            }
+
             } else {
                 $settings[$key] = $defaultValue;
             }
@@ -62,6 +65,8 @@ class SettingController extends Controller
             'pondok_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
             'location_map_url' => 'nullable|url|max:1000',
             'is_ppdb_open' => 'boolean',
+            'ppdb_asrama_open' => 'boolean',
+            'ppdb_pulang_pergi_open' => 'boolean',
             'ppdb_academic_year' => 'nullable|string|max:20',
             'cta_enrollment_heading' => 'required|string|max:255', // NEW: Validasi teks CTA
             // Tambahkan validasi untuk kunci pengaturan lainnya
@@ -87,9 +92,10 @@ class SettingController extends Controller
             }
 
             // Untuk checkbox 'is_ppdb_open', nilai yang diterima adalah boolean, simpan sebagai string '0' atau '1'
-            if ($key === 'is_ppdb_open') {
-                 $value = $value ? '1' : '0'; // Konversi boolean ke string '1' atau '0' untuk database
+            if (in_array($key, ['is_ppdb_open', 'ppdb_asrama_open', 'ppdb_pulang_pergi_open'])) {
+                $value = $value ? '1' : '0';
             }
+
 
             Setting::updateOrCreate(
                 ['key' => $key],

@@ -13,13 +13,29 @@
 
 {{-- Tipe Pendaftaran --}}
 <x-form.group name="ppdb_type" label="Tipe Pendaftaran">
-    <x-form.enum-radio
-    name="ppdb_type"
-    label="Tipe Pendaftaran"
-    enum="\App\Enums\PpdbType"
-    :checked="old('ppdb_type', $applicant->ppdb_type ?? '')"
-    />
+    <div class="flex flex-col gap-2 sm:flex-row sm:gap-6">
+        <label class="inline-flex items-center space-x-2">
+            <input
+                type="radio"
+                name="ppdb_type"
+                value="Asrama"
+                {{ empty($settings['ppdb_asrama_open']) ? 'disabled' : '' }}
+                {{ old('ppdb_type', $applicant->ppdb_type ?? '') === 'Asrama' ? 'checked' : '' }}
+            >
+            <span>Asrama</span>
+        </label>
 
+        <label class="inline-flex items-center space-x-2">
+            <input
+                type="radio"
+                name="ppdb_type"
+                value="Pulang-Pergi"
+                {{ empty($settings['ppdb_pulang_pergi_open']) ? 'disabled' : '' }}
+                {{ old('ppdb_type', $applicant->ppdb_type ?? '') === 'Pulang-Pergi' ? 'checked' : '' }}
+            >
+            <span>Pulang-Pergi</span>
+        </label>
+    </div>
 </x-form.group>
 
 {{-- Periode Halaqoh --}}

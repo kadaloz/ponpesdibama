@@ -97,15 +97,29 @@
                 @endif
             </div>
 
-            {{-- PPDB Toggle --}}
-            <div class="pt-4 border-t border-gray-200">
-                <label for="is_ppdb_open" class="block text-xl font-bold text-gray-800 mb-2">Status Pendaftaran PSB</label>
-                <div class="flex items-center space-x-3">
-                    <input type="hidden" name="is_ppdb_open" value="0">
-                    <input type="checkbox" name="is_ppdb_open" id="is_ppdb_open" value="1" class="h-5 w-5 text-teal-600 border-gray-300 rounded" {{ old('is_ppdb_open', $settings['is_ppdb_open']) ? 'checked' : '' }}>
-                    <label for="is_ppdb_open" class="text-lg font-medium text-gray-700">Aktifkan PSB Online</label>
-                </div>
-            </div>
+    {{-- PPDB Tipe Pendaftaran --}}
+<div class="pt-4">
+    <label class="block text-xl font-bold text-gray-800 mb-2">Tipe Pendaftaran yang Dibuka</label>
+
+    <div class="flex items-center space-x-6">
+        <div class="flex items-center space-x-2">
+            <input type="hidden" name="ppdb_asrama_open" value="0">
+            <input type="checkbox" name="ppdb_asrama_open" id="ppdb_asrama_open" value="1"
+                class="h-5 w-5 text-teal-600 border-gray-300 rounded"
+                {{ old('ppdb_asrama_open', $settings['ppdb_asrama_open']) ? 'checked' : '' }}>
+            <label for="ppdb_asrama_open" class="text-lg font-medium text-gray-700">Asrama</label>
+        </div>
+
+        <div class="flex items-center space-x-2">
+            <input type="hidden" name="ppdb_pulang_pergi_open" value="0">
+            <input type="checkbox" name="ppdb_pulang_pergi_open" id="ppdb_pulang_pergi_open" value="1"
+                class="h-5 w-5 text-teal-600 border-gray-300 rounded"
+                {{ old('ppdb_pulang_pergi_open', $settings['ppdb_pulang_pergi_open']) ? 'checked' : '' }}>
+            <label for="ppdb_pulang_pergi_open" class="text-lg font-medium text-gray-700">Pulang-Pergi</label>
+        </div>
+    </div>
+</div>
+
 
             {{-- Tahun Ajaran --}}
             <div class="pt-4 border-t border-gray-200">

@@ -31,7 +31,9 @@ class ApplicantController extends Controller
     public function create()
     {
         $programs = Program::where('is_active', true)->get();
-        return view('public.applicants.create', compact('programs'));
+        $settings = Setting::pluck('value', 'key')->toArray();
+
+        return view('public.applicants.create', compact('programs', 'settings'));
     }
 
     /**
@@ -73,6 +75,23 @@ $request->validate([
     'parent_phone.regex' => 'Nomor HP orang tua harus berupa angka dan panjang 10–15 digit.',
     'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
 ]);
+
+// ✅ Validasi tambahan: pastikan tipe pendaftaran yang dipilih memang dibuka
+$settings = Setting::pluck('value', 'key')->toArray();
+
+$ppdbType = $request->input('ppdb_type');
+$asramaOpen = filter_var($settings['ppdb_asrama_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+$pulangPergiOpen = filter_var($settings['ppdb_pulang_pergi_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+
+if (
+    ($ppdbType === 'Asrama' && !$asramaOpen) ||
+    ($ppdbType === 'Pulang-Pergi' && !$pulangPergiOpen)
+) {
+    return back()
+        ->withErrors(['ppdb_type' => 'Tipe pendaftaran ini sedang tidak dibuka.'])
+        ->withInput();
+}
+
 
         // ✅ Verifikasi token reCAPTCHA ke Google
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
