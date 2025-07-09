@@ -25,9 +25,9 @@
         @if ($placeholder)
             <option value="">{{ $placeholder }}</option>
         @endif
-        @foreach ($options as $value => $label)
+        @foreach ($options as $value => $optionLabel)
             <option value="{{ $value }}" {{ $value == $selected ? 'selected' : '' }}>
-                {{ $label }}
+                {{ $optionLabel }}
             </option>
         @endforeach
     </select>
