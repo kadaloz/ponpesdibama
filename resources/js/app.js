@@ -1,19 +1,28 @@
+// --------------------------------------------
+// ✨ Import Dasar & Plugin UI
+// --------------------------------------------
 import "./bootstrap";
-
 import Alpine from "alpinejs";
 window.Alpine = Alpine;
 Alpine.start();
 
-// ⬇️ Tambahkan Flatpickr setelah Alpine
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
-
-// Opsional: Bahasa Indonesia
 import { Indonesian } from "flatpickr/dist/l10n/id.js";
 flatpickr.localize(Indonesian);
 
-// Inisialisasi setelah DOM siap
-document.addEventListener("DOMContentLoaded", function () {
+import TomSelect from "tom-select";
+import "tom-select/dist/css/tom-select.css";
+
+import Swiper from "swiper";
+import "swiper/css";
+import "swiper/css/navigation";
+import "swiper/css/effect-fade";
+
+// --------------------------------------------
+// 📅 Inisialisasi Flatpickr
+// --------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
     flatpickr("#date_of_birth", {
         dateFormat: "Y-m-d",
         altInput: true,
@@ -22,20 +31,21 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 
-import TomSelect from "tom-select";
-import "tom-select/dist/css/tom-select.css";
-
-// Inisialisasi saat DOM siap
-document.addEventListener("DOMContentLoaded", function () {
+// --------------------------------------------
+// 🌍 Dropdown Wilayah Dinamis (TomSelect + API)
+// --------------------------------------------
+document.addEventListener("DOMContentLoaded", () => {
     const province = document.getElementById("province");
     const city = document.getElementById("city");
     const district = document.getElementById("district");
     const village = document.getElementById("village");
 
-    const oldProv = province.dataset.old;
-    const oldCity = city.dataset.old;
-    const oldDistrict = district.dataset.old;
-    const oldVillage = village.dataset.old;
+    const oldProv = province?.dataset.old;
+    const oldCity = city?.dataset.old;
+    const oldDistrict = district?.dataset.old;
+    const oldVillage = village?.dataset.old;
+
+    if (!province || !city || !district || !village) return;
 
     const tsProvince = new TomSelect(province, {
         placeholder: "Pilih Provinsi",
@@ -73,6 +83,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     tsProvince.addOption({ value: prov, text: prov })
                 );
                 tsProvince.refreshOptions();
+
                 if (oldProv) {
                     tsProvince.setValue(oldProv);
                     loadCities(oldProv);
@@ -90,6 +101,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     tsCity.addOption({ value: kab, text: kab })
                 );
                 tsCity.refreshOptions();
+
                 if (oldCity) {
                     tsCity.setValue(oldCity);
                     loadDistricts(prov, oldCity);
@@ -111,6 +123,7 @@ document.addEventListener("DOMContentLoaded", function () {
                     tsDistrict.addOption({ value: kec, text: kec })
                 );
                 tsDistrict.refreshOptions();
+
                 if (oldDistrict) {
                     tsDistrict.setValue(oldDistrict);
                     loadVillages(prov, kab, oldDistrict);
@@ -134,12 +147,13 @@ document.addEventListener("DOMContentLoaded", function () {
                     tsVillage.addOption({ value: kel, text: kel })
                 );
                 tsVillage.refreshOptions();
+
                 if (oldVillage) tsVillage.setValue(oldVillage);
             })
             .finally(() => setDisabled(village, false));
     }
 
-    // Trigger perubahan manual
+    // Event Binding antar dropdown
     tsProvince.on("change", (value) => {
         tsCity.clearOptions();
         tsCity.setValue("");
@@ -164,15 +178,12 @@ document.addEventListener("DOMContentLoaded", function () {
         loadVillages(tsProvince.getValue(), tsCity.getValue(), value);
     });
 
-    // Initial load
-    loadProvinces();
+    loadProvinces(); // Inisialisasi pertama
 });
 
-import Swiper from "swiper";
-import "swiper/css";
-import "swiper/css/navigation";
-import "swiper/css/effect-fade";
-
+// --------------------------------------------
+// 🎞️ Inisialisasi SwiperJS untuk Slider Program
+// --------------------------------------------
 document.addEventListener("DOMContentLoaded", () => {
     const swiperEl = document.querySelector(".programSwiper");
 
