@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 use App\Mail\ApplicantStatusChangedNotification;
 use Illuminate\Validation\Rule; // Import Rule
+use App\Enums\HalaqohPeriod; // Import HalaqohPeriod enum
 
 class ApplicantController extends Controller
 {
@@ -38,33 +39,41 @@ class ApplicantController extends Controller
      */
     public function store(Request $request)
     {
-        $request->validate([
-            'g-recaptcha-response' => 'required',
-            'full_name' => 'required|string|max:255',
-            'gender' => 'required|string|in:Laki-laki,Perempuan',
-            'place_of_birth' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'nisn' => 'nullable|string|max:255',
-            'last_education' => 'nullable|string|max:255',
-            'school_origin' => 'nullable|string|max:255',
-            'parent_name' => 'required|string',
-            'parent_phone' => 'required|string',
-            'parent_email' => 'nullable|string|email|max:255',
-            'parent_occupation' => 'nullable|string|max:255',
-            'address' => 'required|string',
-            'province' => 'required|string',
-            'city' => 'required|string',
-            'district' => 'required|string',
-            'village' => 'required|string',
-            'chosen_program' => 'nullable|string|max:255',
-            'ppdb_type' => 'required|string|in:Asrama,Pulang-Pergi',
-            'halaqoh_period' => 'nullable|string|in:Sore,Malam',
+$request->validate([
+    'g-recaptcha-response' => ['required'],
+    'full_name' => 'required|string|max:255',
+    'gender' => 'required|string|in:Laki-laki,Perempuan',
+    'place_of_birth' => 'nullable|string|max:255',
+    'date_of_birth' => 'nullable|date',
+    'nisn' => ['nullable', 'digits:10'],
+    'last_education' => 'nullable|string|max:255',
+    'school_origin' => 'nullable|string|max:255',
+    'parent_name' => 'required|string',
+    'parent_phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+    'parent_email' => 'nullable|string|email|max:255',
+    'parent_occupation' => 'nullable|string|max:255',
+    'address' => 'required|string',
+    'province' => 'required|string',
+    'city' => 'required|string',
+    'district' => 'required|string',
+    'village' => 'required|string',
+    'chosen_program' => 'nullable|string|max:255',
+    'ppdb_type' => 'required|string|in:Asrama,Pulang-Pergi',
+    'halaqoh_period' => [
+        'required_if:ppdb_type,Pulang-Pergi',
+        Rule::in(enum_values(HalaqohPeriod::class)),
+    ],
+    'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+    'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+    'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+    'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
+], [
+    'halaqoh_period.required_if' => 'Periode halaqoh wajib diisi jika memilih tipe Pulang-Pergi.',
+    'halaqoh_period.in' => 'Periode halaqoh harus dipilih antara Sore atau Malam.',
+    'parent_phone.regex' => 'Nomor HP orang tua harus berupa angka dan panjang 10–15 digit.',
+    'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
+]);
 
-            'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
-        ]);
         // ✅ Verifikasi token reCAPTCHA ke Google
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
         'secret' => config('services.recaptcha.secret'),

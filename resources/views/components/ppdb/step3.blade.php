@@ -6,29 +6,29 @@
     name="chosen_program"
     label="Pilih Program"
     :options="$programs->pluck('name', 'name')->toArray()"
-    :selected="$applicant->chosen_program ?? ''"
+    :selected="old('chosen_program', $applicant->chosen_program ?? '')"
     placeholder="Pilih Program"
 />
 
 {{-- Tipe Pendaftaran --}}
-<x-form.radio-group
+<x-form.enum-radio
     name="ppdb_type"
     label="Tipe Pendaftaran"
-    :options="['Asrama' => 'Asrama', 'Pulang-Pergi' => 'Pulang-Pergi']"
-    :checked="$applicant->ppdb_type ?? ''"
-    onchange="toggleHalaqohPeriod()"
+    enum="\App\Enums\PpdbType"
+    :checked="old('ppdb_type', $applicant->ppdb_type ?? '')"
 />
 
+
 {{-- Periode Halaqoh --}}
-<div class="mb-4 hidden" id="halaqoh-period-group">
-    <x-form.select
-        id="halaqoh_period"
+<div class="mb-4" id="halaqoh-period-group" x-show="showHalaqoh" x-transition>
+    <x-form.enum-select
         name="halaqoh_period"
         label="Periode Ngaji"
-        :options="['Sore' => 'Halaqoh Sore', 'Malam' => 'Halaqoh Malam']"
-        :selected="$applicant->halaqoh_period ?? ''"
+        enum="\App\Enums\HalaqohPeriod"
+        :selected="old('halaqoh_period', $applicant->halaqoh_period ?? '')"
         placeholder="Pilih Periode"
-    />
+        x-bind:required="showHalaqoh"
+/>
 </div>
 
 {{-- Dokumen Upload --}}

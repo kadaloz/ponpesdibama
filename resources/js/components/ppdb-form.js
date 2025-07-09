@@ -1,11 +1,12 @@
 export default function ppdbForm() {
     return {
         step: 1,
+        showHalaqoh: false,
 
         nextStep() {
             if (this.validateStep()) {
                 this.step++;
-                this.toggleHalaqoh();
+                this.updateHalaqohVisibility();
             }
         },
 
@@ -19,7 +20,20 @@ export default function ppdbForm() {
             );
             const group = document.getElementById("halaqoh-period-group");
             if (asrama && group) {
-                group.classList.toggle("hidden", asrama.checked);
+                const isAsrama = asrama.checked;
+                group.classList.toggle("hidden", isAsrama);
+                this.showHalaqoh = !isAsrama;
+            }
+        },
+
+        updateHalaqohVisibility() {
+            const selected = document.querySelector(
+                'input[name="ppdb_type"]:checked'
+            );
+            this.showHalaqoh = selected?.value === "Pulang-Pergi";
+            const group = document.getElementById("halaqoh-period-group");
+            if (group) {
+                group.classList.toggle("hidden", !this.showHalaqoh);
             }
         },
 
