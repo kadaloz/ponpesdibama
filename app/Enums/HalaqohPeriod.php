@@ -7,13 +7,14 @@ enum HalaqohPeriod: string
     case Sore = 'Sore';
     case Malam = 'Malam';
 
-    public static function options(): array
+    public function label(): string
     {
-        return [
-            self::Sore->value => 'Halaqoh Sore',
-            self::Malam->value => 'Halaqoh Malam',
-        ];
+        return match ($this) {
+            self::Sore => 'Sore (Ba’da Ashar)',
+            self::Malam => 'Malam (Ba’da Isya)',
+        };
     }
+
 
     public static function values(): array
     {

@@ -49,12 +49,13 @@
     data-required-if="ppdb_type:Pulang-Pergi"
 >
     <option value="">Pilih Periode</option>
-    @foreach (\App\Enums\HalaqohPeriod::cases() as $period)
-        <option value="{{ $period->value }}"
-            {{ old('halaqoh_period', $applicant->halaqoh_period ?? '') === $period->value ? 'selected' : '' }}>
-            {{ $period->label() }}
-        </option>
-    @endforeach
+   @foreach (\App\Enums\HalaqohPeriod::cases() as $period)
+    <option value="{{ $period->value }}"
+        {{ old('halaqoh_period', $applicant->halaqoh_period ?? '') === $period->value ? 'selected' : '' }}>
+        {{ $period->label() }}
+    </option>
+@endforeach
+
 </select>
 
 
