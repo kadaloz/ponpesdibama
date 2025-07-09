@@ -13,7 +13,7 @@ class EnumSelect extends Component
     public array $options;
     public ?string $placeholder;
 
-    public function __construct(string $name, string $label, string $enum, ?string $selected = null, ?string $placeholder = null)
+   public function __construct(string $name, string $enum, string $label = '', ?string $selected = null, ?string $placeholder = null)
     {
         $this->name = $name;
         $this->label = $label;
