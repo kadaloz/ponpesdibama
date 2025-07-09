@@ -1,6 +1,5 @@
 <?php
 
-use UnitEnum;
 
 /**
  * Ambil semua nilai dari enum PHP
