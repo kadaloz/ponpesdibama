@@ -16,6 +16,7 @@
     label="Tipe Pendaftaran"
     enum="\App\Enums\PpdbType"
     :checked="old('ppdb_type', $applicant->ppdb_type ?? '')"
+    x-on:change="handlePpdbTypeChange"
 />
 
 
