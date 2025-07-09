@@ -3,122 +3,62 @@
 </h3>
 
 {{-- Nama Orang Tua/Wali --}}
-<div class="mb-4">
-    <label for="parent_name" class="block text-sm font-semibold text-gray-700 mb-1">
-        Nama Orang Tua/Wali
-    </label>
-    <input type="text" name="parent_name" id="parent_name" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-        placeholder="Contoh: H. Abdul Hakim" value="{{ old('parent_name', $applicant->parent_name ?? '') }}"
-        autocomplete="name">
-    @error('parent_name')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+<x-form.input
+    id="parent_name"
+    name="parent_name"
+    label="Nama Orang Tua/Wali"
+    placeholder="Contoh: H. Abdul Hakim"
+    :value="$applicant->parent_name ?? ''"
+    required
+/>
 
-{{-- No. HP Orang Tua/Wali --}}
-<div class="mb-4">
-    <label for="parent_phone" class="block text-sm font-semibold text-gray-700 mb-1">
-        No. HP Orang Tua/Wali
-    </label>
-    <input type="tel" name="parent_phone" id="parent_phone" required inputmode="numeric"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-        placeholder="Contoh: 081234567890" value="{{ old('parent_phone', $applicant->parent_phone ?? '') }}">
-    @error('parent_phone')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+{{-- Nomor HP Orang Tua/Wali --}}
+<x-form.input
+    id="parent_phone"
+    name="parent_phone"
+    label="No. HP Orang Tua/Wali"
+    placeholder="Contoh: 081234567890"
+    type="tel"
+    inputmode="numeric"
+    :value="$applicant->parent_phone ?? ''"
+    required
+/>
 
-{{-- Email Orang Tua/Wali --}}
-<div class="mb-4">
-    <label for="parent_email" class="block text-sm font-semibold text-gray-700 mb-1">
-        Email Orang Tua/Wali <span class="text-gray-400 italic">(opsional)</span>
-    </label>
-    <input type="email" name="parent_email" id="parent_email"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-        placeholder="Contoh: ayah@email.com" value="{{ old('parent_email', $applicant->parent_email ?? '') }}">
-    @error('parent_email')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+{{-- Email Orang Tua/Wali (Opsional) --}}
+<x-form.input
+    id="parent_email"
+    name="parent_email"
+    label="Email Orang Tua/Wali"
+    placeholder="Contoh: ayah@email.com"
+    type="email"
+    :value="$applicant->parent_email ?? ''"
+    note="(opsional)"
+/>
 
 {{-- Pekerjaan Orang Tua/Wali --}}
-<div class="mb-4">
-    <label for="parent_occupation" class="block text-sm font-semibold text-gray-700 mb-1">
-        Pekerjaan Orang Tua/Wali
-    </label>
-    <input type="text" name="parent_occupation" id="parent_occupation"
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-        placeholder="Contoh: Petani" value="{{ old('parent_occupation', $applicant->parent_occupation ?? '') }}">
-    @error('parent_occupation')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+<x-form.input
+    id="parent_occupation"
+    name="parent_occupation"
+    label="Pekerjaan Orang Tua/Wali"
+    placeholder="Contoh: Petani"
+    :value="$applicant->parent_occupation ?? ''"
+/>
 
 {{-- Alamat Lengkap --}}
-<div class="mb-4">
-    <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">
-        Alamat Lengkap
-    </label>
-    <textarea name="address" id="address" rows="3" required
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-        placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel">{{ old('address', $applicant->address ?? '') }}</textarea>
-    @error('address')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+<x-form.textarea
+    id="address"
+    name="address"
+    label="Alamat Lengkap"
+    placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel"
+    rows="3"
+    :value="$applicant->address ?? ''"
+    required
+/>
 
-{{-- Wilayah --}}
-<div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
-    {{-- Provinsi --}}
-    <div>
-        <label for="province" class="block text-sm font-semibold text-gray-700 mb-1">Provinsi</label>
-        <select id="province" name="province" required
-            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-            data-old="{{ old('province', $applicant->province ?? '') }}">
-            <option value="">⏳ Memuat Provinsi...</option>
-        </select>
-        @error('province')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-    </div>
-
-    {{-- Kabupaten/Kota --}}
-    <div>
-        <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota</label>
-        <select id="city" name="city" required
-            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-            data-old="{{ old('city', $applicant->city ?? '') }}">
-            <option value="">Pilih Kabupaten/Kota</option>
-        </select>
-        @error('city')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-    </div>
-
-    {{-- Kecamatan --}}
-    <div>
-        <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan</label>
-        <select id="district" name="district" required
-            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-            data-old="{{ old('district', $applicant->district ?? '') }}">
-            <option value="">Pilih Kecamatan</option>
-        </select>
-        @error('district')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-    </div>
-
-    {{-- Kelurahan/Desa --}}
-    <div>
-        <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa</label>
-        <select id="village" name="village" required
-            class="w-full border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-            data-old="{{ old('village', $applicant->village ?? '') }}">
-            <option value="">Pilih Kelurahan/Desa</option>
-        </select>
-        @error('village')
-            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-        @enderror
-    </div>
-</div>
+{{-- Wilayah: Provinsi, Kota/Kabupaten, Kecamatan, Kelurahan --}}
+<x-form.wilayah
+    :province="$applicant->province ?? ''"
+    :city="$applicant->city ?? ''"
+    :district="$applicant->district ?? ''"
+    :village="$applicant->village ?? ''"
+/>

@@ -48,8 +48,10 @@
 @push('scripts')
 <script src="https://www.google.com/recaptcha/api.js?render={{ config('services.recaptcha.site_key') }}"></script>
 <script>
+document.addEventListener('DOMContentLoaded', function () {
     let currentStep = 1;
     const totalSteps = 3;
+
 
     function showStep(step) {
         for (let i = 1; i <= totalSteps; i++) {
@@ -67,7 +69,9 @@
     function toggleHalaqohPeriod() {
         const asramaRadio = document.querySelector('input[name="ppdb_type"][value="Asrama"]');
         const group = document.getElementById('halaqoh-period-group');
-        if (asramaRadio && group) group.classList.toggle('hidden', asramaRadio.checked);
+        if (asramaRadio && group) {
+            group.classList.toggle('hidden', asramaRadio.checked);
+        }
     }
 
     function validateInput(input) {
@@ -110,28 +114,24 @@
         showStep(currentStep);
     }
 
-    document.addEventListener('DOMContentLoaded', function () {
-        showStep(currentStep);
-        toggleHalaqohPeriod();
-
-        const form = document.getElementById('ppdbForm');
-        if (form) {
-            form.addEventListener('submit', function (e) {
-                e.preventDefault();
-                grecaptcha.ready(function () {
-                    grecaptcha.execute("{{ config('services.recaptcha.site_key') }}", { action: 'ppdb_form' })
-                        .then(function (token) {
-                            const input = document.createElement('input');
-                            input.type = 'hidden';
-                            input.name = 'g-recaptcha-response';
-                            input.value = token;
-                            form.appendChild(input);
-                            form.submit();
-                        });
-                });
+    if (form) {
+        form.addEventListener('submit', function (e) {
+            e.preventDefault();
+            grecaptcha.ready(function () {
+                grecaptcha.execute("{{ config('services.recaptcha.site_key') }}", { action: 'ppdb_form' })
+                    .then(function (token) {
+                        const input = document.createElement('input');
+                        input.type = 'hidden';
+                        input.name = 'g-recaptcha-response';
+                        input.value = token;
+                        form.appendChild(input);
+                        form.submit();
+                    });
             });
-        }
-    });
+        });
+    }
+})   
+
 </script>
 @endpush
 @endsection
