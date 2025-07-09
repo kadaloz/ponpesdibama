@@ -1,7 +1,12 @@
 import "./bootstrap";
 
 import Alpine from "alpinejs";
+import ppdbForm from "./components/ppdb-form";
+import "./components/wilayah";
+
 window.Alpine = Alpine;
+window.ppdbForm = ppdbForm;
+
 Alpine.start();
 
 // Flatpickr
