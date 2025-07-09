@@ -1,4 +1,12 @@
-<div x-data="{ ppdbType: '{{ old('ppdb_type', $applicant->ppdb_type ?? '') }}' }">
+<div x-data="{ ppdbType: @js(old('ppdb_type', $applicant->ppdb_type ?? '')) }" x-init="
+    $watch('ppdbType', value => {
+        const field = document.querySelector('[data-required-if]');
+        if (field) {
+            const [depField, requiredValue] = field.dataset.requiredIf.split(':');
+            field.required = (value === requiredValue);
+        }
+    });
+">
     <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2">Program & Dokumen</h3>
 
     {{-- Pilih Program --}}
@@ -42,22 +50,25 @@
     </x-form.group>
 
     {{-- Periode Halaqoh --}}
-<select
-    id="halaqoh_period"
-    name="halaqoh_period"
-    class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
-    data-required-if="ppdb_type:Pulang-Pergi"
->
-    <option value="">Pilih Periode</option>
-   @foreach (\App\Enums\HalaqohPeriod::cases() as $period)
-    <option value="{{ $period->value }}"
-        {{ old('halaqoh_period', $applicant->halaqoh_period ?? '') === $period->value ? 'selected' : '' }}>
-        {{ $period->label() }}
-    </option>
-@endforeach
-
-</select>
-
+    <x-form.group name="halaqoh_period" label="Periode Halaqoh">
+        <select
+            id="halaqoh_period"
+            name="halaqoh_period"
+            class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+            data-required-if="ppdb_type:Pulang-Pergi"
+        >
+            <option value="">Pilih Periode</option>
+            @foreach (\App\Enums\HalaqohPeriod::cases() as $period)
+                <option value="{{ $period->value }}"
+                    {{ old('halaqoh_period', $applicant->halaqoh_period ?? '') === $period->value ? 'selected' : '' }}>
+                    {{ $period->label() }}
+                </option>
+            @endforeach
+        </select>
+        @error('halaqoh_period')
+            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+        @enderror
+    </x-form.group>
 
     {{-- Dokumen Upload --}}
     <div class="space-y-4 pt-6">
