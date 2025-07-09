@@ -1,7 +1,7 @@
 @props([
     'id' => null,
     'name',
-    'label',
+    'label' => '',
     'options' => [],
     'selected' => '',
     'placeholder' => '',
@@ -13,24 +13,31 @@
 @endphp
 
 <div class="mb-4 {{ $attributes->get('class') }}">
-    <label for="{{ $id }}" class="block text-sm font-semibold text-gray-700 mb-1">
-        {{ $label }}
-    </label>
+    @if ($label)
+        <label for="{{ $id }}" class="block text-sm font-semibold text-gray-700 mb-1">
+            {{ $label }}
+        </label>
+    @endif
+
     <select
         id="{{ $id }}"
         name="{{ $name }}"
         {{ $required ? 'required' : '' }}
-        class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500"
+        {{ $attributes->except('class')->merge([
+            'class' => 'w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500'
+        ]) }}
     >
         @if ($placeholder)
             <option value="">{{ $placeholder }}</option>
         @endif
-        @foreach ($options as $value => $optionLabel)
-            <option value="{{ $value }}" {{ $value == $selected ? 'selected' : '' }}>
-                {{ $optionLabel }}
+
+        @foreach ($options as $optionValue => $optionText)
+            <option value="{{ $optionValue }}" {{ $optionValue == $selected ? 'selected' : '' }}>
+                {{ $optionText }}
             </option>
         @endforeach
     </select>
+
     @error($name)
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
