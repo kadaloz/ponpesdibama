@@ -108,6 +108,9 @@ document.addEventListener("DOMContentLoaded", () => {
                     loadDistricts(prov, oldCity);
                 }
             })
+            .catch((err) => {
+                console.error("❌ Gagal memuat kota:", err);
+            })
             .finally(() => (city.disabled = false));
     }
 
