@@ -96,44 +96,63 @@
                 @error('parent_occupation')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
 
-            {{-- Alamat --}}
-            <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Informasi Alamat</h3>
-            <div class="mb-4">
-                <label for="address" class="block text-sm font-medium text-gray-700">Alamat Lengkap</label>
-                <textarea name="address" id="address" rows="3" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">{{ old('address', $applicant->address) }}</textarea>
-                @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-            </div>
+<h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Informasi Alamat</h3>
 
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div>
-                    <label for="province" class="block text-sm font-medium text-gray-700">Provinsi</label>
-                    <select id="province" name="province" required data-selected="{{ old('province', $applicant->province) }}" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Provinsi</option>
-                    </select>
-                    @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                </div>
-                <div>
-                    <label for="city" class="block text-sm font-medium text-gray-700">Kabupaten/Kota</label>
-                    <select id="city" name="city" required data-selected="{{ old('city', $applicant->city) }}" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Kabupaten/Kota</option>
-                    </select>
-                    @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                </div>
-                <div>
-                    <label for="district" class="block text-sm font-medium text-gray-700">Kecamatan</label>
-                    <select id="district" name="district" required data-selected="{{ old('district', $applicant->district) }}" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Kecamatan</option>
-                    </select>
-                    @error('district')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                </div>
-                <div>
-                    <label for="village" class="block text-sm font-medium text-gray-700">Kelurahan/Desa</label>
-                    <select id="village" name="village" required data-selected="{{ old('village', $applicant->village) }}" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Kelurahan/Desa</option>
-                    </select>
-                    @error('village')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-                </div>
-            </div>
+{{-- Alamat Lengkap --}}
+<div class="mb-4">
+    <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap</label>
+    <textarea name="address" id="address" rows="3" required
+        class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"
+        placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel">{{ old('address', $applicant->address ?? '') }}</textarea>
+    @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+</div>
+
+{{-- Wilayah --}}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+    {{-- Provinsi --}}
+    <div>
+        <label for="province" class="block text-sm font-semibold text-gray-700 mb-1">Provinsi</label>
+        <select name="province" id="province" required
+            data-selected="{{ old('province', $applicant->province ?? '') }}"
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+            <option value="">Pilih Provinsi</option>
+        </select>
+        @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kota/Kabupaten --}}
+    <div>
+        <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota</label>
+        <select name="city" id="city" required
+            data-selected="{{ old('city', $applicant->city ?? '') }}"
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+            <option value="">Pilih Kabupaten/Kota</option>
+        </select>
+        @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kecamatan --}}
+    <div>
+        <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan</label>
+        <select name="district" id="district" required
+            data-selected="{{ old('district', $applicant->district ?? '') }}"
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+            <option value="">Pilih Kecamatan</option>
+        </select>
+        @error('district')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+
+    {{-- Kelurahan --}}
+    <div>
+        <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa</label>
+        <select name="village" id="village" required
+            data-selected="{{ old('village', $applicant->village ?? '') }}"
+            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+            <option value="">Pilih Kelurahan/Desa</option>
+        </select>
+        @error('village')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
+    </div>
+</div>
 
             {{-- Program dan Tipe PPDB --}}
             @include('admin.applicants.partials.program_ppdb_type')
