@@ -5,7 +5,7 @@ use InvalidArgumentException;
 if (!function_exists('enum_values')) {
     function enum_values(string $enumClass): array
     {
-        if (!enum_exists($enumClass)) {
+        if (!class_exists($enumClass) || !method_exists($enumClass, 'cases')) {
             throw new InvalidArgumentException("Class {$enumClass} is not a valid enum.");
         }
 
