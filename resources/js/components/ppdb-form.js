@@ -1,37 +1,17 @@
 export default function ppdbForm() {
     return {
         step: 1,
-        showHalaqoh: false,
-
-        init() {
-            this.updateHalaqohVisibility();
-
-            document
-                .querySelectorAll('input[name="ppdb_type"]')
-                .forEach((el) => {
-                    el.addEventListener("change", () => {
-                        this.updateHalaqohVisibility();
-                    });
-                });
-        },
+        ppdbType: "", // <-- model binding langsung ke input radio
+        isSubmitting: false,
 
         nextStep() {
-            if (this.validateStep()) {
-                this.step++;
-                this.updateHalaqohVisibility();
-            }
+            if (this.validateStep()) this.step++;
         },
 
         prevStep() {
             this.step--;
         },
 
-        updateHalaqohVisibility() {
-            const selected = document.querySelector(
-                'input[name="ppdb_type"]:checked'
-            );
-            this.showHalaqoh = selected?.value === "Pulang-Pergi";
-        },
         validateStep() {
             const current = document.querySelector(`#step-${this.step}`);
             const required = current.querySelectorAll(
@@ -42,7 +22,6 @@ export default function ppdbForm() {
             required.forEach((field) => {
                 let isRequired = field.hasAttribute("required");
 
-                // Cek kondisi dinamis
                 const condition = field.dataset.requiredIf;
                 if (condition) {
                     const [targetName, expectedValue] = condition.split(":");
@@ -52,7 +31,7 @@ export default function ppdbForm() {
                     isRequired = target?.value === expectedValue;
                 }
 
-                const value = field.value.trim();
+                const value = field.value?.trim?.() || "";
                 const isValid =
                     !isRequired ||
                     (field.name === "parent_email"
@@ -70,19 +49,42 @@ export default function ppdbForm() {
             if (!valid) alert("Mohon lengkapi semua data yang wajib diisi.");
             return valid;
         },
+
         handleSubmit() {
+            if (!this.validateStep()) return;
+            this.isSubmitting = true;
+
             grecaptcha.ready(() => {
+                const siteKey = window.recaptchaSiteKey || "";
+                if (!siteKey) {
+                    alert("reCAPTCHA gagal dimuat. Coba lagi nanti.");
+                    this.isSubmitting = false;
+                    return;
+                }
+
                 grecaptcha
-                    .execute(window.recaptchaSiteKey || "", {
-                        action: "ppdb_form",
-                    })
+                    .execute(siteKey, { action: "ppdb_form" })
                     .then((token) => {
-                        const input = document.createElement("input");
-                        input.type = "hidden";
-                        input.name = "g-recaptcha-response";
+                        const form = document.getElementById("ppdbForm");
+
+                        let input = form.querySelector(
+                            'input[name="g-recaptcha-response"]'
+                        );
+                        if (!input) {
+                            input = document.createElement("input");
+                            input.type = "hidden";
+                            input.name = "g-recaptcha-response";
+                            form.appendChild(input);
+                        }
+
                         input.value = token;
-                        document.getElementById("ppdbForm").appendChild(input);
-                        document.getElementById("ppdbForm").submit();
+                        this.isSubmitting = false;
+                        form.submit();
+                    })
+                    .catch((err) => {
+                        console.error("reCAPTCHA error:", err);
+                        this.isSubmitting = false;
+                        alert("Verifikasi reCAPTCHA gagal. Silakan coba lagi.");
                     });
             });
         },

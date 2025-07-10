@@ -12,20 +12,12 @@ document.addEventListener("DOMContentLoaded", () => {
     )
         return;
 
-    const selectedProv = provinsiSelect.dataset.selected || "";
-    const selectedKab = kabupatenSelect.dataset.selected || "";
-    const selectedKec = kecamatanSelect.dataset.selected || "";
-    const selectedKel = kelurahanSelect.dataset.selected || "";
-
     fetch("/api/provinces")
         .then((res) => res.json())
         .then((provinces) => {
             provinces.forEach((prov) => {
-                provinsiSelect.appendChild(
-                    new Option(prov, prov, false, prov === selectedProv)
-                );
+                provinsiSelect.appendChild(new Option(prov, prov));
             });
-            if (selectedProv) updateCities(selectedProv);
         })
         .catch(() => alert("❌ Gagal memuat data provinsi."));
 
@@ -55,11 +47,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((res) => res.json())
             .then((cities) => {
                 cities.forEach((kab) => {
-                    kabupatenSelect.appendChild(
-                        new Option(kab, kab, false, kab === selectedKab)
-                    );
+                    kabupatenSelect.appendChild(new Option(kab, kab));
                 });
-                if (selectedKab) updateDistricts(provinsi, selectedKab);
             })
             .catch(() => alert("❌ Gagal memuat data kota/kabupaten."));
     }
@@ -74,19 +63,8 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((res) => res.json())
             .then((districts) => {
                 districts.forEach((kec) => {
-                    kecamatanSelect.appendChild(
-                        new Option(kec, kec, false, kec === selectedKec)
-                    );
+                    kecamatanSelect.appendChild(new Option(kec, kec));
                 });
-
-                const found = Array.from(kecamatanSelect.options).some(
-                    (opt) => opt.value === selectedKec
-                );
-                if (!found) {
-                    kecamatanSelect.dispatchEvent(new Event("change"));
-                } else {
-                    updateVillages(provinsi, kota, selectedKec);
-                }
             })
             .catch(() => alert("❌ Gagal memuat data kecamatan."));
     }
@@ -103,9 +81,7 @@ document.addEventListener("DOMContentLoaded", () => {
             .then((res) => res.json())
             .then((villages) => {
                 villages.forEach((kel) => {
-                    kelurahanSelect.appendChild(
-                        new Option(kel, kel, false, kel === selectedKel)
-                    );
+                    kelurahanSelect.appendChild(new Option(kel, kel));
                 });
             })
             .catch(() => alert("❌ Gagal memuat data kelurahan."));

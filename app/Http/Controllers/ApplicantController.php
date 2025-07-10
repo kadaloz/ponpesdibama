@@ -14,6 +14,7 @@ use Illuminate\Support\Facades\Http;
 use App\Mail\ApplicantStatusChangedNotification;
 use Illuminate\Validation\Rule; // Import Rule
 use App\Enums\HalaqohPeriod; // Import HalaqohPeriod enum
+use App\Enums\PPDBType; // Import PPDBType enum
 
 class ApplicantController extends Controller
 {
@@ -61,7 +62,11 @@ $request->validate([
     'district' => 'required|string',
     'village' => 'required|string',
     'chosen_program' => 'nullable|string|max:255',
-    'ppdb_type' => 'required|string|in:Asrama,Pulang-Pergi',
+        'ppdb_type' => [
+        'required',
+        'string',
+        Rule::in(enum_values(PpdbType::class)),
+    ],
     'halaqoh_period' => [
         'required_if:ppdb_type,Pulang-Pergi',
         Rule::in(enum_values(HalaqohPeriod::class)),

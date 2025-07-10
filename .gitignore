@@ -16,6 +16,9 @@
 /public/build
 /public/hot
 /public/storage
+/public/index.php
+/public/favicon.ico
+/public/robots.txt
 /storage/*.key
 /storage/pail
 /vendor
