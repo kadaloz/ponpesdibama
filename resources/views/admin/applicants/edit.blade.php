@@ -194,28 +194,4 @@
     </div>
 </div>
 
-    @push('scripts')
-    <script>
-        function toggleHalaqohPeriod() {
-            const ppdbTypeRadio = document.querySelector('input[name="ppdb_type"]:checked');
-            const halaqohPeriodGroup = document.getElementById('halaqoh-period-group');
-            const halaqohPeriodSelect = document.getElementById('halaqoh_period');
-
-            if (ppdbTypeRadio && ppdbTypeRadio.value === 'Pulang-Pergi') {
-                halaqohPeriodGroup.classList.remove('hidden');
-                halaqohPeriodSelect.setAttribute('required', 'required');
-            } else {
-                halaqohPeriodGroup.classList.add('hidden');
-                halaqohPeriodSelect.removeAttribute('required');
-                halaqohPeriodSelect.value = ''; // Reset pilihan jika disembunyikan
-            }
-        }
-
-        // Jalankan saat halaman dimuat untuk mengatur status awal
-        document.addEventListener('DOMContentLoaded', function() {
-            toggleHalaqohPeriod(); // Panggil fungsi saat DOMContentLoaded
-        });
-
-    </script>
-    @endpush
 @endsection
