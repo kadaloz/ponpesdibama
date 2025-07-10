@@ -81,5 +81,7 @@
     </div>
 
     @stack('scripts')
+<script src="{{ asset('js/wilayah.js') }}"></script>
+
 </body>
 </html>
