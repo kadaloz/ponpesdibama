@@ -5,8 +5,8 @@
             PonpesDIBAMA<span class="text-yellow-300">.com</span>
         </a>
 
-        <!-- Logo Institusi Resmi -->
-        <div class="flex items-center space-x-3 mt-3 md:mt-0">
+        <!-- Logo Institusi Resmi (Hanya tampil di desktop) -->
+        <div class="hidden md:flex items-center space-x-3">
             <img src="{{ asset('images/logo/kemenag.png') }}" 
                  alt="Logo Kemenag" title="Kementerian Agama RI" 
                  class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
