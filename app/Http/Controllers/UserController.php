@@ -103,46 +103,63 @@ class UserController extends Controller
      * Update the specified resource in storage.
      */
     public function update(Request $request, User $user)
-    {
-        // Hanya admin yang bisa mengedit user dan perannya
-        if (!auth()->user()->hasRole('admin')) {
-            abort(403, 'Unauthorized action.');
+{
+    // Izinkan jika:
+    // - user yang login adalah admin
+    // - atau user yang login sedang mengedit dirinya sendiri
+    if (!auth()->user()->hasRole('admin') && auth()->id() !== $user->id) {
+        abort(403, 'Unauthorized action.');
+    }
+
+    $request->validate([
+        'name' => 'required|string|max:255',
+        'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
+        'roles' => 'nullable|array',
+        'roles.*' => 'exists:roles,id',
+    ]);
+
+    // Update name & email
+    $user->update([
+        'name' => $request->name,
+        'email' => $request->email,
+    ]);
+
+    // Hanya admin yang boleh mengubah role
+    if (auth()->user()->hasRole('admin') && $request->has('roles')) {
+        $selectedRoles = Role::whereIn('id', $request->roles)->pluck('name')->toArray();
+
+        // Cegah admin menghapus satu-satunya peran admin dari dirinya sendiri
+        if (
+            $user->id === auth()->id() &&
+            in_array('admin', $user->getRoleNames()->toArray()) &&
+            !in_array('admin', $selectedRoles)
+        ) {
+            return back()->with('error', 'Anda tidak dapat menghapus peran admin utama Anda sendiri.');
         }
 
+        // Validasi tambahan: hanya admin boleh tetapkan peran tertentu
+        if (in_array('mudabbir', $selectedRoles) && !auth()->user()->hasRole('admin')) {
+            abort(403, 'Only admin can assign mudabbir role.');
+        }
+
+        $user->syncRoles($selectedRoles);
+    }
+
+    // Perbarui password jika diberikan
+    if ($request->filled('password')) {
         $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:users,email,' . $user->id,
-            'roles' => 'nullable|array',
-            'roles.*' => 'exists:roles,id',
+            'password' => 'string|min:8|confirmed',
         ]);
 
         $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
+            'password' => Hash::make($request->password),
         ]);
-
-        // Perbarui peran user
-        $selectedRoles = Role::whereIn('id', $request->input('roles', []))->pluck('name')->toArray();
-
-        // Validasi khusus: admin tidak boleh mengubah peran adminnya sendiri menjadi bukan admin
-        // Atau membatasi peran mudabbir jika user yang mengedit bukan admin (jika ada logika ini)
-        if (in_array('mudabbir', $selectedRoles) && !auth()->user()->hasRole('admin') && $request->has('roles') && !in_array('mudabbir', $user->getRoleNames()->toArray())) {
-            // Jika user bukan admin dan mencoba menambahkan peran mudabbir, tolak
-            abort(403, 'Only admin can assign mudabbir role.');
-        }
-        
-        $user->syncRoles($selectedRoles); // Sinkronkan peran
-
-        // Jika password diisi, perbarui juga (opsional, bisa pisah form)
-        if ($request->filled('password')) {
-            $request->validate([
-                'password' => 'string|min:8|confirmed',
-            ]);
-            $user->update(['password' => Hash::make($request->password)]);
-        }
-
-        return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui!');
     }
+
+    return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil diperbarui!');
+}
+
+
 
     /**
      * Remove the specified resource from storage.

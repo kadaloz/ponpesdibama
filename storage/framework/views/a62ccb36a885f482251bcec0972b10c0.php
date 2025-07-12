@@ -81,6 +81,8 @@
     </div>
 
     <?php echo $__env->yieldPushContent('scripts'); ?>
+<script src="<?php echo e(asset('js/wilayah.js')); ?>"></script>
+
 </body>
 </html>
 <?php /**PATH /Users/husnulfuadifebriansyah/Documents/dari git/ponpesdibama/resources/views/layouts/admin.blade.php ENDPATH**/ ?>
