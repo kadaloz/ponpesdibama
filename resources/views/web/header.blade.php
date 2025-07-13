@@ -5,19 +5,5 @@
             PonpesDIBAMA<span class="text-yellow-300">.com</span>
         </a>
 
-        <!-- Logo Institusi Resmi (Hanya tampil di desktop) -->
-        <div class="hidden md:flex items-center space-x-3">
-            <img src="{{ asset('storage/images/logo/academy.png') }}" 
-                 alt="Logo Academy" title="Logo Academi" 
-                 class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
-
-            <img src="{{ asset('storage/images/logo/diniyah.png') }}" 
-                 alt="Logo Diniyah" title="Logo Resmi Diniyah" 
-                 class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
-
-            <img src="{{ asset('storage/images/logo/pondok.png') }}" 
-                 alt="Logo Pesantren" title="Logo Resmi Pondok Pesantren" 
-                 class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
-        </div>
     </div>
 </header>
