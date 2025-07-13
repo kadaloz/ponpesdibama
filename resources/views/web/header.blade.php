@@ -7,12 +7,12 @@
 
         <!-- Logo Institusi Resmi (Hanya tampil di desktop) -->
         <div class="hidden md:flex items-center space-x-3">
-            <img src="{{ asset('images/logo/kemenag.png') }}" 
-                 alt="Logo Kemenag" title="Kementerian Agama RI" 
+            <img src="{{ asset('images/logo/academy.png') }}" 
+                 alt="Logo Academy" title="Logo Academi" 
                  class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
 
-            <img src="{{ asset('images/logo/nasional.png') }}" 
-                 alt="Logo Nasional" title="Lambang Negara Indonesia" 
+            <img src="{{ asset('images/logo/diniyah.png') }}" 
+                 alt="Logo Diniyah" title="Logo Resmi Diniyah" 
                  class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
 
             <img src="{{ asset('images/logo/ponpes.png') }}" 
