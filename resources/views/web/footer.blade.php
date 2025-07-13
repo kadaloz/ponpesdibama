@@ -41,21 +41,19 @@
             </div>
         </div>
 
-        <!-- Divider -->
-        <div class="border-t border-teal-700 mt-10 pt-6 text-center text-xs text-teal-300 space-y-3">
-            <p>Dibangun oleh Team IT PonpesDIBAMA untuk pendidikan Islam | Laravel + Tailwind CSS</p>
+       <!-- Divider -->
+<div class="border-t border-teal-700 mt-10 pt-6 text-center">
+    <div class="flex justify-center items-center gap-3">
+        <img src="{{ asset('storage/images/logo/project.png') }}" alt="Logo Project"
+             class="h-6 w-auto rounded shadow-md">
+        <img src="{{ asset('storage/images/logo/academy.png') }}" alt="Logo Academy"
+             class="h-6 w-auto rounded shadow-md">
+        <img src="{{ asset('storage/images/logo/yadun-ulya.png') }}" alt="Logo Yadun Ulya"
+             class="h-6 w-auto rounded shadow-md">
+        <img src="{{ asset('storage/images/logo/lqc.png') }}" alt="Logo LQC"
+             class="h-6 w-auto rounded shadow-md">
+    </div>
+</div>
 
-            <!-- Logo Mini Project By -->
-            <div class="flex justify-center items-center gap-3">
-                <img src="{{ asset('storage/images/logo/project.png') }}" alt="Logo Project"
-                    class="h-6 w-auto rounded shadow-md">
-                <img src="{{ asset('storage/images/logo/academy.png') }}" alt="Logo Academy"
-                    class="h-6 w-auto rounded shadow-md">
-                <img src="{{ asset('storage/images/logo/yadun-ulya.png') }}" alt="Logo Yadun Ulya"
-                    class="h-6 w-auto rounded shadow-md">
-                <img src="{{ asset('storage/images/logo/lqc.png') }}" alt="Logo LQC"
-                    class="h-6 w-auto rounded shadow-md">
-            </div>
-        </div>
     </div>
 </footer>
