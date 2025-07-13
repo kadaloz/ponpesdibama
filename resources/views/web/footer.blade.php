@@ -50,7 +50,7 @@
              class="h-6 w-auto rounded shadow-md">
         <img src="{{ asset('storage/images/logo/yadun-ulya.png') }}" alt="Logo Yadun Ulya"
              class="h-6 w-auto rounded shadow-md">
-        <img src="{{ asset('storage/images/logo/lqc.png') }}" alt="Logo LQC"
+        <img src="{{ asset('storage/images/logo/camping.png') }}" alt="Logo Camping Qur'an"
              class="h-6 w-auto rounded shadow-md">
     </div>
 </div>
