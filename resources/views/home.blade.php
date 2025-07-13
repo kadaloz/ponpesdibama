@@ -16,20 +16,21 @@
     <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-<!-- Logo Institusi (versi sangat kecil) -->
-<div class="flex justify-center items-center gap-1 mb-3">
-    <img src="{{ asset('storage/images/logo/academy.webp') }}"
+<!-- Logo Institusi (Responsif & Estetik) -->
+<div class="flex justify-center items-center gap-2 mb-5 sm:gap-3 lg:gap-4">
+    <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
-         class="w-[18px] h-auto rounded-md shadow-sm">
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 
-    <img src="{{ asset('storage/images/logo/diniyah.webp') }}"
+    <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
-         class="w-[18px] h-auto rounded-md shadow-sm">
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 
-    <img src="{{ asset('storage/images/logo/ponpes.webp') }}"
+    <img src="{{ asset('storage/images/logo/ponpes.png') }}"
          alt="Logo Ponpes"
-         class="w-[18px] h-auto rounded-md shadow-sm">
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 </div>
+
 
 
 
