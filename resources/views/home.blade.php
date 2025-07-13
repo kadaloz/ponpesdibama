@@ -17,19 +17,20 @@
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
 <!-- Logo Institusi -->
-<div class="flex justify-center items-center gap-4 mb-6">
+<div class="flex justify-center items-center gap-3 mb-6">
     <img src="{{ asset('storage/images/logo/academy.webp') }}"
          alt="Logo Academy"
-         class="max-w-[80px] h-auto scale-75 sm:scale-90 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
+         class="max-w-[40px] h-auto scale-90 sm:scale-100 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/diniyah.webp') }}"
          alt="Logo Diniyah"
-         class="max-w-[80px] h-auto scale-75 sm:scale-90 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
+         class="max-w-[40px] h-auto scale-90 sm:scale-100 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/ponpes.webp') }}"
          alt="Logo Ponpes"
-         class="max-w-[80px] h-auto scale-75 sm:scale-90 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
+         class="max-w-[40px] h-auto scale-90 sm:scale-100 md:scale-100 rounded-md shadow-md hover:scale-105 transition-transform duration-300 ease-in-out">
 </div>
+
 
 
 
