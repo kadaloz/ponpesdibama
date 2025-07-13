@@ -28,15 +28,16 @@
                         x-model="ppdbType"
                         class="text-teal-600 focus:ring-teal-500"
                         @disabled($disabled)
-                        required
                     >
-                    <span>{{ $type->label() }}</span>
+                    <span class="{{ $disabled ? 'text-gray-400 line-through' : '' }}">
+                        {{ $type->label() }}
+                    </span>
                 </label>
             @endforeach
         </div>
     </x-form.group>
 
-    {{-- Periode Halaqoh --}}
+    {{-- Periode Halaqoh (Jika Pulang-Pergi) --}}
     <template x-if="ppdbType === 'Pulang-Pergi'">
         <x-form.group
             name="halaqoh_period"
@@ -54,20 +55,19 @@
         </x-form.group>
     </template>
 
-    {{-- Upload Dokumen --}}
+    {{-- Upload Dokumen (Opsional) --}}
     <div class="space-y-4 pt-6">
         @foreach ([
-            'akta' => 'Akta Kelahiran',
-            'kk' => 'Kartu Keluarga (KK)',
-            'ijazah' => 'Ijazah Terakhir',
-            'photo' => 'Pas Foto'
-        ] as $key => $label)
-            <x-form.group name="document_{{ $key }}" label="{{ $label }}">
+            'akta' => ['label' => 'Akta Kelahiran', 'accept' => '.pdf,.jpg,.jpeg,.png'],
+            'kk' => ['label' => 'Kartu Keluarga (KK)', 'accept' => '.pdf,.jpg,.jpeg,.png'],
+            'ijazah' => ['label' => 'Ijazah Terakhir', 'accept' => '.pdf,.jpg,.jpeg,.png'],
+            'photo' => ['label' => 'Pas Foto', 'accept' => '.jpg,.jpeg,.png'], // Khusus foto
+        ] as $key => $config)
+            <x-form.group name="document_{{ $key }}" label="{{ $config['label'] }} (Opsional)">
                 <x-form.file
                     id="document_{{ $key }}"
                     name="document_{{ $key }}"
-                    accept=".pdf,.jpg,.jpeg,.png"
-                    required
+                    accept="{{ $config['accept'] }}"
                 />
             </x-form.group>
         @endforeach
