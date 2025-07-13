@@ -17,19 +17,19 @@
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
     <!-- Logo Institusi -->
-<div class="flex justify-center items-center space-x-4 mb-8 flex-wrap">
-    <img src="{{ asset('storage/images/logo/academy.png') }}"
-         alt="Logo Academy"
-         class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
+        <div class="flex justify-center items-center gap-4 mb-6">
+            <img src="{{ asset('storage/images/logo/academy.png') }}"
+                 alt="Logo Academy"
+                 class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 
-    <img src="{{ asset('storage/images/logo/diniyah.png') }}"
-         alt="Logo Diniyah"
-         class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
+            <img src="{{ asset('storage/images/logo/diniyah.png') }}"
+                 alt="Logo Diniyah"
+                 class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 
-    <img src="{{ asset('storage/images/logo/pondok.png') }}"
-         alt="Logo Ponpes"
-         class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
-</div>
+            <img src="{{ asset('storage/images/logo/ponpes.png') }}"
+                 alt="Logo Ponpes"
+                 class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
+        </div>
 
 
 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
