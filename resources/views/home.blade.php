@@ -18,15 +18,15 @@
     
     <!-- Logo Institusi -->
         <div class="flex justify-center items-center gap-4 mb-6">
-            <img src="{{ asset('storage/images/logo/academy.png') }}"
+            <img src="{{ asset('storage/images/logo/academy.webp') }}"
                  alt="Logo Academy"
                  class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 
-            <img src="{{ asset('storage/images/logo/diniyah.png') }}"
+            <img src="{{ asset('storage/images/logo/diniyah.webp') }}"
                  alt="Logo Diniyah"
                  class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 
-            <img src="{{ asset('storage/images/logo/ponpes.png') }}"
+            <img src="{{ asset('storage/images/logo/ponpes.webp') }}"
                  alt="Logo Ponpes"
                  class="max-w-[60px] h-auto sm:max-w-[72px] md:max-w-[80px] rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
         </div>
