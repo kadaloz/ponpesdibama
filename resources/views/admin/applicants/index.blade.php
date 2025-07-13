@@ -37,7 +37,7 @@
                             <tr>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">No. Pendaftaran</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
-                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Program</th>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">PPDB Tipe</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
                                 <th class="py-3 px-6 text-center text-xs font-medium text-gray-600 uppercase tracking-wider">Aksi</th>
                             </tr>
@@ -47,7 +47,21 @@
                                 <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-150">
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ $applicant->registration_number }}</td>
                                     <td class="py-4 px-6 text-sm text-gray-900">{{ $applicant->full_name }}</td>
-                                    <td class="py-4 px-6 text-sm text-gray-600">{{ $applicant->chosen_program ?? '-' }}</td>
+                                    <td class="py-4 px-6 text-sm">
+    @php
+        $ppdbType = $applicant->ppdb_type;
+        $typeClass = match ($ppdbType) {
+            'Asrama' => 'bg-teal-100 text-teal-800',
+            'Pulang-Pergi' => 'bg-orange-100 text-orange-800',
+            default => 'bg-gray-100 text-gray-700'
+        };
+    @endphp
+
+    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $typeClass }}">
+        {{ $ppdbType ? ucfirst(str_replace('-', ' ', $ppdbType)) : 'Tidak Ada' }}
+    </span>
+</td>
+
                                     <td class="py-4 px-6 text-sm">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
                                             $applicant->status == 'pending' ? 'bg-yellow-100 text-yellow-800' :
