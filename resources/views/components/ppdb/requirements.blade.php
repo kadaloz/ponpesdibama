@@ -1,54 +1,29 @@
 <div class="mb-10 space-y-6">
 
-   {{-- Accordion Item: Persyaratan Pendaftaran --}}
-<div x-data="{ open: false }" class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow" x-cloak>
+{{-- Accordion Item: Persyaratan Pendaftaran --}}
+<div x-data="{ open: true }" class="bg-yellow-50 border-l-4 border-yellow-400 p-5 rounded-xl shadow" x-cloak>
     <button @click="open = !open" class="flex justify-between items-center w-full text-left">
         <div class="flex items-center">
-            <x-heroicon-o-exclamation-circle class="w-6 h-6 text-yellow-500 mr-2" />
-            <h3 class="text-lg font-bold text-yellow-700">Persyaratan Pendaftaran</h3>
+            <x-heroicon-o-exclamation-circle class="w-5 h-5 text-yellow-500 mr-2" />
+            <h3 class="text-base font-semibold text-yellow-700">Persyaratan Pendaftaran</h3>
         </div>
-        <svg x-show="!open" class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
-             viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M19 9l-7 7-7-7" />
+        <svg x-show="!open" class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
         </svg>
-        <svg x-show="open" x-cloak class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
-             viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M5 15l7-7 7 7" />
+        <svg x-show="open" x-cloak class="w-4 h-4 text-yellow-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 15l7-7 7 7" />
         </svg>
     </button>
 
-    <div x-show="open" x-collapse class="mt-4 text-sm text-gray-700 transition-all duration-300 ease-in-out space-y-3">
+    <div x-show="open" x-collapse class="mt-4 text-sm text-gray-700 space-y-2">
         <ul class="list-inside space-y-2">
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-document-text class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Fotokopi Akta Kelahiran
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-document-text class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Fotokopi Kartu Keluarga (KK)
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-academic-cap class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Fotokopi Ijazah Terakhir (jika sudah ada)
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-camera class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Pas Foto ukuran 3x4 terbaru
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-phone class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Nomor HP aktif yang bisa dihubungi
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-pencil-square class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Surat Pernyataan Wali Santri (bisa diunduh dan diisi manual)
-            </li>
-            <li class="flex items-start gap-2">
-                <x-heroicon-o-currency-dollar class="w-5 h-5 text-yellow-500 mt-0.5" />
-                Biaya administrasi awal (dibayar ke panitia)
-            </li>
+            <li class="flex items-start gap-2"><x-heroicon-o-document-text class="w-4 h-4 text-yellow-500" /> Fotokopi Akta Kelahiran</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-document-text class="w-4 h-4 text-yellow-500" /> Fotokopi Kartu Keluarga (KK)</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-academic-cap class="w-4 h-4 text-yellow-500" /> Fotokopi Ijazah Terakhir (jika sudah ada)</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-camera class="w-4 h-4 text-yellow-500" /> Pas Foto ukuran 3x4 terbaru</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-phone class="w-4 h-4 text-yellow-500" /> Nomor HP aktif yang bisa dihubungi</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-pencil-square class="w-4 h-4 text-yellow-500" /> Surat Pernyataan Wali Santri</li>
+            <li class="flex items-start gap-2"><x-heroicon-o-currency-dollar class="w-4 h-4 text-yellow-500" /> Biaya administrasi awal</li>
         </ul>
     </div>
 </div>
