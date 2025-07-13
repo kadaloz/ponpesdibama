@@ -52,7 +52,7 @@
 
 
 <!-- Redesigned Floating Navigation -->
-<nav class="sticky top-[82px] z-40 mx-auto mt-4 max-w-max px-6 py-3 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full transition-all duration-300 hover:shadow-xl">
+<nav class="sticky top-[80px] z-40 mx-auto mt-6 max-w-max px-6 py-3 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full transition-all duration-300 hover:shadow-xl">
     <ul class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-sm md:text-base font-medium text-teal-800">
         <li>
             <a href="#beranda" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Beranda</a>
