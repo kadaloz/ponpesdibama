@@ -53,53 +53,41 @@
 
     <div x-show="open" x-collapse class="mt-6">
 
-        @php
-            $steps = [
-                ['text' => 'Mengisi Formulir Pendaftaran', 'icon' => 'document-text'],
-                ['text' => 'Mengisi Surat Pernyataan Wali Santri', 'icon' => 'pencil-square'],
-                ['text' => 'Membayar Administrasi', 'icon' => 'credit-card'],
-                ['text' => 'Test Masuk (Bacaan)', 'icon' => 'book-open'],
-                ['text' => 'Pembagian Halaqoh', 'icon' => 'users']
-            ];
-        @endphp
+@php
+    $steps = [
+        ['text' => 'Mengisi Formulir Pendaftaran', 'icon' => 'document-text'],
+        ['text' => 'Mengisi Surat Pernyataan Wali', 'icon' => 'pencil-square'],
+        ['text' => 'Membayar Administrasi', 'icon' => 'currency-dollar'],
+        ['text' => 'Test Masuk (Bacaan)', 'icon' => 'academic-cap'],
+        ['text' => 'Pembagian Halaqoh', 'icon' => 'users'],
+    ];
+@endphp
 
-        <div class="flex flex-col md:flex-row md:justify-between md:space-x-4 space-y-6 md:space-y-0 relative">
-            @foreach ($steps as $index => $step)
-                <div class="relative flex-1 group">
-                    @if (!$loop->last)
-                        <div class="hidden md:block absolute top-6 right-0 w-full h-1 border-t-2 border-dashed border-blue-300 z-0 transform translate-x-1/2"></div>
-                    @endif
-
-                    <div class="relative z-10 flex flex-col items-center text-center px-5 py-6 bg-white rounded-xl shadow-md hover:shadow-lg transition-all duration-300 ease-in-out">
-                        {{-- Heroicon --}}
-                        @switch($step['icon'])
-                            @case('document-text')
-                                <x-heroicon-o-document-text class="w-10 h-10 text-blue-600 mb-3" />
-                                @break
-                            @case('pencil-square')
-                                <x-heroicon-o-pencil-square class="w-10 h-10 text-blue-600 mb-3" />
-                                @break
-                            @case('credit-card')
-                                <x-heroicon-o-credit-card class="w-10 h-10 text-blue-600 mb-3" />
-                                @break
-                            @case('book-open')
-                                <x-heroicon-o-book-open class="w-10 h-10 text-blue-600 mb-3" />
-                                @break
-                            @case('users')
-                                <x-heroicon-o-user-group class="w-10 h-10 text-blue-600 mb-3" />
-                                @break
-                        @endswitch
-
-                        {{-- Step Number --}}
-                        <div class="mb-1 text-xs font-semibold text-blue-500">Langkah {{ $index + 1 }}</div>
-
-                        {{-- Step Text --}}
-                        <p class="text-sm font-medium text-gray-800">{{ $step['text'] }}</p>
-                    </div>
-                </div>
-            @endforeach
-        </div>
+<div class="bg-blue-50 border-l-4 border-blue-400 p-5 rounded-xl shadow">
+    <div class="flex items-center mb-4">
+        <x-heroicon-o-clock class="w-5 h-5 text-blue-500 mr-2" />
+        <h3 class="text-base font-semibold text-blue-700">Alur Pendaftaran</h3>
     </div>
+
+    <div class="flex flex-col md:flex-row md:justify-between md:space-x-4 space-y-6 md:space-y-0 relative">
+        @foreach ($steps as $index => $step)
+            <div class="relative flex-1 group">
+                @if (!$loop->last)
+                    <div class="hidden md:block absolute top-6 right-0 w-full h-1 border-t-2 border-dashed border-blue-300 z-0 transform translate-x-1/2"></div>
+                @endif
+
+                <div class="relative z-10 flex flex-col items-center text-center px-4 py-5 bg-white rounded-xl shadow-md hover:shadow-lg transition duration-300">
+                    <div class="mb-2 flex items-center justify-center w-9 h-9 bg-blue-600 text-white rounded-full text-xs font-bold shadow">
+                        {{ $index + 1 }}
+                    </div>
+                    <x-dynamic-component :component="'heroicon-o-' . $step['icon']" class="w-5 h-5 text-blue-500 mb-1" />
+                    <p class="text-sm font-medium text-gray-800">{{ $step['text'] }}</p>
+                </div>
+            </div>
+        @endforeach
+    </div>
+</div>
+
 </div>
 
 </div>
