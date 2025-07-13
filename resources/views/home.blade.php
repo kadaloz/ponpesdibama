@@ -17,26 +17,19 @@
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
 <!-- Logo Institusi (Responsif & Estetik) -->
-<div class="flex justify-center items-center gap-3 mb-6 sm:gap-4 lg:gap-5">
+<div class="flex justify-center items-center gap-4 mb-6 flex-wrap">
     <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
-         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
-         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/pondok.png') }}"
          alt="Logo Pondok"
-         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-12 sm:h-14 md:h-16 lg:h-20 xl:h-24 w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 </div>
-
-
-
-
-
-
-
 
 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
     <span class="block mb-1">Selamat Datang di</span>
