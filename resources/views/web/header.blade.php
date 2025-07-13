@@ -15,7 +15,7 @@
                  alt="Logo Diniyah" title="Logo Resmi Diniyah" 
                  class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
 
-            <img src="{{ asset('storage/images/logo/ponpes.png') }}" 
+            <img src="{{ asset('storage/images/logo/pondok.png') }}" 
                  alt="Logo Pesantren" title="Logo Resmi Pondok Pesantren" 
                  class="h-8 w-8 rounded-md shadow-sm hover:scale-105 transition-transform duration-200 ease-in-out">
         </div>
