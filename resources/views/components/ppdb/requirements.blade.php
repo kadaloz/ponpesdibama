@@ -1,39 +1,58 @@
 <div class="mb-10 space-y-6">
 
-    {{-- Accordion Item: Persyaratan Pendaftaran --}}
-    <div x-data="{ open: false }" class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow" x-cloak>
-        <button @click="open = !open" class="flex justify-between items-center w-full text-left">
-            <div class="flex items-center">
-                <svg class="w-6 h-6 text-yellow-500 mr-2" fill="none" stroke="currentColor" stroke-width="2"
-                     viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round"
-                          d="M9 12l2 2l4 -4M12 20a8 8 0 100-16a8 8 0 000 16z" />
-                </svg>
-                <h3 class="text-lg font-bold text-yellow-700">Persyaratan Pendaftaran</h3>
-            </div>
-            <svg x-show="!open" class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M19 9l-7 7-7-7" />
-            </svg>
-            <svg x-show="open" x-cloak class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
-                 viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                      d="M5 15l7-7 7 7" />
-            </svg>
-        </button>
-        <div x-show="open" x-collapse class="mt-4 text-sm text-gray-700">
-            <ul class="list-disc list-inside space-y-1 pl-1">
-                <li>Fotokopi Akta Kelahiran</li>
-                <li>Fotokopi Kartu Keluarga (KK)</li>
-                <li>Fotokopi Ijazah Terakhir (jika sudah ada)</li>
-                <li>Pas Foto ukuran 3x4 terbaru</li>
-                <li>Nomor HP aktif yang bisa dihubungi</li>
-                <li>Surat Pernyataan Wali Santri (bisa diunduh dan diisi manual)</li>
-                <li>Biaya administrasi awal (dibayar ke panitia)</li>
-            </ul>
+   {{-- Accordion Item: Persyaratan Pendaftaran --}}
+<div x-data="{ open: false }" class="bg-yellow-50 border-l-4 border-yellow-400 p-6 rounded-xl shadow" x-cloak>
+    <button @click="open = !open" class="flex justify-between items-center w-full text-left">
+        <div class="flex items-center">
+            <x-heroicon-o-exclamation-circle class="w-6 h-6 text-yellow-500 mr-2" />
+            <h3 class="text-lg font-bold text-yellow-700">Persyaratan Pendaftaran</h3>
         </div>
+        <svg x-show="!open" class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
+             viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M19 9l-7 7-7-7" />
+        </svg>
+        <svg x-show="open" x-cloak class="w-5 h-5 text-yellow-500" fill="none" stroke="currentColor"
+             viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M5 15l7-7 7 7" />
+        </svg>
+    </button>
+
+    <div x-show="open" x-collapse class="mt-4 text-sm text-gray-700 transition-all duration-300 ease-in-out space-y-3">
+        <ul class="list-inside space-y-2">
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-document-text class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Fotokopi Akta Kelahiran
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-document-text class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Fotokopi Kartu Keluarga (KK)
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-academic-cap class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Fotokopi Ijazah Terakhir (jika sudah ada)
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-camera class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Pas Foto ukuran 3x4 terbaru
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-phone class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Nomor HP aktif yang bisa dihubungi
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-pencil-square class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Surat Pernyataan Wali Santri (bisa diunduh dan diisi manual)
+            </li>
+            <li class="flex items-start gap-2">
+                <x-heroicon-o-currency-dollar class="w-5 h-5 text-yellow-500 mt-0.5" />
+                Biaya administrasi awal (dibayar ke panitia)
+            </li>
+        </ul>
     </div>
+</div>
+
 
 {{-- Accordion Item: Alur Pendaftaran --}}
 <div x-data="{ open: false }" class="bg-blue-50 border-l-4 border-blue-400 p-6 rounded-xl shadow" x-cloak>
