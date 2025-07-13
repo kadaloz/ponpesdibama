@@ -16,31 +16,23 @@
     <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-<!-- Logo Institusi (PNG, Responsif & Estetik) -->
-<div class="flex justify-center items-center gap-4 mb-6 flex-wrap">
+<!-- Logo Institusi (Kecil & Rapi) -->
+<div class="flex justify-center items-center gap-3 mb-6 flex-wrap">
     <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
          title="Logo Academy"
-         class="h-[40px] sm:h-[48px] md:h-[56px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
+         class="h-[28px] sm:h-[32px] md:h-[36px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
          title="Logo Diniyah"
-         class="h-[40px] sm:h-[48px] md:h-[56px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
+         class="h-[28px] sm:h-[32px] md:h-[36px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/pondok.png') }}"
          alt="Logo Pondok"
          title="Logo Pondok Pesantren"
-         class="h-[40px] sm:h-[48px] md:h-[56px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
+         class="h-[28px] sm:h-[32px] md:h-[36px] w-auto rounded-md shadow-md transition duration-300 ease-in-out">
 </div>
-
-
-
-
-
-
-
-
 
 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
     <span class="block mb-1">Selamat Datang di</span>
