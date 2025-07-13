@@ -1,4 +1,3 @@
-{{-- resources/views/web/footer.blade.php --}}
 <footer class="bg-gradient-to-tr from-teal-800 to-teal-900 text-white py-12 mt-20 rounded-t-3xl shadow-inner">
     <div class="container mx-auto px-6">
         <!-- Grid Layout -->
@@ -43,8 +42,18 @@
         </div>
 
         <!-- Divider -->
-        <div class="border-t border-teal-700 mt-10 pt-6 text-center text-xs text-teal-300">
-            Dibangun oleh Team IT PonpesDIBAMA untuk pendidikan Islam | Laravel + Tailwind CSS
+        <div class="border-t border-teal-700 mt-10 pt-6 text-center text-xs text-teal-300 space-y-3">
+            <p>Dibangun oleh Team IT PonpesDIBAMA untuk pendidikan Islam | Laravel + Tailwind CSS</p>
+
+            <!-- Logo Mini Project By -->
+            <div class="flex justify-center items-center gap-3">
+                <img src="{{ asset('storage/images/logo/academy.png') }}" alt="Logo Academy"
+                    class="h-6 w-auto rounded shadow-md">
+                <img src="{{ asset('storage/images/logo/diniyah.png') }}" alt="Logo Diniyah"
+                    class="h-6 w-auto rounded shadow-md">
+                <img src="{{ asset('storage/images/logo/pondok.png') }}" alt="Logo Pondok"
+                    class="h-6 w-auto rounded shadow-md">
+            </div>
         </div>
     </div>
 </footer>
