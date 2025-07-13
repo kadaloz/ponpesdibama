@@ -47,11 +47,13 @@
 
             <!-- Logo Mini Project By -->
             <div class="flex justify-center items-center gap-3">
+                <img src="{{ asset('storage/images/logo/project.png') }}" alt="Logo Project"
+                    class="h-6 w-auto rounded shadow-md">
                 <img src="{{ asset('storage/images/logo/academy.png') }}" alt="Logo Academy"
                     class="h-6 w-auto rounded shadow-md">
-                <img src="{{ asset('storage/images/logo/diniyah.png') }}" alt="Logo Diniyah"
+                <img src="{{ asset('storage/images/logo/yadun-ulya.png') }}" alt="Logo Yadun Ulya"
                     class="h-6 w-auto rounded shadow-md">
-                <img src="{{ asset('storage/images/logo/pondok.png') }}" alt="Logo Pondok"
+                <img src="{{ asset('storage/images/logo/lqc.png') }}" alt="Logo LQC"
                     class="h-6 w-auto rounded shadow-md">
             </div>
         </div>
