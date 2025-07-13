@@ -24,12 +24,14 @@
         </div>
 
         <!-- Judul -->
-        <h1 class="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-white text-center leading-snug tracking-tight drop-shadow-xl mb-6 animate-fade-in-up">
-            <span class="block mb-1">Selamat Datang di</span>
-            <span class="block text-yellow-300 mb-1">Website Resmi</span>
-            <span class="block">Yayasan Pondok Pesantren</span>
-            <span class="block text-yellow-300">Diniyah Baitul Makmur Aikmel</span>
-        </h1>
+        <h1 class="text-center font-extrabold leading-tight tracking-tight drop-shadow-xl mb-8 animate-fade-in-up"
+    style="font-size: clamp(2rem, 5vw + 1rem, 4.5rem);">
+    <span class="block mb-1">Selamat Datang di</span>
+    <span class="block text-yellow-300 mb-1">Website Resmi</span>
+    <span class="block">Yayasan Pondok Pesantren</span>
+    <span class="block text-yellow-300">Diniyah Baitul Makmur Aikmel</span>
+</h1>
+
 
         <!-- Motto -->
         <p class="text-base sm:text-lg md:text-xl italic text-white/90 text-center leading-normal max-w-2xl mx-auto px-4 font-medium animate-fade-in-up">
