@@ -26,7 +26,7 @@
          alt="Logo Diniyah"
          class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 
-    <img src="{{ asset('storage/images/logo/ponpes.png') }}"
+    <img src="{{ asset('storage/images/logo/pondok.png') }}"
          alt="Logo Ponpes"
          class="h-12 w-12 sm:h-14 sm:w-14 md:h-16 md:w-16 rounded-md shadow-md hover:scale-105 transition duration-300 ease-in-out">
 </div>
