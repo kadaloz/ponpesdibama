@@ -6,7 +6,7 @@
 @section('main_content')
 <!-- Hero Section -->
 <section id="beranda"
-         class="relative bg-gradient-to-r from-teal-700 to-emerald-700 text-white py-12 sm:py-16 md:py-24 flex items-center justify-center min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] rounded-b-3xl shadow-2xl overflow-hidden">
+         class="relative bg-gradient-to-r from-teal-700 to-emerald-700 text-white py-8 sm:py-12 md:py-20 flex items-center justify-center min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] rounded-b-3xl shadow-2xl overflow-hidden">
 
     <!-- Background Image -->
     <div class="absolute inset-0 bg-cover bg-center opacity-10 blur-sm"
