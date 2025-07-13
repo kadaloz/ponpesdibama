@@ -14,17 +14,17 @@
     </div>
 
     <!-- Content Wrapper -->
-    <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-4xl mx-auto space-y-6 animate-fade-in-up">
+    <div class="relative z-10 flex flex-col items-center text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
 
-        <!-- Logo Animasi -->
-        <div class="animate-bounce-slow">
+        <!-- Logo -->
+        <div class="mb-6">
             <img src="{{ asset('storage/images/logo/pondok.png') }}"
                  alt="Logo Pondok"
-                 class="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto max-w-[180px] rounded-md shadow-xl transition-transform duration-500 hover:scale-105">
+                 class="h-24 sm:h-28 md:h-32 lg:h-36 xl:h-40 w-auto max-w-[180px] rounded-md shadow-xl transition-transform duration-300 ease-in-out">
         </div>
 
         <!-- Judul -->
-        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-xl fade-in-text">
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white leading-tight tracking-tight drop-shadow-xl mb-6">
             <span class="block mb-1">Selamat Datang di</span>
             <span class="block text-yellow-300 mb-1">Website Resmi</span>
             <span class="block">Yayasan Pondok Pesantren</span>
@@ -32,15 +32,15 @@
         </h1>
 
         <!-- Sub Judul -->
-        <p class="text-lg sm:text-xl md:text-2xl italic text-white/90 leading-relaxed max-w-2xl font-medium fade-in-text delay-100">
+        <p class="text-lg sm:text-xl md:text-2xl italic text-white/90 leading-relaxed max-w-2xl font-medium mb-8">
             <span class="block">Mendidik <span class="text-yellow-200 font-semibold">Generasi Qur'ani</span>,</span>
             <span class="block">Berakhlak <span class="text-yellow-200 font-semibold">Islami</span>,</span>
             <span class="block">untuk <span class="text-yellow-200 font-semibold">Membangun Negeri</span>.</span>
         </p>
 
-        <!-- Tombol CTA -->
+        <!-- CTA Button -->
         <a href="#program"
-           class="inline-flex items-center justify-center px-8 py-4 bg-white text-teal-700 font-semibold text-base md:text-lg rounded-full shadow-xl hover:bg-teal-50 transition-transform duration-300 transform hover:scale-105 ring-2 ring-white/30 fade-in-text delay-200">
+           class="inline-flex items-center justify-center px-8 py-4 bg-white text-teal-700 font-semibold text-base md:text-lg rounded-full shadow-xl hover:bg-teal-50 transition-transform duration-300 transform hover:scale-105 ring-2 ring-white/30 animate-bounce">
             Lihat Program Kami
             <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
                 <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
