@@ -22,13 +22,40 @@
                     <dd class="text-xl mt-1">{{ $applicant->full_name }}</dd>
                 </div>
                 <div>
-                    <dt class="font-semibold text-gray-600">Program Dipilih:</dt>
-                    <dd class="text-xl mt-1">{{ $applicant->chosen_program ?? '-' }}</dd>
-                </div>
-                <div>
-                    <dt class="font-semibold text-gray-600">Tipe Pendaftaran:</dt>
-                    <dd class="text-xl mt-1">{{ $applicant->ppdb_type ?? '-' }}</dd>
-                </div>
+    <dt class="font-semibold text-gray-600">Program Dipilih:</dt>
+    @php
+        $program = $applicant->chosen_program;
+        $programClass = match ($program) {
+            'Tahfizh' => 'bg-green-100 text-green-800',
+            'Kitab Kuning' => 'bg-yellow-100 text-yellow-800',
+            'Bahasa Arab' => 'bg-blue-100 text-blue-800',
+            default => 'bg-gray-100 text-gray-800'
+        };
+    @endphp
+    <dd class="mt-1">
+        <span class="inline-block px-4 py-2 rounded-full font-semibold text-sm {{ $programClass }}">
+            {{ $program ?? 'Tidak Ada' }}
+        </span>
+    </dd>
+</div>
+
+<div>
+    <dt class="font-semibold text-gray-600">Tipe Pendaftaran:</dt>
+    @php
+        $type = $applicant->ppdb_type;
+        $typeClass = match ($type) {
+            'Asrama' => 'bg-teal-100 text-teal-800',
+            'Pulang-Pergi' => 'bg-orange-100 text-orange-800',
+            default => 'bg-gray-100 text-gray-800'
+        };
+    @endphp
+    <dd class="mt-1">
+        <span class="inline-block px-4 py-2 rounded-full font-semibold text-sm {{ $typeClass }}">
+            {{ $type ?? 'Tidak Ada' }}
+        </span>
+    </dd>
+</div>
+
                 @if ($applicant->ppdb_type == 'Pulang-Pergi')
                 <div>
                     <dt class="font-semibold text-gray-600">Periode Ngaji:</dt>
