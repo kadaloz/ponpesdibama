@@ -17,19 +17,20 @@
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
 <!-- Logo Institusi (Responsif & Estetik) -->
-<div class="flex justify-center items-center gap-2 mb-5 sm:gap-3 lg:gap-4">
+<div class="flex justify-center items-center gap-3 mb-6 sm:gap-4 lg:gap-5">
     <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/pondok.png') }}"
-         alt="Logo Ponpes"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         alt="Logo Pondok"
+         class="h-8 w-auto sm:h-10 md:h-12 lg:h-14 xl:h-16 rounded-md shadow-sm transition duration-300 ease-in-out">
 </div>
+
 
 
 
