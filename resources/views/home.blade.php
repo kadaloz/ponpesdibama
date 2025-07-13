@@ -16,23 +16,25 @@
     <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-<!-- Logo Institusi (Super Kecil & Rapi) -->
-<div class="flex justify-center items-center gap-2 mb-4 flex-wrap">
+<!-- Logo Institusi (Responsif & Estetik) -->
+<div class="flex justify-center items-center gap-2 mb-5 sm:gap-3 lg:gap-4">
     <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
-         title="Logo Academy"
-         class="h-[20px] sm:h-[24px] md:h-[28px] w-auto rounded shadow">
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
-         title="Logo Diniyah"
-         class="h-[20px] sm:h-[24px] md:h-[28px] w-auto rounded shadow">
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 
     <img src="{{ asset('storage/images/logo/pondok.png') }}"
-         alt="Logo Pondok"
-         title="Logo Pondok Pesantren"
-         class="h-[20px] sm:h-[24px] md:h-[28px] w-auto rounded shadow">
+         alt="Logo Ponpes"
+         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
 </div>
+
+
+
+
+
 
 
 <h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
