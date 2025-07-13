@@ -8,47 +8,50 @@
 <section id="beranda"
          class="relative bg-gradient-to-r from-teal-700 to-emerald-700 text-white py-8 sm:py-12 md:py-20 flex items-center justify-center min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] rounded-b-3xl shadow-2xl overflow-hidden">
 
-    <!-- Background Image -->
-    <div class="absolute inset-0 bg-cover bg-center opacity-10 blur-sm"
-         style="background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=@Bait+El+Makmur');">
+    <!-- Background Text (Responsive) -->
+    <div class="absolute inset-0 flex items-center justify-center text-center select-none pointer-events-none z-0">
+        <h1 class="text-[9vw] sm:text-[7vw] md:text-[5vw] lg:text-[4vw] font-extrabold tracking-wider text-white opacity-10 blur-sm whitespace-nowrap">
+            @Bait El Makmur
+        </h1>
     </div>
 
     <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-<!-- Logo Institusi Utama -->
-<div class="flex justify-center items-center mb-6">
-    <img src="{{ asset('storage/images/logo/pondok.png') }}"
-         alt="Logo Pondok"
-         class="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto max-w-[180px] rounded-md shadow-xl transition-transform duration-300 ease-in-out">
-</div>
+        <!-- Logo Institusi -->
+        <div class="flex justify-center items-center mb-6">
+            <img src="{{ asset('storage/images/logo/pondok.png') }}"
+                 alt="Logo Pondok"
+                 class="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto max-w-[180px] rounded-md shadow-xl transition-transform duration-300 ease-in-out">
+        </div>
 
+        <!-- Judul Utama -->
+        <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
+            <span class="block mb-1">Selamat Datang di</span>
+            <span class="block text-yellow-300 mb-1">Website Resmi</span>
+            <span class="block">Yayasan Pondok Pesantren</span>
+            <span class="block text-yellow-300">Diniyah Baitul Makmur Aikmel</span>
+        </h1>
 
-<h1 class="text-4xl sm:text-5xl lg:text-6xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
-    <span class="block mb-1">Selamat Datang di</span>
-    <span class="block text-yellow-300 mb-1">Website Resmi</span>
-    <span class="block">Yayasan Pondok Pesantren</span>
-    <span class="block text-yellow-300">Diniyah Baitul Makmur Aikmel</span>
-</h1>
+        <!-- Motto -->
+        <p class="text-lg sm:text-xl md:text-2xl italic text-white/90 text-center leading-relaxed max-w-2xl mx-auto px-4 font-medium">
+            <span class="block">Mendidik <span class="text-yellow-200 font-semibold">Generasi Qur'ani</span>,</span>
+            <span class="block">Berakhlak <span class="text-yellow-200 font-semibold">Islami</span>,</span>
+            <span class="block">untuk <span class="text-yellow-200 font-semibold">Membangun Negeri</span>.</span>
+        </p>
 
-<p class="text-lg sm:text-xl md:text-2xl italic text-white/90 text-center leading-relaxed max-w-2xl mx-auto px-4 font-medium">
-    <span class="block">Mendidik <span class="text-yellow-200 font-semibold">Generasi Qur'ani</span>,</span>
-    <span class="block">Berakhlak <span class="text-yellow-200 font-semibold">Islami</span>,</span>
-    <span class="block">untuk <span class="text-yellow-200 font-semibold">Membangun Negeri</span>.</span>
-</p>
-
-<a href="#program"
-   class="inline-flex items-center justify-center mt-10 px-8 py-4 bg-white text-teal-700 font-semibold text-base md:text-lg rounded-full shadow-xl hover:bg-teal-50 transition-transform duration-300 transform hover:scale-105 ring-2 ring-white/30 animate-bounce">
-    Lihat Program Kami
-    <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
-         xmlns="http://www.w3.org/2000/svg">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
-    </svg>
-</a>
+        <!-- CTA Button -->
+        <a href="#program"
+           class="inline-flex items-center justify-center mt-10 px-8 py-4 bg-white text-teal-700 font-semibold text-base md:text-lg rounded-full shadow-xl hover:bg-teal-50 transition-transform duration-300 transform hover:scale-105 ring-2 ring-white/30 animate-bounce">
+            Lihat Program Kami
+            <svg class="w-5 h-5 ml-2" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"
+                 xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+            </svg>
+        </a>
 
     </div>
 </section>
-
 
 
 <!-- Redesigned Floating Navigation -->
