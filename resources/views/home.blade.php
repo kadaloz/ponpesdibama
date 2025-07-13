@@ -16,20 +16,21 @@
     <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-<!-- Logo Institusi (Responsif & Estetik) -->
-<div class="flex justify-center items-center gap-2 mb-5 sm:gap-3 lg:gap-4">
+<!-- Logo Institusi (Ukuran Asli) -->
+<div class="flex justify-center items-center gap-3 mb-6">
     <img src="{{ asset('storage/images/logo/academy.png') }}"
          alt="Logo Academy"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-auto w-auto rounded-md shadow-sm">
 
     <img src="{{ asset('storage/images/logo/diniyah.png') }}"
          alt="Logo Diniyah"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-auto w-auto rounded-md shadow-sm">
 
-    <img src="{{ asset('storage/images/logo/ponpes.png') }}"
+    <img src="{{ asset('storage/images/logo/pondok.png') }}"
          alt="Logo Ponpes"
-         class="h-5 w-auto sm:h-6 md:h-7 lg:h-8 xl:h-9 rounded-md shadow-sm transition duration-300 ease-in-out">
+         class="h-auto w-auto rounded-md shadow-sm">
 </div>
+
 
 
 
