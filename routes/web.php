@@ -224,7 +224,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');
     Route::put('ppdb-requirements/update', [PpdbRequirementController::class, 'update'])->name('ppdb-requirements.update')->middleware('permission:edit ppdb requirements');
 
-    Route::get('/admin/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index')->middleware('permission:view audit logs');
+    Route::get('/admin/audit_trails', [AuditLogController::class, 'index'])->name('audit_trails.index')->middleware('permission:view audit logs');
 
 
     // Rute Profil Admin
