@@ -4,98 +4,48 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@yield('title', 'Pondok Pesantren Dibama - Pendidikan Islam Unggul')</title>
-    @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Pastikan Alpine.js diimpor melalui app.js --}}
+
+    {{-- Komponen SEO --}}
+    <x-seo 
+        title="@yield('title', 'Pondok Pesantren Dibama - Pendidikan Islam Unggul')"
+        description="@yield('meta_description', 'Website resmi Pondok Pesantren Diniyah Baitul Makmur Aikmel, lembaga pendidikan Islam yang mencetak generasi Qur’ani dan berakhlak.')"
+        keywords="@yield('meta_keywords', 'pondok pesantren, dibama, pesantren aikmel, pendidikan islam, ppdb online')"
+        image="@yield('meta_image', asset('images/og-default.jpg'))"
+    />
+
+    {{-- Styles & Fonts --}}
+    @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    {{-- Style Internal --}}
     <style>
         body { font-family: 'Inter', sans-serif; }
-        /* Custom styles for section titles */
         .section-title {
-            @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-12 {{-- Margin bawah ditingkatkan --}}
+            @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-12 
                    bg-clip-text text-transparent bg-gradient-to-r from-teal-700 to-blue-700
-                   drop-shadow-xl; {{-- Efek bayangan ditingkatkan --}}
+                   drop-shadow-xl;
         }
-        /* Apply rounded corners to images */
-        img {
-            @apply rounded-lg shadow-md;
-        }
-        /* Basic animation for hero section */
-        @keyframes fadeInDown {
-            from { opacity: 0; transform: translateY(-20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes fadeInUp {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        @keyframes bounce {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
+        img { @apply rounded-lg shadow-md; }
+
+        @keyframes fadeInDown { from { opacity: 0; transform: translateY(-20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeInUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
+
         .animate-fade-in-down { animation: fadeInDown 1s ease-out forwards; }
         .animate-fade-in-up { animation: fadeInUp 1s ease-out forwards 0.5s; }
         .animate-bounce { animation: bounce 1s infinite alternate; }
 
-        /* Modal specific styles */
-        .modal {
-            display: none; /* Hidden by default */
-            position: fixed; /* Stay in place */
-            z-index: 1000; /* Sit on top */
-            left: 0;
-            top: 0;
-            width: 100%; /* Full width */
-            height: 100%; /* Full height */
-            overflow: auto; /* Enable scroll if needed */
-            background-color: rgba(0,0,0,0.4); /* Black w/ opacity */
-            justify-content: center;
-            align-items: center;
-        }
-
-        .modal-content {
-            background-color: #fefefe;
-            margin: auto;
-            padding: 20px;
-            border-radius: 0.5rem;
-            width: 80%;
-            max-width: 500px;
-            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
-            position: relative;
-        }
-
-        .close-button {
-            color: #aaa;
-            float: right;
-            font-size: 28px;
-            font-weight: bold;
-        }
-
-        .close-button:hover,
-        .close-button:focus {
-            color: black;
-            text-decoration: none;
-            cursor: pointer;
-        }
-
-        /* Menambahkan scroll-margin-top untuk semua section yang memiliki ID */
-        section[id] {
-            scroll-margin-top: 150px; /* Sesuaikan nilai ini jika masih terpotong */
-        }
-
+        section[id] { scroll-margin-top: 150px; }
         .nav-link {
-             @apply block px-4 py-2 rounded-full transition-colors duration-200 
-             hover:bg-teal-100 hover:text-teal-900 
-             focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400;
+            @apply block px-4 py-2 rounded-full transition-colors duration-200 
+            hover:bg-teal-100 hover:text-teal-900 
+            focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-teal-400;
         }
-        
-        .nav-link.active {
-             @apply bg-yellow-600 text-white shadow-md;
-        }
-
-        [x-cloak] {
-            display: none !important;
-        }
+        .nav-link.active { @apply bg-yellow-600 text-white shadow-md; }
+        [x-cloak] { display: none !important; }
     </style>
-    @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
+
+    @stack('styles')
 </head>
 <body class="bg-gray-50 text-gray-800"> {{-- Menggunakan kelas Tailwind untuk warna latar belakang dan teks dasar --}}
     @include('web.header') {{-- Menyertakan header dari file terpisah --}}
