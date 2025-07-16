@@ -48,63 +48,61 @@ class Student extends Model
         return $this->belongsTo(Applicant::class);
     }
 
+    /**
+     * Relasi Many-to-Many ke Halaqoh (santri tergabung di satu atau lebih halaqoh).
+     */
+    public function halaqohs()
+    {
+        return $this->belongsToMany(Halaqoh::class)
+                    ->withPivot('join_date', 'status')
+                    ->withTimestamps();
+    }
+
     protected static function booted(): void
-{
-    static::creating(function (Student $student) {
-        if (empty($student->nis)) {
-            $student->nis = self::generateUniqueNis(
-                $student->type ?? 'Pulang-Pergi',  // default type jika kosong
-                $student->gender ?? 'Laki-laki',
-                $student->admission_year ?? date('Y')
-            );
+    {
+        static::creating(function (Student $student) {
+            if (empty($student->nis)) {
+                $student->nis = self::generateUniqueNis(
+                    $student->type ?? 'Pulang-Pergi',
+                    $student->gender ?? 'Laki-laki',
+                    $student->admission_year ?? date('Y')
+                );
+            }
+        });
+    }
+
+    /**
+     * Generate Unique NIS (DBM-[YEAR]-[TYPE]-[GENDER]-[XXXX])
+     */
+    public static function generateUniqueNis(string $type, string $gender, ?string $admissionYear = null): string
+    {
+        if (empty($gender)) {
+            throw new \InvalidArgumentException("Jenis kelamin tidak boleh kosong.");
         }
-    });
-}
 
+        if (empty($admissionYear)) {
+            throw new \InvalidArgumentException("Tahun masuk tidak boleh kosong.");
+        }
 
-/**
- * Generate a unique NIS with type and gender.
- * Format: DBM-[YEAR]-[TYPE]-[GENDER]-[XXX]
- * Example: DBM-2025-TP-L-001
- */
-public static function generateUniqueNis(string $type, string $gender, ?string $admissionYear = null): string
-{
-    if (empty($gender)) {
-        throw new \InvalidArgumentException("Jenis kelamin tidak boleh kosong.");
+        $yearPart = $admissionYear;
+        $typeInitialMap = [
+            'Asrama' => 'ASR',
+            'Pulang-Pergi' => 'TPQ',
+        ];
+        $typeInitial = $typeInitialMap[$type] ?? 'TPQ';
+        $genderInitial = strtoupper(substr($gender, 0, 1));
+
+        $prefix = "DBM{$yearPart}{$typeInitial}{$genderInitial}";
+
+        $lastNis = self::where('nis', 'like', "{$prefix}%")
+            ->orderBy('nis', 'desc')
+            ->pluck('nis')
+            ->first();
+
+        $nextNumber = $lastNis
+            ? (int) substr($lastNis, strlen($prefix)) + 1
+            : 1;
+
+        return $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
-
-    if (empty($admissionYear)) {
-        throw new \InvalidArgumentException("Tahun masuk tidak boleh kosong.");
-    }
-
-    $yearPart = $admissionYear;
-    $typeInitialMap = [
-        'Asrama' => 'ASR',
-        'Pulang-Pergi' => 'TPQ',
-    ];
-    $typeInitial = $typeInitialMap[$type] ?? 'TPQ'; // default fallback
-    $genderInitial = strtoupper(substr($gender, 0, 1));
-
-    $prefix = "DBM{$yearPart}{$typeInitial}{$genderInitial}";
-
-    $lastNis = self::where('nis', 'like', "{$prefix}%")
-        ->orderBy('nis', 'desc')
-        ->pluck('nis')
-        ->first();
-
-    if ($lastNis) {
-        $lastNumber = (int) substr($lastNis, strlen($prefix));
-        $nextNumber = $lastNumber + 1;
-    } else {
-        $nextNumber = 1;
-    }
-
-    $paddedSequence = str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-
-    return $prefix . $paddedSequence;
-}
-
-
-
-
 }

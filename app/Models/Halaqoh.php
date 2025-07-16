@@ -2,7 +2,7 @@
 
 namespace App\Models;
 
-use Illuminate\Database\Eloquent\Factories\HasFactory; // Fixed: use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Halaqoh extends Model
@@ -24,21 +24,31 @@ class Halaqoh extends Model
         'end_date' => 'date',
     ];
 
-    // Relasi Many-to-One ke Teacher (pengajar utama halaqoh)
+    /**
+     * Relasi ke Pengajar (Teacher)
+     */
     public function teacher()
     {
         return $this->belongsTo(Teacher::class);
     }
 
-    // Relasi Many-to-Many ke Student (santri yang tergabung dalam halaqoh)
+    /**
+     * Relasi Many-to-Many ke Santri (Student) via halaqoh_student pivot table.
+     */
     public function students()
     {
-        return $this->belongsToMany(Student::class, 'halaqoh_student')->withPivot('join_date', 'status')->withTimestamps();
+        return $this->belongsToMany(Student::class)
+                    ->withPivot('join_date', 'status') // Penting: akses kolom pivot
+                    ->withTimestamps();                // Menyimpan timestamps di pivot table
     }
 
-    // Relasi One-to-Many ke HalaqohSchedule (jadwal halaqoh)
+    /**
+     * Relasi One-to-Many ke Jadwal Halaqoh.
+     */
     public function schedules()
     {
-        return $this->hasMany(HalaqohSchedule::class)->orderBy('day_of_week')->orderBy('start_time');
+        return $this->hasMany(HalaqohSchedule::class)
+                    ->orderBy('day_of_week')
+                    ->orderBy('start_time');
     }
 }

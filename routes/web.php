@@ -215,10 +215,22 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
      
     Route::resource('teachers', TeacherController::class)->middleware('permission:view teachers|create teachers|edit teachers|delete teachers');
 
-     // NEW: Rute resource untuk Halaqoh
-    Route::resource('halaqohs', HalaqohController::class)->middleware('permission:view halaqohs|create halaqohs|edit halaqohs|delete halaqohs');
+    // NEW: Rute resource untuk Halaqoh
+    Route::resource('halaqohs', HalaqohController::class)
+    ->middleware('permission:view halaqohs|create halaqohs|edit halaqohs|delete halaqohs');
+
     // Rute khusus untuk menghapus jadwal halaqoh via AJAX
     Route::delete('halaqohs/schedules/{schedule}', [HalaqohController::class, 'deleteSchedule'])->name('halaqohs.delete_schedule')->middleware('permission:edit halaqohs');
+
+    // Rute untuk menambahkan santri ke halaqoh
+    Route::post('halaqohs/{halaqoh}/assign-student', [HalaqohController::class, 'assignStudent'])->name('halaqohs.assign_student')->middleware('permission:edit halaqohs');
+
+    // Rute untuk menghapus santri dari halaqoh
+    Route::delete('halaqohs/{halaqoh}/remove-student/{student}', [HalaqohController::class, 'removeStudent'])->name('halaqohs.remove_student')->middleware('permission:edit halaqohs');
+    // Rute untuk manajemen santri per halaqoh
+    Route::get('halaqohs/{halaqoh}/manage-students', [HalaqohController::class, 'manageStudents'])->name('halaqohs.manage_students')->middleware('permission:edit halaqohs');
+    Route::post('halaqohs/{halaqoh}/update-students', [HalaqohController::class, 'updateStudents'])->name('halaqohs.update_students')->middleware('permission:edit halaqohs');
+
 
     // Rute untuk mengelola syarat PPDB (PpdbRequirementController)
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');

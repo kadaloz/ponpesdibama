@@ -13,8 +13,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('halaqoh_student', function (Blueprint $table) {
-            $table->foreignId('halaqoh_id')->constrained('halaqohs')->onDelete('cascade');
-            $table->foreignId('student_id')->constrained('students')->onDelete('cascade');
+            $table->foreignId('halaqoh_id')->constrained()->onDelete('cascade');
+            $table->foreignId('student_id')->constrained()->onDelete('cascade');
             $table->date('join_date')->nullable(); // Tanggal santri bergabung dengan halaqoh
             $table->enum('status', ['active', 'inactive'])->default('active'); // Status santri di halaqoh
             $table->timestamps();
