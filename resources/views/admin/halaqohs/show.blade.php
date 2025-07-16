@@ -73,7 +73,7 @@
         </div>
 
         <div class="mt-8 flex justify-end">
-            <a href="{{ route('admin.halaqohs.index') }}" class="inline-flex items-center px-5 py-2 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300">
+            <a href="{{ route('halaqohs.index') }}" class="inline-flex items-center px-5 py-2 bg-gray-200 text-gray-800 rounded-lg font-semibold hover:bg-gray-300">
                 Kembali ke Daftar Halaqoh
             </a>
         </div>
