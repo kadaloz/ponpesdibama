@@ -27,6 +27,10 @@
     <meta name="twitter:description" content="@yield('meta_description')"/>
     <meta name="twitter:image" content="@yield('meta_image', asset('images/og-default.jpg'))"/>
 
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('storage/images/logo/dibama.ico') }}" sizes="32x32" type="image/ico">
+    <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.ico') }}">
+
     {{-- Styles & Fonts --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">

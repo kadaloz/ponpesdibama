@@ -3,7 +3,7 @@
 @section('title', 'Beranda - Pondok Pesantren DIBAMA')
 @section('meta_description', 'Website resmi Pondok Pesantren Diniyah Baitul Makmur Aikmel. Tempat mencetak generasi Qurani dan berakhlak Islami.')
 @section('meta_keywords', 'pondok pesantren, dibama, aikmel, pendidikan islam, ppdb online')
-@section('meta_image', asset('images/beranda-banner.jpg'))
+@section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
     {{-- Konten halaman --}}

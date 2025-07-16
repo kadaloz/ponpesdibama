@@ -1,6 +1,9 @@
 @extends('web.apps')
 
 @section('title', 'Pendaftaran PPDB Online - PonpesDIBAMA')
+@section('meta_description', 'Daftar sebagai santri baru di Pondok Pesantren Diniyah Baitul Makmur Aikmel. Isi formulir pendaftaran online dengan mudah.')
+@section('meta_keywords', 'ppdb online, pendaftaran santri, pondok pesantren, pendidikan islam')
+@section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
 <section id="ppdb-form" class="py-16 md:py-24 bg-gray-50 text-gray-800">

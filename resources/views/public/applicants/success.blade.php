@@ -1,6 +1,9 @@
 @extends('web.apps')
 
 @section('title', 'Pendaftaran Berhasil - PonpesDIBAMA')
+@section('meta_description', 'Pendaftaran PPDB online Anda telah berhasil. Simpan nomor pendaftaran untuk verifikasi dan daftar ulang.')
+@section('meta_keywords', 'ppdb online, pendaftaran berhasil, pondok pesantren, pendidikan islam')
+@section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
 <section class="py-24 md:py-40 bg-gradient-to-r from-teal-600 to-green-600 text-white flex items-center justify-center min-h-[80vh] rounded-b-lg shadow-xl">
