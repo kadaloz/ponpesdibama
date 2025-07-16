@@ -6,7 +6,6 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
-use function App\Helpers\record_audit;
 
 class SettingController extends Controller
 {

@@ -7,7 +7,6 @@ use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class TeacherController extends Controller
 {

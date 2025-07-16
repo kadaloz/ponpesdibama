@@ -8,7 +8,6 @@ use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class GalleryController extends Controller
 {

@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; // Untuk membuat slug
-use function App\Helpers\record_audit; // Import fungsi record_audit
+
 
 class ProgramController extends Controller
 {

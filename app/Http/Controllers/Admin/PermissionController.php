@@ -9,7 +9,6 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class PermissionController extends Controller
 {

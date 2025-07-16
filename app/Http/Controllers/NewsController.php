@@ -7,7 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
-use function App\Helpers\record_audit; // Import fungsi record_audit
+
 
 class NewsController extends Controller
 {

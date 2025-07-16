@@ -15,7 +15,6 @@ use App\Mail\ApplicantStatusChangedNotification;
 use Illuminate\Validation\Rule; // Import Rule
 use App\Enums\HalaqohPeriod; // Import HalaqohPeriod enum
 use App\Enums\PpdbType; // Import PPDBType enum
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class ApplicantController extends Controller
 {
