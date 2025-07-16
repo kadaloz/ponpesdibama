@@ -47,6 +47,9 @@
                                 </td>
                                 <td class="px-4 py-2 text-sm text-right space-x-2">
                                     <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}" class="inline-block text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
+                                    <a href="{{ route('admin.halaqohs.show', $halaqoh) }}" class="inline-block text-teal-600 hover:text-teal-800 font-medium">Detail</a>
+                                    <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}" class="inline-block text-blue-600 hover:text-blue-800 font-medium">Kelola Santri</a>
+            
                                     <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
                                         @csrf
                                         @method('DELETE')
