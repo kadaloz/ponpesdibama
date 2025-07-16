@@ -32,4 +32,13 @@ class Teacher extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    /**
+     * Relasi One-to-Many ke Halaqoh (satu guru bisa mengajar di banyak halaqoh).
+     */
+    public function halaqoh()
+    {
+        return $this->hasOne(Halaqoh::class);
+    }
+
 }
