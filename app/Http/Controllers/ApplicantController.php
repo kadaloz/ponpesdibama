@@ -23,7 +23,7 @@ class ApplicantController extends Controller
      */
     public function index()
     {
-        $allApplicants = Applicant::latest()->get();
+        $allApplicants = Applicant::latest()->paginate(20);
         return view('admin.applicants.index', compact('allApplicants'));
     }
 

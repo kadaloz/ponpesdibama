@@ -8,7 +8,6 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class AuthenticatedSessionController extends Controller
 {
