@@ -17,10 +17,7 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
-        if (Auth::check()) {
-            // Jika sudah login, arahkan ke halaman dashboard
-            return redirect()->route('dashboard');
-        }
+      
         // Jika belum login, tampilkan halaman login
         return view('auth.login');
     }
