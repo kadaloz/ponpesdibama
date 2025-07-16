@@ -39,7 +39,7 @@
         "@type": "EducationalOrganization",
         "name": "Pondok Pesantren Diniyah Baitul Makmur Aikmel",
         "url": "{{ url('/') }}",
-        "logo": "{{ asset('images/logo/dibama.png') }}",
+        "logo": "{{ asset('storage/images/logo/dibama.png') }}",
         "description": "Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur'ani.",
         "contactPoint": {
             "@type": "ContactPoint",

@@ -4,7 +4,7 @@
 @section('title', $news->title . ' - Berita PonpesDIBAMA')
 @section('meta_description', \Illuminate\Support\Str::limit(strip_tags($news->content), 150))
 @section('meta_keywords', 'berita pondok, berita pesantren, informasi islami')
-@section('meta_image', $news->image ? asset('storage/' . $news->image) : asset('images/og-default.jpg'))
+@section('meta_image', $news->image ? asset('storage/' . $news->image) : asset('storage/images/og-default.jpg'))
 
 @section('main_content')
     <!-- Hero Section -->
