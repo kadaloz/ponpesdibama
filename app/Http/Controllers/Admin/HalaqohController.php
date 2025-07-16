@@ -114,4 +114,11 @@ class HalaqohController extends Controller
 
         return redirect()->route('admin.halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
     }
+
+    public function show(Halaqoh $halaqoh)
+    {
+        $halaqoh->load(['teacher', 'students']);
+        return view('admin.halaqohs.show', compact('halaqoh'));
+    } 
+    
 }
