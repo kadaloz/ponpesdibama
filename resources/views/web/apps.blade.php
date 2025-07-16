@@ -27,11 +27,35 @@
     <meta name="twitter:description" content="@yield('meta_description')"/>
     <meta name="twitter:image" content="@yield('meta_image', asset('images/og-default.jpg'))"/>
 
-   <!-- Favicon -->
-<link rel="icon" href="{{ asset('images/logo/dibama.ico') }}" sizes="32x32" type="image/x-icon">
-<link rel="shortcut icon" href="{{ asset('images/logo/dibama.ico') }}" type="image/x-icon">
-<link rel="apple-touch-icon" href="{{ asset('images/logo/dibama.png') }}">
+    {{-- Favicon --}}
+    <link rel="icon" href="{{ asset('images/logo/dibama.ico') }}" sizes="32x32">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/logo/dibama.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('images/logo/dibama.png') }}">
 
+    {{-- Structured Data --}}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Pondok Pesantren Diniyah Baitul Makmur Aikmel",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('images/logo/dibama.png') }}",
+        "description": "Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur'ani.",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+62 819-1657-7540",
+            "contactType": "Customer Support"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Alamat lengkap pondok",
+            "addressLocality": "Aikmel",
+            "addressRegion": "Nusa Tenggara Barat",
+            "postalCode": "83653",
+            "addressCountry": "ID"
+        }
+    }
+    </script>
 
     {{-- Styles & Fonts --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -126,6 +150,7 @@
         }
     </style>
     @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
+    @stack('head')
 </head>
 <body class="bg-gray-50 text-gray-800"> {{-- Menggunakan kelas Tailwind untuk warna latar belakang dan teks dasar --}}
     @include('web.header') {{-- Menyertakan header dari file terpisah --}}
