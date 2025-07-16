@@ -9,7 +9,6 @@ use Maatwebsite\Excel\Facades\Excel; // Import Facade Excel
 use App\Exports\StudentsExport; // Import Kelas Export
 use App\Imports\StudentsImport; // Import Kelas Import
 use Illuminate\Support\Facades\Storage; // Import Storage facade
-use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class StudentController extends Controller
 {
