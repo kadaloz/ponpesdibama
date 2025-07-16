@@ -28,9 +28,9 @@
     <meta name="twitter:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
 
     {{-- Favicon --}}
-    <link rel="icon" href="{{ asset('images/logo/dibama.ico') }}" sizes="32x32">
+    <link rel="icon" href="{{ asset('storage/images/logo/dibama.ico') }}" sizes="32x32">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('storage/images/logo/dibama.png') }}">
-    <link rel="apple-touch-icon" href="{{ asset('images/logo/dibama.png') }}">
+    <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.png') }}">
 
     {{-- Structured Data --}}
     <script type="application/ld+json">
