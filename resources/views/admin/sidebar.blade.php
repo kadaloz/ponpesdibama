@@ -114,6 +114,14 @@
                 </li>
             @endcan
 
+           @can('view audit logs')
+                <li>
+                    <a href="{{ route('admin.audit-trails.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.audit-trails.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-document class="w-5 h-5 mr-2" /> Audit Trail
+                    </a>
+                </li>
+            @endcan
+
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Modul Lain</p>
             </li>
@@ -125,16 +133,6 @@
                     </a>
                 </li>
             @endcan
-
-           @can('view audit logs')
-    <li>
-        <a href="{{ route('admin.audit-trails.index') }}"
-           class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.audit-trails.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-            <x-heroicon-o-document class="w-5 h-5 mr-2" /> Audit Trail
-        </a>
-    </li>
-@endcan
-
 
             @can('manage finance')
                 <li>
