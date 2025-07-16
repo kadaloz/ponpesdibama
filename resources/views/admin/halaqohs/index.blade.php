@@ -8,7 +8,7 @@
     <div class="p-6 text-gray-900">
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-2xl font-bold text-teal-700">Daftar Halaqoh</h3>
-            <a href="{{ route('halaqohs.create') }}" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 shadow">
+            <a href="{{ route('admin.halaqohs.create') }}" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 shadow">
                 <x-heroicon-o-plus class="w-5 h-5 mr-2" />
                 Tambah Halaqoh
             </a>
@@ -46,8 +46,8 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 text-sm text-right space-x-2">
-                                    <a href="{{ route('halaqohs.edit', $halaqoh) }}" class="inline-block text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
-                                    <form action="{{ route('halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
+                                    <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}" class="inline-block text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
+                                    <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Hapus</button>

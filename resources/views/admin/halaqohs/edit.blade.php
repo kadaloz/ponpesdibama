@@ -5,7 +5,7 @@
 @section('header_admin', 'Edit Data Halaqoh')
 
 @section('admin_content')
-<form action="{{ route('halaqohs.update', $halaqoh) }}" method="POST">
+<form action="{{ route('admin.halaqohs.update', $halaqoh) }}" method="POST">
     @method('PUT')
     @include('admin.halaqohs._form')
 </form>

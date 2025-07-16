@@ -7,7 +7,7 @@
     <div class="bg-white shadow rounded-lg p-6">
         <h2 class="text-xl font-bold text-teal-700 mb-4">Santri dalam Halaqoh "{{ $halaqoh->name }}"</h2>
 
-        <form method="POST" action="{{ route('halaqohs.update_students', $halaqoh) }}">
+        <form method="POST" action="{{ route('admin.halaqohs.update_students', $halaqoh) }}">
             @csrf
 
             <div class="mb-4">

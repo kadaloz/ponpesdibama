@@ -5,7 +5,7 @@
 @section('header_admin', 'Tambah Halaqoh Baru')
 
 @section('admin_content')
-<form action="{{ route('halaqohs.store') }}" method="POST">
+<form action="{{ route('admin.halaqohs.store') }}" method="POST">
     @include('admin.halaqohs._form')
 </form>
 @endsection
