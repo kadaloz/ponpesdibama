@@ -126,13 +126,15 @@
                 </li>
             @endcan
 
-            @can('view audit logs')
-                <li>
-                    <a href="{{ route('audit-trails.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('audit-trails.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-document class="w-5 h-5 mr-2" /> Audit Trail
-                    </a>
-                </li>
-            @endcan
+           @can('view audit logs')
+    <li>
+        <a href="{{ route('admin.audit-trails.index') }}"
+           class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.audit-trails.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+            <x-heroicon-o-document class="w-5 h-5 mr-2" /> Audit Trail
+        </a>
+    </li>
+@endcan
+
 
             @can('manage finance')
                 <li>
