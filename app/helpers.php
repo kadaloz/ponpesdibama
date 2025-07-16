@@ -1,6 +1,5 @@
 <?php
 
-use InvalidArgumentException;
 
 if (!function_exists('enum_values')) {
     function enum_values(string $enumClass): array
