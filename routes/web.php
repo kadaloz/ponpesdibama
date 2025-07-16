@@ -16,7 +16,7 @@ use App\Http\Controllers\Admin\HalaqohController; // NEW: Import HalaqohControll
 use App\Http\Controllers\Public\GalleryPublicController; // NEW: Import Public GalleryPublicController
 use App\Http\Controllers\Public\ApplicantPrintController; // NEW: Import ApplicantPrintController
 use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbRequirementController
-use App\Http\Controllers\Admin\AuditLogController; // NEW: Import AuditLogController
+use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogController
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
