@@ -17,7 +17,7 @@
     {{-- Open Graph (Facebook / WhatsApp) --}}
     <meta property="og:title" content="@yield('title', 'Pondok Pesantren Dibama - Pendidikan Islam Unggul')"/>
     <meta property="og:description" content="@yield('meta_description')"/>
-    <meta property="og:image" content="@yield('meta_image', asset('images/og-default.jpg'))"/>
+    <meta property="og:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
     <meta property="og:url" content="{{ url()->current() }}"/>
     <meta property="og:type" content="website"/>
 
@@ -25,11 +25,11 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="@yield('title')"/>
     <meta name="twitter:description" content="@yield('meta_description')"/>
-    <meta name="twitter:image" content="@yield('meta_image', asset('images/og-default.jpg'))"/>
+    <meta name="twitter:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
 
     {{-- Favicon --}}
     <link rel="icon" href="{{ asset('images/logo/dibama.ico') }}" sizes="32x32">
-    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('images/logo/dibama.png') }}">
+    <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('storage/images/logo/dibama.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('images/logo/dibama.png') }}">
 
     {{-- Structured Data --}}
