@@ -26,6 +26,7 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
 use Spatie\Sitemap\Sitemap;
 use Spatie\Sitemap\Tags\Url;
+use Carbon\Carbon;
 
 /*
 |--------------------------------------------------------------------------
@@ -117,7 +118,7 @@ Route::get('/sitemap.xml', function () {
     $news = News::whereNotNull('published_at')->get();
     foreach ($news as $newsItem) {
         $sitemap->add(Url::create(url('/berita/' . $newsItem->slug))
-            ->setLastModificationDate($newsItem->published_at)
+             ->setLastModificationDate(Carbon::parse($newsItem->published_at))
             ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
             ->setPriority(0.7));
     }
