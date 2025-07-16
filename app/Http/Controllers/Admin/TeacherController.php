@@ -7,6 +7,7 @@ use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class TeacherController extends Controller
 {
@@ -65,6 +66,14 @@ class TeacherController extends Controller
         ]);
 
         $teacher = Teacher::create($request->all());
+        // Catat audit trail untuk pembuatan pengajar
+        record_audit(
+            'create_teacher',
+            'Pengajar baru berhasil dibuat: ' . $teacher->full_name,
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.teachers.index')->with('success', 'Data pengajar berhasil ditambahkan!');
     }
@@ -116,6 +125,14 @@ class TeacherController extends Controller
         ]);
 
         $teacher->update($request->all());
+        // Catat audit trail untuk pembaruan pengajar
+        record_audit(
+            'update_teacher',
+            'Data pengajar berhasil diperbarui: ' . $teacher->full_name,
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.teachers.index')->with('success', 'Data pengajar berhasil diperbarui!');
     }
@@ -126,6 +143,14 @@ class TeacherController extends Controller
     public function destroy(Teacher $teacher)
     {
         $teacher->delete();
+        // Catat audit trail untuk penghapusan pengajar
+        record_audit(
+            'delete_teacher',
+            'Data pengajar berhasil dihapus: ' . $teacher->full_name,
+            auth()->user()->name ?? 'Guest',
+            request()->ip(),
+            request()->userAgent()
+        );
         return redirect()->route('admin.teachers.index')->with('success', 'Data pengajar berhasil dihapus!');
     }
 }

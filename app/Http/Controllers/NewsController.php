@@ -7,6 +7,7 @@ use App\Models\Category;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class NewsController extends Controller
 {
@@ -68,6 +69,15 @@ class NewsController extends Controller
 
         News::create($data);
 
+        // Catat audit trail untuk pembuatan berita
+        record_audit(
+            'create_news',
+            'Berita baru berhasil dibuat: ' . $data['title'],
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
+
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil ditambahkan!');
     }
 
@@ -114,6 +124,15 @@ class NewsController extends Controller
         }
 
         $news->delete();
+
+        // Catat audit trail untuk penghapusan berita
+        record_audit(
+            'delete_news',
+            'Berita berhasil dihapus: ' . $news->title,
+            auth()->user()->name ?? 'Guest',
+            request()->ip(),
+            request()->userAgent()
+        );
 
         return redirect()->route('admin.news.index')->with('success', 'Berita berhasil dihapus!');
     }

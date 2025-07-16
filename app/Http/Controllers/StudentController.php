@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel; // Import Facade Excel
 use App\Exports\StudentsExport; // Import Kelas Export
 use App\Imports\StudentsImport; // Import Kelas Import
 use Illuminate\Support\Facades\Storage; // Import Storage facade
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class StudentController extends Controller
 {
@@ -62,6 +63,7 @@ class StudentController extends Controller
     public function create()
     {
         $halaqohPeriods = ['Sore', 'Malam'];
+
         return view('admin.students.create', compact('halaqohPeriods'));
     }
 
@@ -136,6 +138,13 @@ class StudentController extends Controller
         }
 
         Student::create($data);
+        record_audit(
+            'create_student',
+            'Buat Data Santri Baru dengan NIS: ' . $data['nis'],
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.students.index')->with('success', 'Data santri berhasil ditambahkan!');
     }
@@ -145,6 +154,7 @@ class StudentController extends Controller
      */
     public function show(Student $student)
     {
+        
         return view('admin.students.show', compact('student'));
     }
 
@@ -160,93 +170,128 @@ class StudentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Student $student)
-    {
-        $request->validate([
-            'nis' => 'nullable|string|max:255|unique:students,nis,' . $student->id,
-            'name' => 'required|string|max:255',
-            'gender' => 'nullable|string|in:Laki-laki,Perempuan',
-            'place_of_birth' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'nisn' => 'nullable|string|max:255',
-            'last_education' => 'nullable|string|max:255',
-            'school_origin' => 'nullable|string|max:255',
-            'address' => 'nullable|string',
-            'city' => 'nullable|string|max:255',
-            'province' => 'nullable|string|max:255',
-            'parent_name' => 'nullable|string|max:255',
-            'parent_phone' => 'nullable|string|max:50',
-            'parent_email' => 'nullable|string|email|max:255',
-            'parent_occupation' => 'nullable|string|max:255',
-            'admission_year' => 'nullable|integer|digits:4',
-            'status' => 'required|string|in:aktif,non-aktif,lulus',
-            'category' => 'nullable|string|max:255',
-            'type' => 'required|string|in:Asrama,Pulang-Pergi',
-            'halaqoh_period' => 'nullable|string|in:Sore,Malam',
-            'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
-            'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-            'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
-        ]);
+public function update(Request $request, Student $student)
+{
+    // 1️⃣ Validasi Data
+    $request->validate([
+        'nis' => 'nullable|string|max:255|unique:students,nis,' . $student->id,
+        'name' => 'required|string|max:255',
+        'gender' => 'nullable|string|in:Laki-laki,Perempuan',
+        'place_of_birth' => 'nullable|string|max:255',
+        'date_of_birth' => 'nullable|date',
+        'nisn' => 'nullable|string|max:255',
+        'last_education' => 'nullable|string|max:255',
+        'school_origin' => 'nullable|string|max:255',
+        'address' => 'nullable|string',
+        'city' => 'nullable|string|max:255',
+        'province' => 'nullable|string|max:255',
+        'parent_name' => 'nullable|string|max:255',
+        'parent_phone' => 'nullable|string|max:50',
+        'parent_email' => 'nullable|string|email|max:255',
+        'parent_occupation' => 'nullable|string|max:255',
+        'admission_year' => 'nullable|integer|digits:4',
+        'status' => 'required|string|in:aktif,non-aktif,lulus',
+        'category' => 'nullable|string|max:255',
+        'type' => 'required|string|in:Asrama,Pulang-Pergi',
+        'halaqoh_period' => 'nullable|string|in:Sore,Malam',
+        'photo' => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
+        'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+        'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
+    ]);
 
-        $data = $request->all();
+    // 2️⃣ Persiapkan Data
+    $data = $request->except(['photo', 'remove_photo', 'document_akta', 'document_kk', 'document_ijazah', 'document_photo']);
 
-        if ($request->type === 'Asrama') {
-            $data['halaqoh_period'] = null;
-        }
-
-        if ($request->hasFile('photo')) {
-            if ($student->photo_path) {
-                Storage::disk('public')->delete($student->photo_path);
-            }
-            $data['photo_path'] = $request->file('photo')->store('student_photos', 'public');
-        } elseif ($request->boolean('remove_photo')) {
-            if ($student->photo_path) {
-                Storage::disk('public')->delete($student->photo_path);
-            }
-            $data['photo_path'] = null;
-        } else {
-            $data['photo_path'] = $student->photo_path;
-        }
-
-        $documentFields = [
-            'document_akta' => 'document_akta_path',
-            'document_kk' => 'document_kk_path',
-            'document_ijazah' => 'document_ijazah_path',
-            'document_photo' => 'document_photo_path',
-        ];
-
-        foreach ($documentFields as $fileInputName => $dbColumnName) {
-            if ($request->hasFile($fileInputName)) {
-                if ($student->{$dbColumnName}) {
-                    Storage::disk('public')->delete($student->{$dbColumnName});
-                }
-                $path = $request->file($fileInputName)->store('student_documents', 'public');
-                $data[$dbColumnName] = $path;
-            } elseif ($request->boolean('remove_' . $fileInputName)) {
-                if ($student->{$dbColumnName}) {
-                    Storage::disk('public')->delete($student->{$dbColumnName});
-                }
-                $data[$dbColumnName] = null;
-            } else {
-                $data[$dbColumnName] = $student->{$dbColumnName};
-            }
-        }
-
-        $student->update($data);
-
-        return redirect()->route('admin.students.index')->with('success', 'Data santri berhasil diperbarui!');
+    if ($request->type === 'Asrama') {
+        $data['halaqoh_period'] = null;
     }
+
+    // 3️⃣ Proses Foto Santri
+    if ($request->hasFile('photo')) {
+        if ($student->photo_path) {
+            Storage::disk('public')->delete($student->photo_path);
+        }
+        $data['photo_path'] = $request->file('photo')->store('student_photos', 'public');
+    } elseif ($request->boolean('remove_photo')) {
+        if ($student->photo_path) {
+            Storage::disk('public')->delete($student->photo_path);
+        }
+        $data['photo_path'] = null;
+    } else {
+        $data['photo_path'] = $student->photo_path;
+    }
+
+    // 4️⃣ Proses Dokumen Upload
+    $documentFields = [
+        'document_akta' => 'document_akta_path',
+        'document_kk' => 'document_kk_path',
+        'document_ijazah' => 'document_ijazah_path',
+        'document_photo' => 'document_photo_path',
+    ];
+
+    foreach ($documentFields as $fileInputName => $dbColumnName) {
+        if ($request->hasFile($fileInputName)) {
+            if ($student->{$dbColumnName}) {
+                Storage::disk('public')->delete($student->{$dbColumnName});
+            }
+            $data[$dbColumnName] = $request->file($fileInputName)->store('student_documents', 'public');
+        } elseif ($request->boolean('remove_' . $fileInputName)) {
+            if ($student->{$dbColumnName}) {
+                Storage::disk('public')->delete($student->{$dbColumnName});
+            }
+            $data[$dbColumnName] = null;
+        } else {
+            $data[$dbColumnName] = $student->{$dbColumnName};
+        }
+    }
+
+    // 5️⃣ Update Database
+    $student->update($data);
+
+    // 6️⃣ Catat Audit Trail
+    record_audit(
+        'update_student',
+        'Update Data Santri dengan NIS: ' . $student->nis,
+        auth()->user()->name ?? 'Guest',
+        $request->ip(),
+        $request->userAgent()
+    );
+
+    // 7️⃣ Redirect
+    return redirect()->route('admin.students.index')->with('success', 'Data santri berhasil diperbarui!');
+}
+
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Student $student)
-    {
-        $student->delete();
-        return redirect()->route('admin.students.index')->with('success', 'Data santri berhasil dihapus!');
+public function destroy(Student $student)
+{
+    // Catat audit sebelum menghapus
+    record_audit('delete_student', 'Hapus Data Santri dengan NIS: ' . $student->nis);
+
+    // Hapus foto profil jika ada
+    if ($student->photo_path) {
+        Storage::disk('public')->delete($student->photo_path);
+        record_audit('delete_file', 'Deleted profile photo for NIS: ' . $student->nis . ' (' . $student->photo_path . ')');
     }
+
+    // Hapus dokumen jika ada
+    foreach (['document_akta_path', 'document_kk_path', 'document_ijazah_path', 'document_photo_path'] as $docField) {
+        if ($student->{$docField}) {
+            Storage::disk('public')->delete($student->{$docField});
+            record_audit('delete_file', 'Deleted document [' . $docField . '] for NIS: ' . $student->nis . ' (' . $student->{$docField} . ')');
+        }
+    }
+
+    // Hapus data santri dari database
+    $student->delete();
+
+    return redirect()->route('admin.students.index')->with('success', 'Data santri dan dokumen berhasil dihapus!');
+}
+
 
     /**
      * Export students data to Excel.

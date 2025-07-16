@@ -9,6 +9,7 @@ use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 use Illuminate\Support\Str;
 use Illuminate\Validation\Rule;
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class PermissionController extends Controller
 {
@@ -92,6 +93,14 @@ class PermissionController extends Controller
             $selectedPermissions = Permission::whereIn('id', $request->input('permissions', []))->get();
             $role->syncPermissions($selectedPermissions);
         }
+        // Catat audit trail untuk pembaruan izin peran
+        record_audit(
+            'update_permissions',
+            'Izin untuk peran ' . $role->name . ' berhasil diperbarui oleh ' . auth()->user()->name,
+            auth()->user()->name ?? 'Guest',
+            request()->ip(),
+            request()->userAgent()
+        );
 
         return redirect()->route('admin.permissions.index')->with('success', 'Izin untuk peran ' . $role->name . ' berhasil diperbarui!');
     }

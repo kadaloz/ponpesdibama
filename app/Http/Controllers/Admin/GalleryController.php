@@ -8,6 +8,7 @@ use App\Models\GalleryImage;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Storage;
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class GalleryController extends Controller
 {
@@ -26,6 +27,7 @@ class GalleryController extends Controller
     public function index()
     {
         $allGalleries = Gallery::latest()->get();
+        
         return view('admin.galleries.index', compact('allGalleries'));
     }
 
@@ -34,6 +36,7 @@ class GalleryController extends Controller
      */
     public function create()
     {
+    
         return view('admin.galleries.create');
     }
 
@@ -81,6 +84,14 @@ class GalleryController extends Controller
             }
         }
     }
+    // Catat audit trail untuk pembuatan album galeri
+    record_audit(
+        'create_gallery',
+        'Album galeri baru berhasil dibuat: ' . $data['title'],
+        auth()->user()->name ?? 'Guest',
+        $request->ip(),
+        $request->userAgent()
+    );
 
     return redirect()->route('admin.galleries.index')->with('success', 'Album galeri berhasil ditambahkan!');
 }
@@ -178,7 +189,14 @@ class GalleryController extends Controller
 }
 
 
-
+        // Catat audit trail untuk pembaruan album galeri
+        record_audit(
+            'update_gallery',
+            'Album galeri berhasil diperbarui: ' . $data['title'],
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
         return redirect()->route('admin.galleries.index')->with('success', 'Album galeri berhasil diperbarui!');
     }
 
@@ -188,6 +206,14 @@ class GalleryController extends Controller
     public function destroy(Gallery $gallery)
     {
         $gallery->delete(); // Model observer akan menangani penghapusan gambar terkait
+        // Catat audit trail untuk penghapusan album galeri
+        record_audit(
+            'delete_gallery',
+            'Album galeri berhasil dihapus: ' . $gallery->title,
+            auth()->user()->name ?? 'Guest',
+            request()->ip(),
+            request()->userAgent()
+        );
         return redirect()->route('admin.galleries.index')->with('success', 'Album galeri berhasil dihapus!');
     }
 
@@ -201,6 +227,18 @@ class GalleryController extends Controller
         }
 
         $image->delete();
+        // Hapus file gambar dari storage
+        if ($image->image_path) {
+            Storage::disk('public')->delete($image->image_path);
+        }   
+        // Catat audit trail untuk penghapusan gambar galeri
+        record_audit(
+            'delete_gallery_image',
+            'Gambar galeri berhasil dihapus: ' . $image->caption,
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
         return response()->json(['message' => 'Gambar berhasil dihapus.']);
     }
 }

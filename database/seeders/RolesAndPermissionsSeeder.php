@@ -52,6 +52,8 @@ class RolesAndPermissionsSeeder extends Seeder
         // Manajemen Syarat PPDB
         Permission::firstOrCreate(['name' => 'edit ppdb requirements']);
 
+        // Izin untuk melihat dan mengelola audit logs
+        Permission::firstOrCreate(['name' => 'view audit logs']);
 
         // Manajemen Akun Pengguna (CRUD Users & Roles)
         Permission::firstOrCreate(['name' => 'manage users']);

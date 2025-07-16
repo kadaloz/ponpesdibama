@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Program;
 use Illuminate\Http\Request;
 use Illuminate\Support\Str; // Untuk membuat slug
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class ProgramController extends Controller
 {
@@ -41,6 +42,15 @@ class ProgramController extends Controller
         $data['slug'] = Str::slug($request->name); // Buat slug dari nama program
 
         Program::create($data);
+
+        // Catat audit trail untuk pembuatan program
+        record_audit(
+            'create_program',
+            'Program baru berhasil dibuat: ' . $data['name'],
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.programs.index')->with('success', 'Program berhasil ditambahkan!');
     }

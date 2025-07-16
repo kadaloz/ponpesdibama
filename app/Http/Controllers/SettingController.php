@@ -6,6 +6,7 @@ use App\Models\Setting;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Storage;
+use function App\Helpers\record_audit;
 
 class SettingController extends Controller
 {
@@ -16,7 +17,7 @@ class SettingController extends Controller
     {
         // Mendapatkan semua pengaturan yang sudah ada, lalu mengumpulkannya ke dalam array asosiatif (key => value)
         $settings = Setting::all()->pluck('value', 'key')->toArray();
-
+        
         // Data default jika pengaturan belum ada di database
         $defaultSettings = [
             'about_us_content' => 'Yayasan Pondok Pesantren Diniyah Baitul Makmur Aikmel didirikan dengan visi...',
@@ -102,6 +103,14 @@ class SettingController extends Controller
                 ['value' => $value]
             );
         }
+        // Catat audit trail untuk pembaruan pengaturan
+        record_audit(
+            'update_settings',
+            'Pengaturan berhasil diperbarui oleh ' . auth()->user()->name,
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan berhasil diperbarui!');
     }

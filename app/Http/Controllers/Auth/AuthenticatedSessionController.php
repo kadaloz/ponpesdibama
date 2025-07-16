@@ -8,6 +8,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class AuthenticatedSessionController extends Controller
 {
@@ -16,6 +17,11 @@ class AuthenticatedSessionController extends Controller
      */
     public function create(): View
     {
+        if (Auth::check()) {
+            // Jika sudah login, arahkan ke halaman dashboard
+            return redirect()->route('dashboard');
+        }
+        // Jika belum login, tampilkan halaman login
         return view('auth.login');
     }
 
@@ -32,6 +38,14 @@ class AuthenticatedSessionController extends Controller
 
             // Arahkan semua peran yang relevan ke admin.dashboard
             if ($user && ($user->hasRole('admin') || $user->hasRole('sekret') || $user->hasRole('mudabbir'))) {
+                // Catat audit trail untuk login
+                record_audit(
+                    'login',
+                    'User logged in: ' . $user->name,
+                    $user->name,
+                    $request->ip(),
+                    $request->userAgent()
+                ); 
                 return redirect()->intended(route('admin.dashboard', absolute: false));
             }
 

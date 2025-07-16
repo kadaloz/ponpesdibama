@@ -88,6 +88,7 @@
                     </a>
                 </li>
             @endcan
+            
 
             @can('manage users')
                 <li>
@@ -121,6 +122,14 @@
                 <li>
                     <a href="{{ route('admin.general.dashboard') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.general.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
                         <x-heroicon-o-squares-2x2 class="w-5 h-5 mr-2" /> Manajemen Umum
+                    </a>
+                </li>
+            @endcan
+
+            @can('view audit logs')
+                <li>
+                    <a href="{{ route('audit-logs.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('audit-logs.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-document-report class="w-5 h-5 mr-2" /> Audit Trail
                     </a>
                 </li>
             @endcan

@@ -16,6 +16,7 @@ use App\Http\Controllers\Admin\HalaqohController; // NEW: Import HalaqohControll
 use App\Http\Controllers\Public\GalleryPublicController; // NEW: Import Public GalleryPublicController
 use App\Http\Controllers\Public\ApplicantPrintController; // NEW: Import ApplicantPrintController
 use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbRequirementController
+use App\Http\Controllers\Admin\AuditLogController; // NEW: Import AuditLogController
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
@@ -223,6 +224,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');
     Route::put('ppdb-requirements/update', [PpdbRequirementController::class, 'update'])->name('ppdb-requirements.update')->middleware('permission:edit ppdb requirements');
 
+    Route::get('/admin/audit-logs', [AuditLogController::class, 'index'])->name('audit-logs.index')->middleware('permission:view audit logs');
 
 
     // Rute Profil Admin
@@ -230,6 +232,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('permission:manage own profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('permission:manage own profile');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')->middleware('permission:manage own profile');
+
 });
 
 

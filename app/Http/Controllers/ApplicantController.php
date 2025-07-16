@@ -15,6 +15,7 @@ use App\Mail\ApplicantStatusChangedNotification;
 use Illuminate\Validation\Rule; // Import Rule
 use App\Enums\HalaqohPeriod; // Import HalaqohPeriod enum
 use App\Enums\PpdbType; // Import PPDBType enum
+use function App\Helpers\record_audit; // Import fungsi record_audit
 
 class ApplicantController extends Controller
 {
@@ -268,9 +269,26 @@ if (
                     'document_ijazah_path' => $applicant->document_ijazah_path,
                     'document_photo_path' => $applicant->document_photo_path,
                 ]);
+                // Catat audit trail untuk konversi pendaftar menjadi santri
+                record_audit(
+                    'convert_applicant_to_student',
+                    'Pendaftar berhasil dikonversi menjadi santri: ' . $applicant->full_name,
+                    auth()->user()->name ?? 'Guest',
+                    $request->ip(),
+                    $request->userAgent()
+                );
+                
                 return redirect()->route('admin.applicants.index')->with('success', 'Pendaftar berhasil diterima dan data santri dibuat!');
             }
         }
+        // Catat audit trail untuk pembaruan pendaftar
+        record_audit(
+            'update_applicant',
+            'Data pendaftar berhasil diperbarui: ' . $applicant->full_name,
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.applicants.index')->with('success', 'Data pendaftar berhasil diperbarui!');
     }
@@ -294,6 +312,15 @@ if (
         }
 
         $applicant->delete();
+        // Catat audit trail untuk penghapusan pendaftar
+        record_audit(
+            'delete_applicant',
+            'Data pendaftar berhasil dihapus: ' . $applicant->full_name,
+            auth()->user()->name ?? 'Guest',
+            request()->ip(),
+            request()->userAgent()
+        );
+        
         return redirect()->route('admin.applicants.index')->with('success', 'Data pendaftar berhasil dihapus!');
     }
 
