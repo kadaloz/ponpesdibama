@@ -11,6 +11,6 @@ class AuditTrailController extends Controller
     {
         $logs = AuditTrail::latest()->paginate(20);
 
-        return view('admin.audit_trails.index', compact('logs'));
+        return view('admin.audit-trails.index', compact('logs'));
     }
 }
