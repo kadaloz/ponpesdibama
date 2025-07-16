@@ -36,7 +36,7 @@ class HalaqohController extends Controller
 
         Halaqoh::create($request->all());
 
-        return redirect()->route('halaqohs.index')->with('success', 'Halaqoh baru berhasil dibuat.');
+        return redirect()->route('admin.halaqohs.index')->with('success', 'Halaqoh baru berhasil dibuat.');
     }
 
     public function edit(Halaqoh $halaqoh)
@@ -63,14 +63,14 @@ class HalaqohController extends Controller
 
         $halaqoh->update($request->all());
 
-        return redirect()->route('halaqohs.index')->with('success', 'Data halaqoh berhasil diperbarui.');
+        return redirect()->route('admin.halaqohs.index')->with('success', 'Data halaqoh berhasil diperbarui.');
     }
 
     public function destroy(Halaqoh $halaqoh)
     {
         $halaqoh->delete();
 
-        return redirect()->route('halaqohs.index')->with('success', 'Halaqoh berhasil dihapus.');
+        return redirect()->route('admin.halaqohs.index')->with('success', 'Halaqoh berhasil dihapus.');
     }
 
     /**
@@ -112,6 +112,6 @@ class HalaqohController extends Controller
 
         $halaqoh->students()->sync($syncData);
 
-        return redirect()->route('halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
+        return redirect()->route('admin.halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
     }
 }
