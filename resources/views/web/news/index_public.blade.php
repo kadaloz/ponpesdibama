@@ -1,7 +1,10 @@
 {{-- resources/views/web/news/index_public.blade.php --}}
 @extends('web.apps')
 
-@section('title', 'Semua Berita & Pengumuman - Pondok Dibama')
+@section('title', 'Semua Berita & Pengumuman - Pondok Pesantren Dibama')
+@section('meta_description', 'Dapatkan berita terbaru dan pengumuman resmi dari Pondok Pesantren Diniyah Baitul Makmur Aikmel.')
+@section('meta_keywords', 'berita pesantren, pengumuman dibama, berita islami, informasi pondok pesantren')
+@section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
     <!-- Hero Section -->

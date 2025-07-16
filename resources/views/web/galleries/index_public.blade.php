@@ -2,6 +2,9 @@
 @extends('web.apps')
 
 @section('title', 'Galeri Kegiatan Pondok - PonpesDIBAMA')
+@section('meta_description', 'Lihat berbagai foto dan video kegiatan Pondok Pesantren Diniyah Baitul Makmur Aikmel.')
+@section('meta_keywords', 'galeri pondok, foto pesantren, video kegiatan, galeri islam')
+@section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
     <!-- Hero Section -->

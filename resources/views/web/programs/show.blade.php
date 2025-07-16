@@ -2,6 +2,9 @@
     @extends('web.apps')
 
     @section('title', $program->name . ' - Program PonpesDIBAMA')
+    @section('meta_description', Str::limit($program->description, 150))
+    @section('meta_keywords', 'program pondok, program pesantren, pendidikan islam')
+    @section('meta_image', asset('storage/' . $program->image ?? 'images/og-default.jpg'))
 
     @section('main_content')
         <div class="py-12 bg-gray-50">

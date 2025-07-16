@@ -24,6 +24,8 @@ use App\Models\Applicant;
 use App\Models\Gallery; // NEW: Import Gallery model
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\DB;
+use Spatie\Sitemap\Sitemap;
+use Spatie\Sitemap\Tags\Url;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,8 +90,56 @@ Route::prefix('galeri')->name('public.galleries.')->group(function () {
 
 // --- NEW: Rute Cetak Pendaftar Publik ---
 Route::get('/applicant/print/{registrationNumber}', [ApplicantPrintController::class, 'show'])->name('applicant.print');
-
-
+// --- NEW: Rute untuk Sitemap ---
+Route::get('/sitemap.xml', function () {
+    $sitemap = Sitemap::create();
+    $sitemap->add(Url::create(url('/'))
+        ->setLastModificationDate(now())
+        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        ->setPriority(1.0));
+    $sitemap->add(Url::create(url('/berita'))
+        ->setLastModificationDate(now())
+        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        ->setPriority(0.8));
+    $sitemap->add(Url::create(url('/program'))
+        ->setLastModificationDate(now())
+        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        ->setPriority(0.8));
+    $sitemap->add(Url::create(url('/ppdb/daftar'))
+        ->setLastModificationDate(now())
+        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        ->setPriority(0.8));
+    $sitemap->add(Url::create(url('/galeri'))
+        ->setLastModificationDate(now())
+        ->setChangeFrequency(Url::CHANGE_FREQUENCY_DAILY)
+        ->setPriority(0.8));
+    // Tambahkan URL untuk setiap berita
+    $news = News::whereNotNull('published_at')->get();
+    foreach ($news as $newsItem) {
+        $sitemap->add(Url::create(url('/berita/' . $newsItem->slug))
+            ->setLastModificationDate($newsItem->published_at)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.7));
+    }
+    // Tambahkan URL untuk setiap program
+    $programs = Program::where('is_active', true)->get();
+    foreach ($programs as $program) {
+        $sitemap->add(Url::create(url('/program/' . $program->slug))
+            ->setLastModificationDate($program->updated_at)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.7));
+    }
+    // Tambahkan URL untuk setiap galeri
+    $galleries = Gallery::published()->get();
+    foreach ($galleries as $gallery) {
+        $sitemap->add(Url::create(url('/galeri/' . $gallery->slug))
+            ->setLastModificationDate($gallery->updated_at)
+            ->setChangeFrequency(Url::CHANGE_FREQUENCY_WEEKLY)
+            ->setPriority(0.7));
+    }
+    return $sitemap->render('xml');
+})->name('sitemap');    
+    
 
 // Hapus Rute default Dashboard pengguna (dari Breeze)
 // Route::get('/dashboard', function () { ... })

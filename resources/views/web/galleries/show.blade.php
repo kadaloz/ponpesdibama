@@ -2,6 +2,9 @@
 @extends('web.apps')
 
 @section('title', $gallery->title . ' - Galeri PonpesDIBAMA')
+@section('meta_description', Str::limit($gallery->description, 150))
+@section('meta_keywords', 'galeri pondok, album pesantren, foto kegiatan')
+@section('meta_image', $gallery->cover_image ? asset('storage/' . $gallery->cover_image) : asset('images/og-default.jpg')) 
 
 @section('main_content')
     <!-- Hero Section -->
