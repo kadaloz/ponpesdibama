@@ -27,9 +27,11 @@
     <meta name="twitter:description" content="@yield('meta_description')"/>
     <meta name="twitter:image" content="@yield('meta_image', asset('images/og-default.jpg'))"/>
 
-    {{-- Favicon --}}
-    <link rel="icon" href="{{ asset('storage/images/logo/dibama.ico') }}" sizes="32x32" type="image/ico">
-    <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.ico') }}">
+   <!-- Favicon -->
+<link rel="icon" href="{{ asset('images/logo/dibama.ico') }}" sizes="32x32" type="image/x-icon">
+<link rel="shortcut icon" href="{{ asset('images/logo/dibama.ico') }}" type="image/x-icon">
+<link rel="apple-touch-icon" href="{{ asset('images/logo/dibama.png') }}">
+
 
     {{-- Styles & Fonts --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
