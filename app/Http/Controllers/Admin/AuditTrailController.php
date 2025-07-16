@@ -7,6 +7,18 @@ use App\Models\AuditTrail;
 
 class AuditTrailController extends Controller
 {
+    /**
+     * Display a listing of the audit logs.
+     *
+     * @return \Illuminate\View\View
+     */
+
+    public function __construct()
+    {
+        // Middleware untuk melindungi seluruh controller berdasarkan izin
+        $this->middleware('permission:view audit logs');
+    }
+    
     public function index()
     {
         $logs = AuditTrail::latest()->paginate(20);
