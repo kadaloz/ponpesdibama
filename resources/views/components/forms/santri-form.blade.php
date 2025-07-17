@@ -46,7 +46,9 @@
             </div>
             <div>
                 <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
-                <input type="date" name="date_of_birth" id="date_of_birth" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('date_of_birth', $student->date_of_birth?->format('Y-m-d') ?? '') }}">
+                <input type="date" name="date_of_birth" id="date_of_birth"
+       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+       value="{{ old('date_of_birth', ($student && $student->date_of_birth) ? $student->date_of_birth->format('Y-m-d') : '') }}">
                 @error('date_of_birth')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
         </div>
