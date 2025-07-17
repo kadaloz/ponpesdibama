@@ -1,7 +1,8 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-//use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\Route;
+use Illuminate\Http\Request; // ✅ yang benar
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
