@@ -234,25 +234,35 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Route API Ajax (pastikan ini ada di web.php, bukan api.php)
     Route::get('/api/students/search', function (Request $request) {
-        $search = $request->input('q');
+    $search = $request->input('q');
+    $halaqohId = $request->input('halaqoh_id'); // ID halaqoh yang sedang diedit
 
-         $students = \App\Models\Student::query()
-            ->where('status', 'aktif')
-            ->when($search, function ($query, $search) {
-                $query->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('nis', 'like', '%' . $search . '%');
+    $students = Student::query()
+        ->where('status', 'aktif')
+        ->where(function ($q) use ($halaqohId) {
+            $q->whereDoesntHave('halaqohs')
+              ->orWhereHas('halaqohs', function ($sub) use ($halaqohId) {
+                  $sub->where('halaqoh_id', $halaqohId);
+              });
         })
-             ->limit(20)
-            ->get(['id', 'name', 'nis', 'type', 'halaqoh_period']);
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('nis', 'like', '%' . $search . '%');
+            });
+        })
+        ->orderBy('name')
+        ->limit(20)
+        ->get(['id', 'name', 'nis', 'type', 'halaqoh_period']);
 
-         return response()->json($students->map(function ($student) {
-         return [
+    return response()->json($students->map(function ($student) {
+        return [
             'value' => $student->id,
             'text' => "{$student->name} ({$student->nis}) - {$student->type}" .
                       ($student->type === 'Pulang-Pergi' ? " | " . ($student->halaqoh_period ?? '-') : ''),
-          ];
-        }));
-    })->middleware('auth');
+        ];
+    }));
+})->middleware('auth');
 
     // Rute untuk mengelola syarat PPDB (PpdbRequirementController)
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');
