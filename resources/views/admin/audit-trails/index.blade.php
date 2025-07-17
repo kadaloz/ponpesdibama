@@ -92,7 +92,6 @@
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Tanggal</th>
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Aksi</th>
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Deskripsi</th>
-                            <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User ID</th>
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">User</th>
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">IP</th>
                             <th class="py-3 px-4 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">Browser</th>
@@ -107,7 +106,6 @@
                                 <td class="py-2 px-4 text-sm text-gray-700">
                                     {{ $log->user_id ? $log->user->name : 'Guest' }}
                                 </td>
-                                <td class="py-2 px-4 text-sm text-gray-700">{{ $log->user_name ?? 'Guest' }}</td> {{-- Asumsi ada relasi user --}}
                                 <td class="py-2 px-4 text-sm text-gray-600">{{ $log->ip_address }}</td>
                                 <td class="py-2 px-4 text-xs text-gray-500">{{ \Illuminate\Support\Str::limit($log->user_agent, 50) }}</td>
                             </tr>

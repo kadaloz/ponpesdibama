@@ -272,7 +272,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     ->name('audit-trails.index')
     ->middleware('permission:view audit logs');
    
-    Route::post('audit-trails/purge', [AuditTrailController::class, 'purge'])
+    Route::delete('audit-trails/purge', [AuditTrailController::class, 'purge'])
         ->name('audit-trails.purge')
         ->middleware('permission:purge audit logs'); 
 
