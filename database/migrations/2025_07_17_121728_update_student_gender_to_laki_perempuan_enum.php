@@ -7,39 +7,39 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration
 {
-    /**
-     * Run the migrations.
-     */
     public function up(): void
     {
+        // 1. Tambah kolom gender_temp
         Schema::table('students', function (Blueprint $table) {
             $table->string('gender_temp', 20)->nullable()->after('gender');
         });
 
+        // 2. Konversi gender lama ke gender_temp
         DB::statement("UPDATE students SET gender_temp = CASE
             WHEN gender = 'banin' THEN 'laki-laki'
             WHEN gender = 'banat' THEN 'perempuan'
-            ELSE NULL
+            ELSE 'laki-laki'  -- Default aman jika NULL
         END;");
 
+        // 3. Drop kolom gender lama
         Schema::table('students', function (Blueprint $table) {
             $table->dropColumn('gender');
         });
 
+        // 4. Buat kolom gender baru dengan enum
         Schema::table('students', function (Blueprint $table) {
             $table->enum('gender', ['laki-laki', 'perempuan'])->after('name');
         });
 
+        // 5. Update gender baru dari gender_temp (dijamin tidak NULL)
         DB::statement("UPDATE students SET gender = gender_temp;");
 
+        // 6. Drop kolom gender_temp
         Schema::table('students', function (Blueprint $table) {
             $table->dropColumn('gender_temp');
         });
     }
 
-    /**
-     * Reverse the migrations.
-     */
     public function down(): void
     {
         Schema::table('students', function (Blueprint $table) {
@@ -49,7 +49,7 @@ return new class extends Migration
         DB::statement("UPDATE students SET gender_temp = CASE
             WHEN gender = 'laki-laki' THEN 'banin'
             WHEN gender = 'perempuan' THEN 'banat'
-            ELSE NULL
+            ELSE 'banin'  -- Default fallback
         END;");
 
         Schema::table('students', function (Blueprint $table) {
