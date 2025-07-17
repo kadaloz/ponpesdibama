@@ -48,7 +48,6 @@
         </div>
     </div>
 
-    ---
 
     {{-- Bagian: Jadwal & Kapasitas --}}
     <div class="bg-white p-6 rounded-lg shadow-sm">
@@ -94,7 +93,6 @@
         </div>
     </div>
 
-    ---
 
     {{-- Bagian: Detail Lainnya --}}
     <div class="bg-white p-6 rounded-lg shadow-sm">
@@ -137,7 +135,6 @@
     </div>
 </div>
 
----
 
 {{-- Tombol Simpan --}}
 <div class="mt-8 flex justify-end"> {{-- Menggunakan mt-8 untuk jarak vertikal lebih banyak dan justify-end untuk penempatan di kanan --}}
