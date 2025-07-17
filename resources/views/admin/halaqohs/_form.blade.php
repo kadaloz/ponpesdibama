@@ -137,22 +137,21 @@
 
 
 {{-- Tombol Simpan --}}
-<div class="mt-8 flex justify-end"> {{-- Menggunakan mt-8 untuk jarak vertikal lebih banyak dan justify-end untuk penempatan di kanan --}}
+<div class="mt-6 flex flex-wrap justify-end gap-3">
     {{-- Tombol Kembali --}}
     <a href="{{ route('admin.halaqohs.index') }}"
-       class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-        {{-- Heroicon: Arrow Left --}}
-        <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
-        Kembali ke Daftar Halaqoh
+       class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-500">
+        <x-heroicon-o-arrow-left class="h-4 w-4 mr-2" />
+        Kembali
     </a>   
 
+    {{-- Tombol Simpan --}}
     <button type="submit"
-            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
-        {{-- Heroicon: Save --}}
-        <!-- SVG Save Icon (Heroicon Outline) -->
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16v2a2 2 0 002 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11l4 4v8a2 2 0 01-2 2z" />
+            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500">
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                  d="M17 16v2a2 2 0 002 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11l4 4v8a2 2 0 01-2 2z" />
         </svg>
-        Simpan Data Halaqoh
+        Simpan
     </button>
 </div>
