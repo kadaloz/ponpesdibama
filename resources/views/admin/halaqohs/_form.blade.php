@@ -33,8 +33,8 @@
 
     {{-- Periode Ngaji --}}
     <div>
-        <label for="halaqoh_period" class="block font-medium text-sm text-gray-700">Periode Ngaji</label>
-        <select name="halaqoh_period" id="halaqoh_period"
+        <label for="period" class="block font-medium text-sm text-gray-700">Periode Ngaji</label>
+        <select name="period" id="period"
                 class="w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
             <option value="">-- Pilih Periode --</option>
             <option value="Sore" {{ old('period', $halaqoh->period ?? '') == 'Sore' ? 'selected' : '' }}>Sore</option>
