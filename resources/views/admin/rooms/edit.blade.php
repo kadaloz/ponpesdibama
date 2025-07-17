@@ -32,8 +32,9 @@
                         <label for="gender_type" class="block text-sm font-medium text-gray-700">Jenis Kelamin Penghuni <span class="text-red-500">*</span></label>
                         <select name="gender_type" id="gender_type" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500 @error('gender_type') border-red-500 @enderror" required>
                             <option value="">Pilih Jenis Kelamin</option>
-                            <option value="banin" {{ old('gender_type', $room->gender_type) == 'laki-laki' ? 'selected' : '' }}>Banin (Laki-laki)</option>
-                            <option value="banat" {{ old('gender_type', $room->gender_type) == 'perempuan' ? 'selected' : '' }}>Banat (Perempuan)</option>
+                            {{-- PERBAIKAN DI SINI: Ubah nilai "value" --}}
+                            <option value="laki-laki" {{ old('gender_type', $room->gender_type) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                            <option value="perempuan" {{ old('gender_type', $room->gender_type) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
                         </select>
                         @error('gender_type')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
