@@ -92,41 +92,57 @@ class HalaqohController extends Controller
     public function manageStudents(Halaqoh $halaqoh)
     {
         // Ambil santri yang belum masuk halaqoh manapun
-        $students = Student::whereDoesntHave('halaqohs')
-            ->orWhereHas('halaqohs', function ($q) use ($halaqoh) {
-                $q->where('halaqoh_id', $halaqoh->id);
-            })->get();
+        $students = Student::where('status', 'aktif')
+        ->where(function ($query) use ($halaqoh) {
+            $query->whereDoesntHave('halaqohs')
+                  ->orWhereHas('halaqohs', function ($q) use ($halaqoh) {
+                      $q->where('halaqoh_id', $halaqoh->id);
+                  });
+        })
+        ->orderBy('name')
+        ->get();
 
         return view('admin.halaqohs.manage_students', compact('halaqoh', 'students'));
     }
 
     public function updateStudents(Request $request, Halaqoh $halaqoh)
     {
-        $studentIds = $request->input('student_ids', []);
+    $studentIds = $request->input('student_ids', []);
 
-        // Validasi agar satu santri hanya satu halaqoh
-        $alreadyAssigned = Student::whereIn('id', $studentIds)
-            ->whereHas('halaqohs', function ($query) use ($halaqoh) {
-                $query->where('halaqoh_id', '!=', $halaqoh->id);
-            })->pluck('name')->toArray();
+    // Cek apakah ada santri tidak aktif
+    $invalidStudents = Student::whereIn('id', $studentIds)
+        ->where('status', '!=', 'aktif')
+        ->pluck('name')
+        ->toArray();
 
-        if (!empty($alreadyAssigned)) {
-            return redirect()->back()->withErrors('Beberapa santri sudah tergabung di halaqoh lain: ' . implode(', ', $alreadyAssigned));
-        }
-
-        // Sinkronisasi data pivot
-        $syncData = [];
-        foreach ($studentIds as $studentId) {
-            $syncData[$studentId] = [
-                'join_date' => now(),
-                'status' => 'active'
-            ];
-        }
-
-        $halaqoh->students()->sync($syncData);
-
-        return redirect()->route('admin.halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
+    if (!empty($invalidStudents)) {
+        return redirect()->back()->withErrors('Santri berikut tidak aktif: ' . implode(', ', $invalidStudents));
     }
+
+    // Validasi: satu santri hanya satu halaqoh
+    $alreadyAssigned = Student::whereIn('id', $studentIds)
+        ->whereHas('halaqohs', function ($query) use ($halaqoh) {
+            $query->where('halaqoh_id', '!=', $halaqoh->id);
+        })->pluck('name')->toArray();
+
+    if (!empty($alreadyAssigned)) {
+        return redirect()->back()->withErrors('Beberapa santri sudah tergabung di halaqoh lain: ' . implode(', ', $alreadyAssigned));
+    }
+
+    // Sinkronisasi data pivot
+    $syncData = [];
+    foreach ($studentIds as $studentId) {
+        $syncData[$studentId] = [
+            'join_date' => now(),
+            'status' => 'active'
+        ];
+    }
+
+    $halaqoh->students()->sync($syncData);
+
+    return redirect()->route('admin.halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
+    }
+
 
     public function show(Halaqoh $halaqoh)
     {
