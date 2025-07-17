@@ -37,8 +37,8 @@
         <select name="halaqoh_period" id="halaqoh_period"
                 class="w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
             <option value="">-- Pilih Periode --</option>
-            <option value="Sore" {{ old('halaqoh_period', $halaqoh->halaqoh_period ?? '') == 'Sore' ? 'selected' : '' }}>Sore</option>
-            <option value="Malam" {{ old('halaqoh_period', $halaqoh->halaqoh_period ?? '') == 'Malam' ? 'selected' : '' }}>Malam</option>
+            <option value="Sore" {{ old('period', $halaqoh->period ?? '') == 'Sore' ? 'selected' : '' }}>Sore</option>
+            <option value="Malam" {{ old('period', $halaqoh->period ?? '') == 'Malam' ? 'selected' : '' }}>Malam</option>
         </select>
         <p class="text-xs text-gray-500 mt-1">Gunakan untuk memfilter santri pulang-pergi sesuai periode pilihannya.</p>
     </div>
