@@ -4,30 +4,86 @@
 @section('header_admin', 'Manajemen Santri Halaqoh: ' . $halaqoh->name)
 
 @section('admin_content')
-    <div class="bg-white shadow rounded-lg p-6">
-        <h2 class="text-xl font-bold text-teal-700 mb-4">Santri dalam Halaqoh "{{ $halaqoh->name }}"</h2>
-
-        <form method="POST" action="{{ route('admin.halaqohs.update_students', $halaqoh) }}">
-            @csrf
-
-            <div class="mb-4">
-                <label for="student_ids" class="block font-semibold mb-2">Pilih Santri</label>
-                <select name="student_ids[]" id="student_ids"
-                    class="w-full border border-gray-300 rounded-lg shadow-sm" multiple size="10">
-                    @foreach ($students as $student)
-                        <option value="{{ $student->id }}"
-                            {{ $halaqoh->students->contains($student->id) ? 'selected' : '' }}>
-                            {{ $student->name }} ({{ $student->type }} | {{ $student->halaqoh_period ?? 'Tanpa Periode' }})
-                        </option>
-                    @endforeach
-                </select>
-                <p class="text-sm text-gray-500 mt-1">Santri hanya dapat masuk ke satu halaqoh.</p>
-            </div>
-
-            <button type="submit"
-                class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">
-                Simpan Perubahan
-            </button>
-        </form>
+<div class="bg-white shadow rounded-lg p-6">
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-xl font-bold text-teal-700">Santri Halaqoh "{{ $halaqoh->name }}"</h2>
+        <a href="{{ route('admin.halaqohs.index') }}" class="bg-gray-500 hover:bg-gray-600 text-white px-4 py-2 rounded-lg">
+            &larr; Kembali ke Halaqoh
+        </a>
     </div>
+
+    {{-- Form Filter --}}
+    <form method="GET" action="{{ route('admin.halaqohs.manage_students', $halaqoh) }}" class="space-y-3 mb-4">
+        <div class="flex flex-wrap gap-3">
+            <input type="text" name="search" value="{{ request('search') }}"
+                placeholder="Cari Nama atau NIS..."
+                class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/3">
+
+            <select name="type" class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4">
+                <option value="">Semua Jenis</option>
+                <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
+                <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang Pergi</option>
+            </select>
+
+            @if(request('type') == 'Pulang-Pergi')
+                <select name="halaqoh_period" class="border border-gray-300 rounded-lg px-4 py-2 w-full md:w-1/4">
+                    <option value="">Semua Periode</option>
+                    <option value="Sore" {{ request('halaqoh_period') == 'Sore' ? 'selected' : '' }}>Sore</option>
+                    <option value="Malam" {{ request('halaqoh_period') == 'Malam' ? 'selected' : '' }}>Malam</option>
+                </select>
+            @endif
+
+            <button type="submit" class="bg-teal-600 hover:bg-teal-700 text-white px-4 py-2 rounded-lg">
+                Filter
+            </button>
+
+            <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}" class="bg-gray-400 hover:bg-gray-500 text-white px-4 py-2 rounded-lg">
+                Reset
+            </a>
+        </div>
+    </form>
+
+    {{-- Form Tambah Santri --}}
+    <form method="POST" action="{{ route('admin.halaqohs.update_students', $halaqoh) }}">
+        @csrf
+
+        <div class="mb-4">
+            <label for="student_ids" class="block font-semibold mb-2">Pilih Santri</label>
+            <select id="student_ids" name="student_ids[]" multiple class="tomselect w-full">
+        @forelse ($students as $student)
+            <option value="{{ $student->id }}"
+                {{ $halaqoh->students->contains($student->id) ? 'selected' : '' }}>
+                {{ $student->name }} ({{ $student->nis }}) - {{ $student->type }}
+                @if($student->type == 'Pulang-Pergi')
+                    | {{ $student->halaqoh_period ?? '-' }}
+                @endif
+            </option>
+        @empty
+            <option disabled>Tidak ada santri tersedia.</option>
+        @endforelse
+        </select>
+            <p class="text-sm text-gray-500 mt-1">Santri hanya dapat masuk ke satu halaqoh.</p>
+        </div>
+
+        <button type="submit"
+            class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">
+            Simpan Perubahan
+        </button>
+    </form>
+</div>
 @endsection
+
+@push('scripts')
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+        new TomSelect('.tomselect', {
+            maxItems: null,
+            plugins: ['remove_button'],
+            placeholder: 'Cari atau pilih santri...',
+            closeAfterSelect: false,
+            allowEmptyOption: false,
+            persist: false
+        });
+    });
+</script>
+@endpush

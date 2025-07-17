@@ -89,21 +89,38 @@ class HalaqohController extends Controller
     /**
      * Manajemen Santri Per Halaqoh.
      */
-    public function manageStudents(Halaqoh $halaqoh)
-    {
-        // Ambil santri yang belum masuk halaqoh manapun
-        $students = Student::where('status', 'aktif')
-        ->where(function ($query) use ($halaqoh) {
-            $query->whereDoesntHave('halaqohs')
-                  ->orWhereHas('halaqohs', function ($q) use ($halaqoh) {
-                      $q->where('halaqoh_id', $halaqoh->id);
-                  });
-        })
-        ->orderBy('name')
-        ->get();
+    public function manageStudents(Halaqoh $halaqoh, Request $request)
+{
+    $query = Student::where('status', 'aktif');
 
-        return view('admin.halaqohs.manage_students', compact('halaqoh', 'students'));
+    if ($search = $request->input('search')) {
+        $query->where(function ($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('nis', 'like', '%' . $search . '%');
+        });
     }
+
+    if ($type = $request->input('type')) {
+        $query->where('type', $type);
+    }
+
+    if ($request->input('type') == 'Pulang-Pergi' && $period = $request->input('halaqoh_period')) {
+        $query->where('halaqoh_period', $period);
+    }
+
+    // Hanya santri tanpa halaqoh atau yang sudah tergabung dalam halaqoh ini
+    $query->where(function ($q) use ($halaqoh) {
+        $q->whereDoesntHave('halaqohs')
+          ->orWhereHas('halaqohs', function ($q2) use ($halaqoh) {
+              $q2->where('halaqoh_id', $halaqoh->id);
+          });
+    });
+
+    $students = $query->orderBy('name')->get();
+
+    return view('admin.halaqohs.manage_students', compact('halaqoh', 'students'));
+}
+
 
     public function updateStudents(Request $request, Halaqoh $halaqoh)
     {
