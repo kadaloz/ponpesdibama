@@ -21,8 +21,10 @@ class Student extends Model
         'last_education',
         'school_origin',
         'address',
-        'city',
-        'province',
+        'province', // Sudah ada
+        'city',     // Sudah ada
+        'district', // BARU DITAMBAHKAN
+        'village',  // BARU DITAMBAHKAN
         'parent_name',
         'parent_phone',
         'parent_email',
