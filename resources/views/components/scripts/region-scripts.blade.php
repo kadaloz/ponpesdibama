@@ -31,7 +31,7 @@
                         const option = new Option(kab, kab, false, kab === selectedKab);
                         kabupatenSelect.appendChild(option);
                     });
-                    // *** PENTING: Jika ada selectedKab, panggil updateDistricts setelah kota terisi ***
+                    // PENTING: Jika ada selectedKab, panggil updateDistricts setelah kota terisi
                     if (selectedKab && kabupatenSelect.value === selectedKab) {
                         updateDistricts(provinsi, selectedKab);
                     } else {
@@ -57,7 +57,7 @@
                         const option = new Option(kec, kec, false, kec === selectedKec);
                         kecamatanSelect.appendChild(option);
                     });
-                    // *** PENTING: Jika ada selectedKec, panggil updateVillages setelah kecamatan terisi ***
+                    // PENTING: Jika ada selectedKec, panggil updateVillages setelah kecamatan terisi
                     if (selectedKec && kecamatanSelect.value === selectedKec) {
                         updateVillages(provinsi, kota, selectedKec);
                     } else {
