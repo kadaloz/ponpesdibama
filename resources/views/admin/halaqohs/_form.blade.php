@@ -1,20 +1,12 @@
 @csrf
 
-<div class="space-y-6">
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
     {{-- Nama Halaqoh --}}
     <div>
         <label for="name" class="block text-sm font-semibold text-gray-700 mb-1">Nama Halaqoh</label>
         <input type="text" name="name" id="name" required
                value="{{ old('name', $halaqoh->name ?? '') }}"
                class="w-full px-4 py-2 border rounded-md shadow-sm border-gray-300 focus:ring-teal-500 focus:border-teal-500">
-    </div>
-
-    {{-- Deskripsi --}}
-    <div>
-        <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi (Opsional)</label>
-        <textarea name="description" id="description" rows="3"
-                  class="w-full px-4 py-2 border rounded-md shadow-sm border-gray-300 focus:ring-teal-500 focus:border-teal-500"
-        >{{ old('description', $halaqoh->description ?? '') }}</textarea>
     </div>
 
     {{-- Guru Ngaji --}}
@@ -44,7 +36,7 @@
         <p class="text-xs text-gray-500 mt-2">Gunakan untuk memfilter santri pulang-pergi sesuai periode pilihannya.</p>
     </div>
 
-    {{-- Kuota Santri --}}
+    {{-- Batas Maksimal Santri --}}
     <div>
         <label for="student_limit" class="block text-sm font-semibold text-gray-700 mb-1">Batas Maksimal Santri</label>
         <input type="number" name="student_limit" id="student_limit" min="1"
@@ -65,11 +57,18 @@
         </select>
     </div>
 
-    {{-- Tombol Submit --}}
-    <div class="pt-4">
-        <button type="submit"
-                class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-md shadow font-semibold">
-            Simpan Halaqoh
-        </button>
+    {{-- Deskripsi --}}
+    <div class="md:col-span-2">
+        <label for="description" class="block text-sm font-semibold text-gray-700 mb-1">Deskripsi (Opsional)</label>
+        <textarea name="description" id="description" rows="3"
+                  class="w-full px-4 py-2 border rounded-md shadow-sm border-gray-300 focus:ring-teal-500 focus:border-teal-500">{{ old('description', $halaqoh->description ?? '') }}</textarea>
     </div>
+</div>
+
+{{-- Tombol Simpan --}}
+<div class="pt-6">
+    <button type="submit"
+            class="w-full sm:w-auto bg-teal-600 hover:bg-teal-700 text-white px-6 py-2 rounded-md shadow font-semibold">
+        Simpan Halaqoh
+    </button>
 </div>
