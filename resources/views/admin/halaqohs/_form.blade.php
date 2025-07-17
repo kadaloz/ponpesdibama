@@ -144,7 +144,10 @@
     <button type="submit"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
         {{-- Heroicon: Save --}}
-        <x-heroicon-o-save class="h-5 w-5 mr-2" />
+        <!-- SVG Save Icon (Heroicon Outline) -->
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16v2a2 2 0 002 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11l4 4v8a2 2 0 01-2 2z" />
+        </svg>
         Simpan Data Halaqoh
     </button>
 </div>
