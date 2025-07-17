@@ -114,13 +114,13 @@
 
         {{-- Footer with Action Buttons --}}
         <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 border-t border-gray-200">
-            <a href="{{ route('halaqoh.edit', $halaqoh->id) }}"
+            <a href="{{ route('admin.halaqohs.edit', $halaqoh->id) }}"
                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <x-heroicon-o-pencil class="h-5 w-5 mr-2" />
                 Edit Halaqoh
             </a>
             {{-- Delete Button (using form for DELETE request) --}}
-            <form action="{{ route('halaqoh.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaqoh ini?');">
+            <form action="{{ route('admin.halaqohs.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaqoh ini?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
