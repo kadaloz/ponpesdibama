@@ -49,19 +49,7 @@
 
         <div class="mb-4">
             <label for="student_ids" class="block font-semibold mb-2">Pilih Santri</label>
-            <select id="student_ids" name="student_ids[]" multiple class="tomselect w-full">
-        @forelse ($students as $student)
-            <option value="{{ $student->id }}"
-                {{ $halaqoh->students->contains($student->id) ? 'selected' : '' }}>
-                {{ $student->name }} ({{ $student->nis }}) - {{ $student->type }}
-                @if($student->type == 'Pulang-Pergi')
-                    | {{ $student->halaqoh_period ?? '-' }}
-                @endif
-            </option>
-        @empty
-            <option disabled>Tidak ada santri tersedia.</option>
-        @endforelse
-        </select>
+            <select id="student_ids" name="student_ids[]" multiple class="student-select w-full"></select>
             <p class="text-sm text-gray-500 mt-1">Santri hanya dapat masuk ke satu halaqoh.</p>
         </div>
 
@@ -73,17 +61,23 @@
 </div>
 @endsection
 
-@push('scripts')
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
-        new TomSelect('.tomselect', {
-            maxItems: null,
-            plugins: ['remove_button'],
-            placeholder: 'Cari atau pilih santri...',
-            closeAfterSelect: false,
-            allowEmptyOption: false,
-            persist: false
-        });
+document.addEventListener("DOMContentLoaded", function () {
+    new TomSelect('.student-select', {
+        maxItems: null,
+        valueField: 'value',
+        labelField: 'text',
+        searchField: 'text',
+        plugins: ['remove_button'],
+        placeholder: 'Ketik nama atau NIS santri...',
+        load: function(query, callback) {
+            if (!query.length) return callback();
+            fetch(`/admin/api/students/search?q=${encodeURIComponent(query)}`)
+                .then(response => response.json())
+                .then(callback)
+                .catch(() => callback());
+        }
     });
+});
 </script>
-@endpush
+
