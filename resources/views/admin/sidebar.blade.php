@@ -6,6 +6,7 @@
 
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
         <ul class="space-y-2">
+            {{-- Bagian Utama --}}
             @can('view dashboard')
                 <li>
                     <a href="{{ route('admin.dashboard') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.dashboard') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
@@ -14,34 +15,7 @@
                 </li>
             @endcan
 
-            <li class="mt-6 pt-4 border-t border-teal-700">
-                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Konten & Website</p>
-            </li>
-
-            @can('view news')
-                <li>
-                    <a href="{{ route('admin.news.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.news.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-newspaper class="w-5 h-5 mr-2" /> Berita & Pengumuman
-                    </a>
-                </li>
-            @endcan
-
-            @can('manage settings')
-                <li>
-                    <a href="{{ route('admin.settings.edit') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.settings.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-cog class="w-5 h-5 mr-2" /> Pengaturan Website
-                    </a>
-                </li>
-            @endcan
-
-            @can('view galleries')
-                <li>
-                    <a href="{{ route('admin.galleries.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.galleries.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-photo class="w-5 h-5 mr-2" /> Manajemen Galeri
-                    </a>
-                </li>
-            @endcan
-
+            {{-- Santri & PPDB --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Santri & PPDB</p>
             </li>
@@ -64,15 +38,45 @@
 
             @can('edit ppdb requirements')
                 <li>
-                    <a href="{{ route('admin.ppdb-requirements.edit') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('ppdb_requirements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                    <a href="{{ route('admin.ppdb-requirements.edit') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.ppdb-requirements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
                         <x-heroicon-o-document-text class="w-5 h-5 mr-2" /> Syarat Pendaftaran
                     </a>
                 </li>
             @endcan
 
+            {{-- Konten & Website --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
-                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Administrasi Sistem</p>
+                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Konten & Website</p>
             </li>
+
+            @can('view news')
+                <li>
+                    <a href="{{ route('admin.news.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.news.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-newspaper class="w-5 h-5 mr-2" /> Berita & Pengumuman
+                    </a>
+                </li>
+            @endcan
+
+            @can('view galleries')
+                <li>
+                    <a href="{{ route('admin.galleries.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.galleries.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-photo class="w-5 h-5 mr-2" /> Manajemen Galeri
+                    </a>
+                </li>
+            @endcan
+
+            {{-- Administrasi & Data Master --}}
+            <li class="mt-6 pt-4 border-t border-teal-700">
+                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Administrasi & Data Master</p>
+            </li>
+
+            @can('view teachers')
+                <li>
+                    <a href="{{ route('admin.teachers.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.teachers.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" /> Manajemen Pengajar
+                    </a>
+                </li>
+            @endcan
 
             @can('view programs')
                 <li>
@@ -81,6 +85,7 @@
                     </a>
                 </li>
             @endcan
+
             @can('view halaqohs')
                 <li>
                     <a href="{{ route('admin.halaqohs.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.halaqohs.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
@@ -88,7 +93,11 @@
                     </a>
                 </li>
             @endcan
-            
+
+            {{-- Pengaturan Sistem & Keamanan --}}
+            <li class="mt-6 pt-4 border-t border-teal-700">
+                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Pengaturan Sistem & Keamanan</p>
+            </li>
 
             @can('manage users')
                 <li>
@@ -106,22 +115,23 @@
                 </li>
             @endcan
 
-            @can('view teachers')
+            @can('manage settings')
                 <li>
-                    <a href="{{ route('admin.teachers.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.teachers.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-academic-cap class="w-5 h-5 mr-2" /> Manajemen Pengajar
+                    <a href="{{ route('admin.settings.edit') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.settings.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-cog class="w-5 h-5 mr-2" /> Pengaturan Website
                     </a>
                 </li>
             @endcan
 
-           @can('view audit logs')
+            @can('view audit logs')
                 <li>
                     <a href="{{ route('admin.audit-trails.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.audit-trails.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-document class="w-5 h-5 mr-2" /> Audit Trail
+                        <x-heroicon-o-document-text class="w-5 h-5 mr-2" /> Audit Trail
                     </a>
                 </li>
             @endcan
 
+            {{-- Modul Lain (atau Integrasi) --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Modul Lain</p>
             </li>
@@ -145,7 +155,7 @@
             @can('manage dormitories')
                 <li>
                     <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md text-teal-100">
-                        <x-heroicon-o-home class="w-5 h-5 mr-2" /> Asrama
+                        <x-heroicon-o-home-modern class="w-5 h-5 mr-2" /> Asrama
                     </a>
                 </li>
             @endcan
