@@ -86,6 +86,15 @@ class HalaqohController extends Controller
         return redirect()->route('admin.halaqohs.index')->with('success', 'Halaqoh berhasil dihapus.');
     }
 
+    public function removeStudent(Halaqoh $halaqoh, Student $student)
+{
+    // Hapus santri dari halaqoh via pivot
+    $halaqoh->students()->detach($student->id);
+
+    return redirect()->back()->with('success', 'Santri berhasil dihapus dari halaqoh.');
+}
+
+
     /**
      * Manajemen Santri Per Halaqoh.
      */
