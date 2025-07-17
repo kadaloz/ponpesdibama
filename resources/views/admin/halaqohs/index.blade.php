@@ -63,15 +63,41 @@
                                         <span class="inline-block px-3 py-1 text-xs bg-gray-200 text-gray-600 rounded-full">Non-aktif</span>
                                     @endif
                                 </td>
-                                <td class="px-4 py-2 text-right space-x-2">
-                                    <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}" class="text-indigo-600 hover:text-indigo-900 font-medium">Edit</a>
-                                    <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}" class="text-teal-600 hover:text-teal-800 font-medium">Kelola Santri</a>
-                                    <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-red-600 hover:text-red-900 font-medium" onclick="return confirm('Yakin ingin menghapus halaqoh ini?')">Hapus</button>
-                                    </form>
-                                </td>
+                                <td class="px-4 py-2 text-right space-x-2 flex justify-end items-center">
+    {{-- Kelola Santri --}}
+    <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}"
+       class="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium">
+        <x-heroicon-o-users class="w-4 h-4 mr-1" />
+        Kelola
+    </a>
+
+    {{-- Edit --}}
+    <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}"
+       class="inline-flex items-center text-indigo-600 hover:text-indigo-900 font-medium">
+        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+        Edit
+    </a>
+
+    {{-- Detail --}}
+    <a href="{{ route('admin.halaqohs.show', $halaqoh) }}"
+       class="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium">
+        <x-heroicon-o-eye class="w-4 h-4 mr-1" />
+        Detail
+    </a>
+
+    {{-- Hapus --}}
+    <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block">
+        @csrf
+        @method('DELETE')
+        <button type="submit"
+                onclick="return confirm('Yakin ingin menghapus halaqoh ini?')"
+                class="inline-flex items-center text-red-600 hover:text-red-800 font-medium">
+            <x-heroicon-o-trash class="w-4 h-4 mr-1" />
+            Hapus
+        </button>
+    </form>
+</td>
+
                             </tr>
                         @endforeach
                     </tbody>
