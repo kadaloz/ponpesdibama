@@ -61,6 +61,11 @@
 </div>
 @endsection
 
+@push('scripts')
+<!-- TomSelect CSS & JS -->
+<link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
     new TomSelect('.student-select', {
@@ -80,5 +85,4 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
-
-
+@endpush

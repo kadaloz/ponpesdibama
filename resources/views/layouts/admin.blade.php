@@ -7,6 +7,9 @@
     <title>@yield('title', 'Admin Panel Ponpes DIBAMA')</title>
     @vite(['resources/css/app.css', 'resources/js/app.js']) {{-- Pastikan Alpine.js diimpor melalui app.js --}}
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <!-- Tambahkan ini di <head> layout -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
+
     <style>
         body { font-family: 'Inter', sans-serif; }
     </style>
@@ -82,6 +85,8 @@
 
     @stack('scripts')
 <script src="{{ asset('js/wilayah.js') }}"></script>
+<!-- Tambahkan ini di akhir <body> layout -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
 </body>
 </html>
