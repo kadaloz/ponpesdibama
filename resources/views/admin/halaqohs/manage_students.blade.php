@@ -49,20 +49,39 @@
 
         <div class="mb-4">
             <label for="student_ids" class="block font-semibold mb-2">Pilih Santri</label>
-            <select id="student_ids" name="student_ids[]" multiple class="student-select w-full"></select>
+            <select id="student_ids" name="student_ids[]" multiple class="student-select w-full">
+                @foreach ($selectedStudents as $student)
+                    <option value="{{ $student->id }}" selected>{{ $student->name }} - {{ $student->nis }}</option>
+                @endforeach
+            </select>
             <p class="text-sm text-gray-500 mt-1">Santri hanya dapat masuk ke satu halaqoh.</p>
         </div>
 
-        <button type="submit"
-            class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">
+        <button type="submit" class="bg-teal-600 text-white px-4 py-2 rounded-lg hover:bg-teal-700">
             Simpan Perubahan
         </button>
     </form>
+
+    {{-- Daftar Santri Terpilih --}}
+    @if($selectedStudents->count())
+        <div class="mt-8">
+            <h3 class="text-lg font-semibold text-gray-700 mb-2">Santri Terdaftar di Halaqoh Ini:</h3>
+            <ul class="list-disc pl-5 text-gray-600 space-y-1">
+                @foreach($selectedStudents as $student)
+                    <li>
+                        {{ $student->name }} (NIS: {{ $student->nis }}) - {{ $student->type }}
+                        @if($student->type === 'Pulang-Pergi')
+                            [{{ $student->halaqoh_period }}]
+                        @endif
+                    </li>
+                @endforeach
+            </ul>
+        </div>
+    @endif
 </div>
 @endsection
 
 @push('scripts')
-<!-- TomSelect CSS & JS -->
 <link href="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/css/tom-select.css" rel="stylesheet">
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 
