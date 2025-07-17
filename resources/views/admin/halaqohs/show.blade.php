@@ -6,7 +6,7 @@
                 <x-heroicon-o-academic-cap class="h-8 w-8 text-white mr-3" />
                 <h1 class="text-2xl font-bold text-white">Detail Halaqoh: {{ $halaqoh->name }}</h1>
             </div>
-            <a href="{{ route('halaqoh.index') }}"
+            <a href="{{ route('admin.halaqohs.index') }}"
                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-500 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                 <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
                 Kembali ke Daftar
