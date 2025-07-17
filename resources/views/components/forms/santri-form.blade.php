@@ -1,6 +1,6 @@
 {{-- resources/views/components/forms/santri-form.blade.php --}}
 
-@props(['student' => null, 'teachers' => [], 'halaqohPeriods' => []])
+@props(['student' => null, 'halaqohPeriods' => []])
 
 <div class="space-y-6">
     {{-- Bagian Informasi Utama Santri --}}
@@ -47,8 +47,8 @@
             <div>
                 <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
                 <input type="date" name="date_of_birth" id="date_of_birth"
-       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
-       value="{{ old('date_of_birth', ($student && $student->date_of_birth) ? $student->date_of_birth->format('Y-m-d') : '') }}">
+                       class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500"
+                       value="{{ old('date_of_birth', ($student && $student->date_of_birth) ? $student->date_of_birth->format('Y-m-d') : '') }}">
                 @error('date_of_birth')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
             </div>
         </div>
@@ -210,7 +210,7 @@
                         <p class="text-sm text-gray-600">Dokumen saat ini:</p>
                         <a href="{{ asset('storage/' . $student->{$fileInputName . '_path'}) }}" target="_blank" class="text-blue-600 hover:underline flex items-center">
                             Lihat Dokumen
-                            <x-heroicon-c-link class="w-4 h-4 ml-1" />
+                            <x-heroicon-o-external-link class="w-4 h-4 ml-1" />
                         </a>
                         <input type="checkbox" name="remove_{{ $fileInputName }}" id="remove_{{ $fileInputName }}" value="1" class="ml-4 focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
                         <label for="remove_{{ $fileInputName }}" class="ml-2 text-sm text-red-600">Hapus Dokumen</label>
