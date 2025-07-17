@@ -83,6 +83,8 @@ class StudentController extends Controller
             'address' => 'nullable|string',
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
+            'district' => 'nullable|string|max:255',
+            'village' => 'nullable|string|max:255',
             'parent_name' => 'nullable|string|max:255',
             'parent_phone' => 'nullable|string|max:50',
             'parent_email' => 'nullable|string|email|max:255',
@@ -184,6 +186,8 @@ public function update(Request $request, Student $student)
         'address' => 'nullable|string',
         'city' => 'nullable|string|max:255',
         'province' => 'nullable|string|max:255',
+        'district' => 'nullable|string|max:255', // BARU DITAMBAHKAN
+        'village' => 'nullable|string|max:255',  // BARU DITAMBAHKAN
         'parent_name' => 'nullable|string|max:255',
         'parent_phone' => 'nullable|string|max:50',
         'parent_email' => 'nullable|string|email|max:255',
