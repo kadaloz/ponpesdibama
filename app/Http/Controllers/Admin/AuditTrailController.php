@@ -69,7 +69,7 @@ class AuditTrailController extends Controller
         $actions = AuditTrail::select('action')->distinct()->pluck('action');
 
 
-        return view('admin.audit_trails.index', compact('logs', 'users', 'actions'));
+        return view('admin.audit-trails.index', compact('logs', 'users', 'actions'));
     }
 
     public function purge(Request $request)
