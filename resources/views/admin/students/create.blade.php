@@ -202,17 +202,34 @@
                     @enderror
                 </div>
 
-                <div>
-                    <label for="type" class="block text-sm font-medium text-gray-700">Tipe Santri</label>
-                    <select name="type" id="type" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Tipe</option>
-                        <option value="Asrama" {{ old('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
-                        <option value="Pulang-Pergi" {{ old('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
-                    </select>
-                    @error('type')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
+ {{-- Tipe Santri --}}
+            <div>
+                <label for="type" class="block text-sm font-medium text-gray-700">Tipe Santri</label>
+                <select name="type" id="type"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    <option value="">Pilih Tipe</option>
+                    <option value="Asrama" {{ old('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
+                    <option value="Pulang-Pergi" {{ old('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
+                </select>
+                @error('type')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
+            {{-- Jadwal Sore / Malam --}}
+            <div id="halaqoh-period-group-student" class="hidden">
+                <label for="halaqoh_period" class="block text-sm font-medium text-gray-700">Jadwal Pulang-Pergi</label>
+                <select name="halaqoh_period" id="halaqoh_period"
+                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                    <option value="">Pilih Jadwal</option>
+                    <option value="Sore" {{ old('halaqoh_period') == 'Sore' ? 'selected' : '' }}>Sore</option>
+                    <option value="Malam" {{ old('halaqoh_period') == 'Malam' ? 'selected' : '' }}>Malam</option>
+                </select>
+                @error('halaqoh_period')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
+            </div>
+
 
                 <div>
                     <label for="status" class="block text-sm font-medium text-gray-700">Status Santri</label>
@@ -246,12 +263,14 @@ document.addEventListener('DOMContentLoaded', function () {
     const kabupatenSelect = document.getElementById('city');
     const kecamatanSelect = document.getElementById('district');
     const kelurahanSelect = document.getElementById('village');
+    const typeSelect = document.getElementById('type');
 
     const selectedProv = "{{ old('province') }}";
     const selectedKab = "{{ old('city') }}";
     const selectedKec = "{{ old('district') }}";
     const selectedKel = "{{ old('village') }}";
 
+    // Load Provinces
     fetch('/api/provinces')
         .then(res => res.json())
         .then(provinces => {
@@ -318,7 +337,28 @@ document.addEventListener('DOMContentLoaded', function () {
             })
             .catch(() => alert('❌ Gagal memuat data kelurahan.'));
     }
+
+    // Fungsi Toggle Halaqoh Period (Dropdown Tipe Santri)
+    function toggleHalaqohPeriodStudent() {
+        const selectedType = typeSelect.value;
+        const halaqohPeriodGroup = document.getElementById('halaqoh-period-group-student');
+        const halaqohPeriodSelect = document.getElementById('halaqoh_period');
+
+        if (selectedType === 'Pulang-Pergi') {
+            halaqohPeriodGroup.classList.remove('hidden');
+            halaqohPeriodSelect.setAttribute('required', 'required');
+        } else {
+            halaqohPeriodGroup.classList.add('hidden');
+            halaqohPeriodSelect.removeAttribute('required');
+            halaqohPeriodSelect.value = '';
+        }
+    }
+
+    // Jalankan fungsi toggle saat halaman dimuat dan saat tipe berubah
+    toggleHalaqohPeriodStudent();
+    typeSelect.addEventListener('change', toggleHalaqohPeriodStudent);
 });
 </script>
+
 @endpush
 
