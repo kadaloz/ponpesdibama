@@ -51,7 +51,7 @@
                                 </span>
                             @elseif($halaqoh->status === 'completed')
                                 <span class="inline-flex items-center px-3 py-1 text-sm font-medium leading-5 rounded-full bg-blue-100 text-blue-800">
-                                    <x-heroicon-s-badge-check class="h-4 w-4 mr-1" />
+                                    <x-heroicon-s-check class="h-4 w-4 mr-1" />
                                     Selesai
                                 </span>
                             @else
