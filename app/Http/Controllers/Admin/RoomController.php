@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Room;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule; // Tambahkan ini untuk Rule::unique
+use Illuminate\Validation\Rule; // Pastikan ini ada
+
 
 class RoomController extends Controller
 {
@@ -46,7 +47,9 @@ class RoomController extends Controller
         $validatedData = $request->validate([
             'room_number' => 'required|string|max:255|unique:rooms,room_number',
             'capacity' => 'required|integer|min:1',
-            'gender_type' => ['required', 'string', Rule::in(['banin', 'banat'])],
+            // --- PERBAIKAN DI SINI ---
+            'gender_type' => ['required', 'string', Rule::in(['laki-laki', 'perempuan'])],
+            // --- AKHIR PERBAIKAN ---
             'status' => ['required', 'string', Rule::in(['available', 'full', 'renovation', 'inactive'])],
             'description' => 'nullable|string|max:1000',
         ]);
@@ -90,7 +93,9 @@ class RoomController extends Controller
         $validatedData = $request->validate([
             'room_number' => ['required', 'string', 'max:255', Rule::unique('rooms', 'room_number')->ignore($room->id)],
             'capacity' => 'required|integer|min:1',
-            'gender_type' => ['required', 'string', Rule::in(['banin', 'banat'])],
+            // --- PERBAIKAN DI SINI ---
+            'gender_type' => ['required', 'string', Rule::in(['laki-laki', 'perempuan'])],
+            // --- AKHIR PERBAIKAN ---
             'status' => ['required', 'string', Rule::in(['available', 'full', 'renovation', 'inactive'])],
             'description' => 'nullable|string|max:1000',
         ]);
