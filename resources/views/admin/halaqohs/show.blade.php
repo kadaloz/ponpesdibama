@@ -6,7 +6,7 @@
                 <x-heroicon-o-academic-cap class="h-8 w-8 text-white mr-3" />
                 <h1 class="text-2xl font-bold text-white">Detail Halaqoh: {{ $halaqoh->name }}</h1>
             </div>
-            <a href="{{ route('admin.halaqohs.index') }}"
+            <a href="{{ route('halaqoh.index') }}"
                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-500 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                 <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
                 Kembali ke Daftar
@@ -69,7 +69,7 @@
             @if($halaqoh->description)
             <div class="pt-5">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                    <x-heroicon-o-pencil class="h-6 w-6 text-gray-500 mr-2" />
+                    <x-heroicon-o-pencil-alt class="h-6 w-6 text-gray-500 mr-2" />
                     Deskripsi
                 </h2>
                 <p class="text-gray-700 leading-relaxed">{{ $halaqoh->description }}</p>
@@ -79,13 +79,13 @@
 
         {{-- Footer dengan Tombol Aksi --}}
         <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 border-t border-gray-200">
-            <a href="{{ route('admin.halaqohs.edit', $halaqoh->id) }}"
+            <a href="{{ route('halaqoh.edit', $halaqoh->id) }}"
                class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
                 <x-heroicon-o-pencil class="h-5 w-5 mr-2" />
                 Edit Halaqoh
             </a>
             {{-- Tombol Hapus (Contoh: menggunakan form untuk DELETE request) --}}
-            <form action="{{ route('admin.halaqohs.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaqoh ini?');">
+            <form action="{{ route('halaqoh.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaqoh ini?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
