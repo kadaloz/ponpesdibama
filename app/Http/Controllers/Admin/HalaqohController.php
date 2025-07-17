@@ -117,6 +117,7 @@ class HalaqohController extends Controller
     });
 
     $students = $query->orderBy('name')->get();
+    $selectedStudents = $halaqoh->students()->get(['id', 'name', 'nis', 'type', 'halaqoh_period']);
 
     return view('admin.halaqohs.manage_students', compact('halaqoh', 'students'));
 }
