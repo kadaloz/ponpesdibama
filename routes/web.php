@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Route;
+//use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\NewsController;
 use App\Http\Controllers\SettingController;
 use App\Http\Controllers\StudentController;
@@ -232,7 +232,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::post('halaqohs/{halaqoh}/update-students', [HalaqohController::class, 'updateStudents'])->name('halaqohs.update_students')->middleware('permission:edit halaqohs');
 
     // Route API Ajax (pastikan ini ada di web.php, bukan api.php)
-    Route::get('/admin/api/students/search', function (Request $request) {
+    Route::get('/api/students/search', function (Request $request) {
         $search = $request->input('q');
 
          $students = \App\Models\Student::query()
