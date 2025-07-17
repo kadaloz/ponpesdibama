@@ -4,7 +4,7 @@
         <div class="bg-teal-600 px-5 py-3 flex items-center justify-between">
             <div class="flex items-center">
                 <x-heroicon-o-academic-cap class="h-6 w-6 text-white mr-2" />
-                <h1 class="text-lg sm:text-xl font-bold text-white">Detail Halaqoh: {{ $halaqoh->name }}</h1>
+                <h1 class="text-lg sm:text-xl font-bold text-white">Detail Halaqoh: {{ $halaqohs->name }}</h1>
             </div>
             <a href="{{ route('admin.halaqohs.index') }}"
                class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-white text-teal-700 hover:bg-teal-100">
@@ -24,28 +24,28 @@
                 <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4 text-sm sm:text-base">
                     <div>
                         <dt class="text-gray-500 font-medium">Nama Halaqoh</dt>
-                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqoh->name }}</dd>
+                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqohs->name }}</dd>
                     </div>
                     <div>
                         <dt class="text-gray-500 font-medium">Guru Ngaji</dt>
-                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqoh->teacher->full_name ?? '-' }}</dd>
+                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqohs->teacher->full_name ?? '-' }}</dd>
                     </div>
                     <div>
                         <dt class="text-gray-500 font-medium">Periode</dt>
-                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqoh->period ?? '-' }}</dd>
+                        <dd class="text-gray-800 font-semibold mt-1">{{ $halaqohs->period ?? '-' }}</dd>
                     </div>
                     <div>
                         <dt class="text-gray-500 font-medium">Kuota Santri</dt>
                         <dd class="text-gray-800 font-semibold mt-1">
-                            {{ $halaqoh->student_limit ? $halaqoh->student_limit . ' Santri' : 'Tidak ada batas' }}
+                            {{ $halaqohs->student_limit ? $halaqohs->student_limit . ' Santri' : 'Tidak ada batas' }}
                         </dd>
                     </div>
                     <div>
                         <dt class="text-gray-500 font-medium">Status</dt>
                         <dd class="mt-1">
-                            @if($halaqoh->status === 'active')
+                            @if($halaqohs->status === 'active')
                                 <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-green-100 text-green-800">Aktif</span>
-                            @elseif($halaqoh->status === 'inactive')
+                            @elseif($halaqohs->status === 'inactive')
                                 <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-red-100 text-red-800">Tidak Aktif</span>
                             @else
                                 <span class="inline-flex items-center px-2 py-1 text-xs font-semibold rounded-full bg-blue-100 text-blue-800">Selesai</span>
@@ -56,26 +56,26 @@
             </section>
 
             {{-- Deskripsi --}}
-            @if($halaqoh->description)
+            @if($halaqohs->description)
             <section>
                 <h2 class="text-base sm:text-lg font-semibold text-gray-900 mb-3 flex items-center">
                     <x-heroicon-o-pencil class="h-5 w-5 text-gray-500 mr-2" />
                     Deskripsi
                 </h2>
-                <p class="text-gray-700 text-sm leading-relaxed">{{ $halaqoh->description }}</p>
+                <p class="text-gray-700 text-sm leading-relaxed">{{ $halaqohs->description }}</p>
             </section>
             @endif
         </div>
 
         {{-- Footer Aksi --}}
         <div class="bg-gray-50 px-5 py-3 flex flex-wrap justify-end gap-3 border-t">
-            <a href="{{ route('admin.halaqohs.edit', $halaqoh->id) }}"
+            <a href="{{ route('admin.halaqohs.edit', $halaqohs->id) }}"
                class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
                 <x-heroicon-o-pencil-square class="h-4 w-4 mr-1" />
                 Edit
             </a>
 
-            <form action="{{ route('admin.halaqohs.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
+            <form action="{{ route('admin.halaqohs.destroy', $halaqohs->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
