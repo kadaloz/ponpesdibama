@@ -69,7 +69,7 @@
             @if($halaqoh->description)
             <div class="pt-5">
                 <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
-                    <x-heroicon-o-pencil-alt class="h-6 w-6 text-gray-500 mr-2" />
+                    <x-heroicon-o-pencil class="h-6 w-6 text-gray-500 mr-2" />
                     Deskripsi
                 </h2>
                 <p class="text-gray-700 leading-relaxed">{{ $halaqoh->description }}</p>
