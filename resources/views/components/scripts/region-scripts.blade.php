@@ -1,4 +1,4 @@
-{{-- resources/views/students/partials/region-scripts.blade.php --}}
+{{-- resources/views/components/scripts/region-scripts.blade.php --}}
 
 @props(['student' => null])
 
@@ -16,37 +16,14 @@
         const selectedKec = "{{ old('district', $student->district ?? '') }}";
         const selectedKel = "{{ old('village', $student->village ?? '') }}";
 
-        fetch('/api/provinces')
-            .then(res => res.json())
-            .then(provinces => {
-                provinces.forEach(prov => {
-                    const option = new Option(prov, prov, false, prov === selectedProv);
-                    provinsiSelect.appendChild(option);
-                });
-                if (selectedProv) updateCities(selectedProv);
-            })
-            .catch(() => console.error('❌ Gagal memuat data provinsi.')); // Ubah alert ke console.error
-
-        provinsiSelect.addEventListener('change', function () {
-            updateCities(this.value);
-            kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        });
-
-        kabupatenSelect.addEventListener('change', function () {
-            updateDistricts(provinsiSelect.value, this.value);
-            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        });
-
-        kecamatanSelect.addEventListener('change', function () {
-            updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
-        });
-
+        // Fungsi untuk mengupdate dropdown kota/kabupaten
         function updateCities(provinsi) {
             kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-            if (!provinsi) return; // Jangan fetch jika provinsi kosong
+            kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>'; // Clear lower levels
+            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>'; // Clear lower levels
+
+            if (!provinsi) return;
+
             fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
                 .then(res => res.json())
                 .then(cities => {
@@ -54,14 +31,25 @@
                         const option = new Option(kab, kab, false, kab === selectedKab);
                         kabupatenSelect.appendChild(option);
                     });
-                    if (selectedKab && kabupatenSelect.value === selectedKab) updateDistricts(provinsi, selectedKab);
+                    // *** PENTING: Jika ada selectedKab, panggil updateDistricts setelah kota terisi ***
+                    if (selectedKab && kabupatenSelect.value === selectedKab) {
+                        updateDistricts(provinsi, selectedKab);
+                    } else {
+                        // Jika tidak ada selectedKab atau tidak cocok, pastikan dropdown bawah bersih
+                        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+                        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+                    }
                 })
                 .catch(() => console.error('❌ Gagal memuat data kota/kabupaten.'));
         }
 
+        // Fungsi untuk mengupdate dropdown kecamatan
         function updateDistricts(provinsi, kota) {
             kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>'; // Clear lower level
+
             if (!provinsi || !kota) return;
+
             fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
                 .then(res => res.json())
                 .then(districts => {
@@ -69,14 +57,23 @@
                         const option = new Option(kec, kec, false, kec === selectedKec);
                         kecamatanSelect.appendChild(option);
                     });
-                    if (selectedKec && kecamatanSelect.value === selectedKec) updateVillages(provinsi, kota, selectedKec);
+                    // *** PENTING: Jika ada selectedKec, panggil updateVillages setelah kecamatan terisi ***
+                    if (selectedKec && kecamatanSelect.value === selectedKec) {
+                        updateVillages(provinsi, kota, selectedKec);
+                    } else {
+                         // Jika tidak ada selectedKec atau tidak cocok, pastikan dropdown bawah bersih
+                        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+                    }
                 })
                 .catch(() => console.error('❌ Gagal memuat data kecamatan.'));
         }
 
+        // Fungsi untuk mengupdate dropdown kelurahan
         function updateVillages(provinsi, kota, kecamatan) {
-            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan/Desa</option>';
+            kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+
             if (!provinsi || !kota || !kecamatan) return;
+
             fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
                 .then(res => res.json())
                 .then(villages => {
@@ -87,8 +84,29 @@
                 })
                 .catch(() => console.error('❌ Gagal memuat data kelurahan.'));
         }
+
+        // --- Event Listeners ---
+        provinsiSelect.addEventListener('change', function () {
+            updateCities(this.value);
+        });
+
+        kabupatenSelect.addEventListener('change', function () {
+            updateDistricts(provinsiSelect.value, this.value);
+        });
+
+        kecamatanSelect.addEventListener('change', function () {
+            updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
+        });
+
+        // --- Initial Load Logic (for Edit mode) ---
+        // Panggil updateCities saat DOMContentLoaded jika ada selectedProv
+        // Ini akan memicu rantai pemuatan berikutnya secara berurutan
+        if (selectedProv) {
+            updateCities(selectedProv);
+        }
     });
 
+    // Fungsi untuk toggle Periode Ngaji (tetap sama)
     function toggleHalaqohPeriodStudent() {
         const ppdbTypeRadio = document.querySelector('input[name="type"]:checked');
         const halaqohPeriodGroup = document.getElementById('halaqoh-period-group-student');
@@ -104,6 +122,7 @@
         }
     }
 
+    // Jalankan saat halaman dimuat untuk mengatur status awal
     document.addEventListener('DOMContentLoaded', function() {
         toggleHalaqohPeriodStudent();
     });
