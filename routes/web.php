@@ -231,6 +231,27 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('halaqohs/{halaqoh}/manage-students', [HalaqohController::class, 'manageStudents'])->name('halaqohs.manage_students')->middleware('permission:edit halaqohs');
     Route::post('halaqohs/{halaqoh}/update-students', [HalaqohController::class, 'updateStudents'])->name('halaqohs.update_students')->middleware('permission:edit halaqohs');
 
+    // Route API Ajax (pastikan ini ada di web.php, bukan api.php)
+    Route::get('/admin/api/students/search', function (Request $request) {
+        $search = $request->input('q');
+
+         $students = \App\Models\Student::query()
+            ->where('status', 'aktif')
+            ->when($search, function ($query, $search) {
+                $query->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('nis', 'like', '%' . $search . '%');
+        })
+             ->limit(20)
+            ->get(['id', 'name', 'nis', 'type', 'halaqoh_period']);
+
+         return response()->json($students->map(function ($student) {
+         return [
+            'value' => $student->id,
+            'text' => "{$student->name} ({$student->nis}) - {$student->type}" .
+                      ($student->type === 'Pulang-Pergi' ? " | " . ($student->halaqoh_period ?? '-') : ''),
+          ];
+        }));
+    })->middleware('auth');
 
     // Rute untuk mengelola syarat PPDB (PpdbRequirementController)
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');
