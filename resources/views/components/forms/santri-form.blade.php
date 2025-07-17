@@ -208,7 +208,7 @@
                         <p class="text-sm text-gray-600">Dokumen saat ini:</p>
                         <a href="{{ asset('storage/' . $student->{$fileInputName . '_path'}) }}" target="_blank" class="text-blue-600 hover:underline flex items-center">
                             Lihat Dokumen
-                            <x-heroicon-o-external-link class="w-4 h-4 ml-1" />
+                            <x-heroicon-c-link class="w-4 h-4 ml-1" />
                         </a>
                         <input type="checkbox" name="remove_{{ $fileInputName }}" id="remove_{{ $fileInputName }}" value="1" class="ml-4 focus:ring-red-500 h-4 w-4 text-red-600 border-gray-300 rounded">
                         <label for="remove_{{ $fileInputName }}" class="ml-2 text-sm text-red-600">Hapus Dokumen</label>
