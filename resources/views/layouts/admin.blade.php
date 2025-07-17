@@ -87,6 +87,8 @@
 <script src="{{ asset('js/wilayah.js') }}"></script>
 <!-- Tambahkan ini di akhir <body> layout -->
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
+
 
 </body>
 </html>

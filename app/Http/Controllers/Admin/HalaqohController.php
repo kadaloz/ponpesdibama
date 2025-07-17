@@ -89,7 +89,7 @@ class HalaqohController extends Controller
     /**
      * Manajemen Santri Per Halaqoh.
      */
-    public function manageStudents(Halaqoh $halaqoh, Request $request)
+   public function manageStudents(Halaqoh $halaqoh, Request $request)
 {
     $query = Student::where('status', 'aktif');
 
@@ -108,7 +108,7 @@ class HalaqohController extends Controller
         $query->where('halaqoh_period', $period);
     }
 
-    // Hanya santri tanpa halaqoh atau yang sudah tergabung dalam halaqoh ini
+    // Filter santri yang belum tergabung atau tergabung di halaqoh ini
     $query->where(function ($q) use ($halaqoh) {
         $q->whereDoesntHave('halaqohs')
           ->orWhereHas('halaqohs', function ($q2) use ($halaqoh) {
@@ -118,13 +118,16 @@ class HalaqohController extends Controller
 
     $students = $query->orderBy('name')->get();
     $selectedStudents = $halaqoh->students()->get(['id', 'name', 'nis', 'type', 'halaqoh_period']);
+    $limit = $halaqoh->student_limit;
+    $currentCount = $selectedStudents->count();
 
-    return view('admin.halaqohs.manage_students', compact('halaqoh', 'students', 'selectedStudents'));
+    return view('admin.halaqohs.manage_students', compact('halaqoh', 'students', 'selectedStudents', 'limit', 'currentCount'));
 }
 
 
+
     public function updateStudents(Request $request, Halaqoh $halaqoh)
-    {
+{
     $studentIds = $request->input('student_ids', []);
 
     // Cek apakah ada santri tidak aktif
@@ -137,14 +140,26 @@ class HalaqohController extends Controller
         return redirect()->back()->withErrors('Santri berikut tidak aktif: ' . implode(', ', $invalidStudents));
     }
 
-    // Validasi: satu santri hanya satu halaqoh
+    // Validasi satu halaqoh
     $alreadyAssigned = Student::whereIn('id', $studentIds)
         ->whereHas('halaqohs', function ($query) use ($halaqoh) {
             $query->where('halaqoh_id', '!=', $halaqoh->id);
-        })->pluck('name')->toArray();
+        })
+        ->pluck('name')
+        ->toArray();
 
     if (!empty($alreadyAssigned)) {
         return redirect()->back()->withErrors('Beberapa santri sudah tergabung di halaqoh lain: ' . implode(', ', $alreadyAssigned));
+    }
+
+    // Validasi kuota halaqoh
+    $currentCount = $halaqoh->students()->count();
+    $newCount = count($studentIds);
+    $overlapCount = $halaqoh->students()->whereIn('id', $studentIds)->count();
+    $totalAfterSync = $currentCount + $newCount - $overlapCount;
+
+    if ($halaqoh->student_limit && $totalAfterSync > $halaqoh->student_limit) {
+        return redirect()->back()->withErrors('Kuota halaqoh terlampaui (maksimal ' . $halaqoh->student_limit . ' santri).');
     }
 
     // Sinkronisasi data pivot
@@ -159,7 +174,8 @@ class HalaqohController extends Controller
     $halaqoh->students()->sync($syncData);
 
     return redirect()->route('admin.halaqohs.index')->with('success', 'Santri berhasil diperbarui di halaqoh.');
-    }
+}
+
 
 
     public function show(Halaqoh $halaqoh)
