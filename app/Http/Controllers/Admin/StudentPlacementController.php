@@ -39,10 +39,14 @@ class StudentPlacementController extends Controller
      */
     public function create()
     {
-        // Santri yang belum memiliki penempatan aktif
-        $students = Student::doesntHave('currentPlacement')->orderBy('name')->get();
+       // Hanya santri dengan tipe 'asrama' DAN belum memiliki penempatan aktif
+        $students = \App\Models\Student::doesntHave('currentPlacement')
+                            ->where('type', 'asrama') // <--- Tambahkan kondisi ini
+                            ->orderBy('name')
+                            ->get();
+
         // Kamar yang masih tersedia atau belum penuh
-        $availableRooms = Room::where('status', 'available')->orWhere('status', 'full')->get();
+        $availableRooms = \App\Models\Room::where('status', 'available')->orWhere('status', 'full')->get();
 
         return view('admin.placements.create', compact('students', 'availableRooms'));
     }
@@ -53,6 +57,7 @@ class StudentPlacementController extends Controller
      */
     public function store(Request $request)
     {
+        
         $validatedData = $request->validate([
             'student_id' => [
                 'required',
@@ -69,45 +74,34 @@ class StudentPlacementController extends Controller
         $student = Student::findOrFail($validatedData['student_id']);
         $room = Room::findOrFail($validatedData['room_id']);
 
-        // Validasi tambahan: Pastikan jenis kelamin kamar sesuai dengan santri
-        if ($student->gender != $room->gender_type) {
+        // --- VALIDASI BARU: Tipe Santri Harus 'asrama' ---
+        if ($student->type !== 'asrama') {
+            return redirect()->back()->withInput()->with('error', 'Santri ini bukan tipe asrama dan tidak bisa ditempatkan di kamar.');
+        }
+        // --- AKHIR VALIDASI BARU ---
+
+        // Validasi jenis kelamin kamar sesuai dengan santri
+        if ($student->gender !== $room->gender_type) {
             return redirect()->back()->withInput()->with('error', 'Jenis kelamin santri tidak sesuai dengan jenis kamar.');
         }
 
-        // Validasi tambahan: Cek kapasitas kamar
-        $currentOccupancy = $room->currentOccupancy(); // Menggunakan helper dari model Room
+        // Validasi kapasitas kamar
+        $currentOccupancy = $room->currentOccupancy();
         if ($currentOccupancy >= $room->capacity) {
             return redirect()->back()->withInput()->with('error', 'Kamar sudah penuh. Pilih kamar lain.');
         }
 
         DB::beginTransaction();
         try {
-            // Jika santri sudah punya penempatan (harusnya tidak terjadi karena Rule::unique, tapi sebagai safeguard)
-            $existingActivePlacement = StudentRoomPlacement::active()->where('student_id', $student->id)->first();
-            if ($existingActivePlacement) {
-                // Akhiri penempatan lama (pindah kamar)
-                $existingActivePlacement->update([
-                    'end_date' => now()->toDateString(),
-                    'is_active' => false,
-                ]);
-            }
+            // Non-aktifkan penempatan sebelumnya jika ada (ini untuk kasus update, tapi aman di sini juga)
+            $student->placements()->update(['is_active' => false, 'end_date' => now()]);
 
             // Buat penempatan baru
-            StudentRoomPlacement::create([
-                'student_id' => $student->id,
-                'room_id' => $room->id,
+            $placement = $student->placements()->create([
+                'room_id' => $validatedData['room_id'],
                 'start_date' => $validatedData['start_date'],
                 'is_active' => true,
             ]);
-
-            // Update status kamar jika kapasitasnya penuh
-            if ($room->currentOccupancy() + 1 >= $room->capacity) { // +1 karena santri baru akan masuk
-                $room->update(['status' => 'full']);
-            } elseif ($room->status === 'full' && $room->currentOccupancy() + 1 < $room->capacity) {
-                 // Jika sebelumnya penuh tapi sekarang ada ruang lagi (misal pindah kamar dari penuh ke kamar ini)
-                $room->update(['status' => 'available']);
-            }
-
 
             // Catat Audit Trail
             record_audit(
@@ -126,6 +120,8 @@ class StudentPlacementController extends Controller
             DB::rollBack();
             return redirect()->back()->withInput()->with('error', 'Gagal menempatkan santri: ' . $e->getMessage());
         }
+
+
     }
 
     /**
