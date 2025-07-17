@@ -6,7 +6,6 @@
     <div class="bg-white p-6 rounded-lg shadow-sm">
         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
             {{-- Heroicon: Academic Cap (untuk ikon utama bagian) --}}
-            {{-- Sesuaikan dengan cara Anda memanggil Heroicon di Laravel --}}
             <x-heroicon-o-academic-cap class="h-6 w-6 text-teal-600 mr-2" />
             Informasi Dasar Halaqoh
         </h3>
@@ -47,7 +46,6 @@
             </div>
         </div>
     </div>
-
 
     {{-- Bagian: Jadwal & Kapasitas --}}
     <div class="bg-white p-6 rounded-lg shadow-sm">
@@ -93,7 +91,6 @@
         </div>
     </div>
 
-
     {{-- Bagian: Detail Lainnya --}}
     <div class="bg-white p-6 rounded-lg shadow-sm">
         <h3 class="text-lg font-bold text-gray-800 mb-4 flex items-center">
@@ -135,23 +132,20 @@
     </div>
 </div>
 
-
-{{-- Tombol Simpan --}}
-<div class="mt-6 flex flex-wrap justify-end gap-3">
+<div class="mt-8 flex justify-end space-x-4"> {{-- Menggunakan mt-8 untuk jarak vertikal, justify-end untuk penempatan di kanan, dan space-x-4 untuk jarak antar tombol --}}
     {{-- Tombol Kembali --}}
-    <a href="{{ route('admin.halaqohs.index') }}"
-       class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm border border-gray-300 text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-1 focus:ring-teal-500">
-        <x-heroicon-o-arrow-left class="h-4 w-4 mr-2" />
-        Kembali
-    </a>   
+    <a href="{{ route('admin.halaqohs.index') }}" {{-- Pastikan rute ini benar untuk kembali ke daftar halaqoh --}}
+       class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+        {{-- Heroicon: Arrow Left --}}
+        <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
+        Kembali ke Daftar
+    </a>
 
     {{-- Tombol Simpan --}}
     <button type="submit"
-            class="inline-flex items-center px-4 py-2 text-sm font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-1 focus:ring-teal-500">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
-                  d="M17 16v2a2 2 0 002 2H5a2 2 0 01-2-2V6a2 2 0 012-2h11l4 4v8a2 2 0 01-2 2z" />
-        </svg>
-        Simpan
+            class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+        {{-- Heroicon: Save --}}
+        <x-heroicon-o-save class="h-5 w-5 mr-2" />
+        Simpan Data Halaqoh
     </button>
 </div>
