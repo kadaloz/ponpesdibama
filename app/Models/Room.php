@@ -17,15 +17,21 @@ class Room extends Model
         'description',
     ];
 
-    // Jika Anda ingin membuat relasi ke student_room_placements di masa mendatang
-    // public function placements()
-    // {
-    //     return $this->hasMany(StudentRoomPlacement::class);
-    // }
+    // Relasi ke penempatan santri
+    public function placements()
+    {
+        return $this->hasMany(StudentRoomPlacement::class);
+    }
 
-    // Jika Anda ingin mendapatkan daftar santri yang saat ini menempati kamar ini (akan dibahas nanti)
-    // public function currentStudents()
-    // {
-    //     return $this->hasMany(StudentRoomPlacement::class)->whereNull('end_date')->with('student');
-    // }
+    // Relasi untuk mendapatkan santri yang saat ini menempati kamar ini
+    public function currentStudents()
+    {
+        return $this->hasMany(StudentRoomPlacement::class)->where('is_active', true)->with('student');
+    }
+
+    // Helper untuk menghitung jumlah santri aktif di kamar ini
+    public function currentOccupancy()
+    {
+        return $this->currentStudents->count();
+    }
 }

@@ -107,4 +107,27 @@ class Student extends Model
 
         return $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
+
+     // Relasi ke penempatan kamar
+    public function placements()
+    {
+        return $this->hasMany(StudentRoomPlacement::class);
+    }
+
+    // Relasi untuk mendapatkan penempatan kamar aktif saat ini (jika ada)
+    public function currentPlacement()
+    {
+        return $this->hasOne(StudentRoomPlacement::class)->where('is_active', true);
+    }
+
+    // Untuk mendapatkan kamar aktif santri
+    public function currentRoom()
+    {
+        return $this->hasOneThrough(Room::class, StudentRoomPlacement::class,
+            'student_id', // Foreign key on StudentRoomPlacement table...
+            'id',         // Foreign key on Room table...
+            'id',         // Local key on Student table...
+            'room_id'     // Local key on StudentRoomPlacement table...
+        )->where('student_room_placements.is_active', true);
+    }
 }

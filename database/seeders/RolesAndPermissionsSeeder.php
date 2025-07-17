@@ -90,6 +90,17 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit rooms']);
         Permission::firstOrCreate(['name' => 'delete rooms']);
 
+        // NEW: Izin untuk Manajemen Penempatan Santri
+        Permission::firstOrCreate(['name' => 'view placements']);
+        Permission::firstOrCreate(['name' => 'create placements']);
+        Permission::firstOrCreate(['name' => 'edit placements']);
+        Permission::firstOrCreate(['name' => 'delete placements']);
+        Permission::firstOrCreate(['name' => 'view placements history']); // Izin untuk melihat riwayat penempatan santri
+        Permission::firstOrCreate(['name' => 'manage placements']); // Izin untuk mengelola penempatan santri
+        Permission::firstOrCreate(['name' => 'view placements in room']); // Izin untuk melihat penempatan santri di ruangan tertentu
+        
+        
+
 
         // --- 2. Buat Roles (Peran) dan Beri Izin (Permissions) ---
 

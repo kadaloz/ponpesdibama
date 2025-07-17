@@ -19,6 +19,7 @@ use App\Http\Controllers\Public\ApplicantPrintController; // NEW: Import Applica
 use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbRequirementController
 use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogController
 use App\Http\Controllers\Admin\RoomController;
+use App\Http\Controllers\Admin\StudentPlacementController; // NEW: Import StudentPlacementController
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
@@ -280,6 +281,16 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Rute resource untuk Ruangan (Room)
     // Diperbarui: Menggunakan middleware 'permission:manage rooms'
     Route::resource('rooms', RoomController::class);
+    // Rute untuk Penempatan Santri
+    Route::get('/placements', [StudentPlacementController::class, 'index'])->name('placements.index') ->middleware('permission:view placements');
+    Route::get('/placements/create', [StudentPlacementController::class, 'create'])->name('placements.create')  ->middleware('permission:create placements');
+    Route::post('/placements', [StudentPlacementController::class, 'store'])->name('placements.store')  ->middleware('permission:create placements');
+    Route::get('/placements/{placement}/edit', [StudentPlacementController::class, 'edit'])->name('placements.edit')    ->middleware('permission:edit placements');
+    Route::put('/placements/{placement}', [StudentPlacementController::class, 'update'])->name('placements.update') ->middleware('permission:edit placements');
+    Route::delete('/placements/{placement}/remove', [StudentPlacementController::class, 'removePlacement'])->name('placements.remove') ->middleware('permission:manage placements'); // Aksi khusus hapus
+    // Rute tambahan untuk melihat detail penempatan spesifik
+    // Route::get('/students/{student}/placements', [StudentPlacementController::class, 'showStudentPlacement'])->name('students.placements.history')  ->middleware('permission:view placements history');
+    // Route::get('/rooms/{room}/occupancy', [StudentPlacementController::class, 'showPlacementsInRoom'])->name('rooms.occupancy') ->middleware('permission:view placements in room');
 
 
 

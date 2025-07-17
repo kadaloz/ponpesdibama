@@ -28,6 +28,14 @@
                 </li>
             @endcan
 
+            @can('view placements') {{-- Tambahkan ini --}}
+                <li>
+                    <a href="{{ route('admin.placements.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.placements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-bed class="w-5 h-5 mr-2" /> Penempatan Asrama
+                    </a>
+                </li>
+            @endcan
+
             @can('view applicants')
                 <li>
                     <a href="{{ route('admin.applicants.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.applicants.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
