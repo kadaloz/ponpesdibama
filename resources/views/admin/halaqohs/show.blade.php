@@ -1,83 +1,99 @@
-@extends('layouts.admin')
+<div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+        {{-- Header dengan Hero Icon --}}
+        <div class="bg-teal-600 px-6 py-4 flex items-center justify-between">
+            <div class="flex items-center">
+                <x-heroicon-o-academic-cap class="h-8 w-8 text-white mr-3" />
+                <h1 class="text-2xl font-bold text-white">Detail Halaqoh: {{ $halaqoh->name }}</h1>
+            </div>
+            <a href="{{ route('halaqoh.index') }}"
+               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-500 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
+                Kembali ke Daftar
+            </a>
+        </div>
 
-@section('title', 'Detail Halaqoh')
-@section('header_admin', 'Detail Halaqoh: ' . $halaqoh->name)
+        {{-- Detail Halaqoh --}}
+        <div class="p-6 space-y-6">
+            {{-- Informasi Umum --}}
+            <div class="border-b border-gray-200 pb-5">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <x-heroicon-o-information-circle class="h-6 w-6 text-gray-500 mr-2" />
+                    Informasi Umum
+                </h2>
+                <dl class="grid grid-cols-1 md:grid-cols-2 gap-x-6 gap-y-4">
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Nama Halaqoh</dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $halaqoh->name }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Guru Ngaji</dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $halaqoh->teacher->full_name }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Periode Ngaji</dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900">{{ $halaqoh->period }}</dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Batas Maksimal Santri</dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900">
+                            @if($halaqoh->student_limit)
+                                {{ $halaqoh->student_limit }} Santri
+                            @else
+                                <span class="text-gray-500">Tidak ada batas</span>
+                            @endif
+                        </dd>
+                    </div>
+                    <div>
+                        <dt class="text-sm font-medium text-gray-500">Status Halaqoh</dt>
+                        <dd class="mt-1 text-lg font-semibold text-gray-900 capitalize">
+                            @if($halaqoh->status == 'active')
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
+                                    Aktif
+                                </span>
+                            @elseif($halaqoh->status == 'inactive')
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-red-100 text-red-800">
+                                    Tidak Aktif
+                                </span>
+                            @else
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
+                                    Selesai
+                                </span>
+                            @endif
+                        </dd>
+                    </div>
+                </dl>
+            </div>
 
-@section('admin_content')
-<div class="bg-white shadow rounded-lg p-6 space-y-6">
-    {{-- Navigasi --}}
-    <div class="flex justify-between items-center">
-        <h2 class="text-xl font-bold text-teal-700">Informasi Halaqoh</h2>
-        <a href="{{ route('admin.halaqohs.index') }}" class="text-sm text-gray-600 hover:text-teal-600">
-            &larr; Kembali ke daftar halaqoh
-        </a>
+            {{-- Deskripsi (Opsional) --}}
+            @if($halaqoh->description)
+            <div class="pt-5">
+                <h2 class="text-xl font-semibold text-gray-900 mb-4 flex items-center">
+                    <x-heroicon-o-pencil-alt class="h-6 w-6 text-gray-500 mr-2" />
+                    Deskripsi
+                </h2>
+                <p class="text-gray-700 leading-relaxed">{{ $halaqoh->description }}</p>
+            </div>
+            @endif
+        </div>
+
+        {{-- Footer dengan Tombol Aksi --}}
+        <div class="bg-gray-50 px-6 py-4 flex justify-end space-x-3 border-t border-gray-200">
+            <a href="{{ route('halaqoh.edit', $halaqoh->id) }}"
+               class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                <x-heroicon-o-pencil class="h-5 w-5 mr-2" />
+                Edit Halaqoh
+            </a>
+            {{-- Tombol Hapus (Contoh: menggunakan form untuk DELETE request) --}}
+            <form action="{{ route('halaqoh.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus halaqoh ini?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-red-600 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    <x-heroicon-o-trash class="h-5 w-5 mr-2" />
+                    Hapus Halaqoh
+                </button>
+            </form>
+        </div>
     </div>
-
-    {{-- Informasi Halaqoh --}}
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-gray-700">
-        <div>
-            <span class="font-semibold">Nama Halaqoh:</span>
-            <p>{{ $halaqoh->name }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Guru Ngaji:</span>
-            <p>{{ $halaqoh->teacher->full_name ?? '-' }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Periode Ngaji:</span>
-            <p>{{ $halaqoh->period ?? '-' }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Status:</span>
-            <p>{{ ucfirst($halaqoh->status) }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Tanggal Mulai:</span>
-            <p>{{ $halaqoh->start_date ? $halaqoh->start_date->format('d M Y') : '-' }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Tanggal Selesai:</span>
-            <p>{{ $halaqoh->end_date ? $halaqoh->end_date->format('d M Y') : '-' }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Kuota Santri:</span>
-            <p>{{ $halaqoh->student_limit ?? 'Tidak terbatas' }}</p>
-        </div>
-        <div>
-            <span class="font-semibold">Jumlah Santri Saat Ini:</span>
-            <p>{{ $halaqoh->students->count() }}</p>
-        </div>
-    </div>
-
-    {{-- Deskripsi --}}
-    @if($halaqoh->description)
-        <div>
-            <span class="font-semibold text-sm text-gray-700">Deskripsi:</span>
-            <p class="mt-2 text-gray-600 whitespace-pre-line">{{ $halaqoh->description }}</p>
-        </div>
-    @endif
-
-    {{-- Daftar Santri --}}
-    @if($halaqoh->students->count())
-        <div class="pt-6">
-            <h3 class="text-lg font-semibold text-gray-700 mb-3">Santri dalam Halaqoh Ini</h3>
-            <ul class="divide-y divide-gray-200 border rounded-md">
-                @foreach($halaqoh->students as $student)
-                    <li class="px-4 py-3 text-sm text-gray-700 flex justify-between items-center">
-                        <div>
-                            <strong>{{ $student->name }}</strong> (NIS: {{ $student->nis }})
-                            <span class="text-xs text-gray-500 ml-2">{{ $student->type }}
-                                @if($student->type === 'Pulang-Pergi')
-                                    | {{ $student->halaqoh_period }}
-                                @endif
-                            </span>
-                        </div>
-                    </li>
-                @endforeach
-            </ul>
-        </div>
-    @else
-        <p class="text-sm text-gray-500 pt-6">Belum ada santri yang tergabung dalam halaqoh ini.</p>
-    @endif
 </div>
-@endsection
