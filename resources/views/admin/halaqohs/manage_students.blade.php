@@ -61,7 +61,11 @@
 </div>
 @endsection
 
+@section('scripts')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0/tom-select.complete.min.js"></script>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tom-select/2.0.0/css/tom-select.default.min.css">       
 <script>
+
 document.addEventListener("DOMContentLoaded", function () {
     new TomSelect('.student-select', {
         maxItems: null,
@@ -80,4 +84,5 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 });
 </script>
+@endsection
 
