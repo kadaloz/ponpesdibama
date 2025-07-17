@@ -66,7 +66,7 @@ class AuditTrailController extends Controller
         $users = User::orderBy('name')->get(['id', 'name']); // Ambil semua user untuk dropdown filter
 
         // Dapatkan daftar aksi unik untuk filter dropdown
-        $actions = AuditLog::select('action')->distinct()->pluck('action');
+        $actions = AuditTrail::select('action')->distinct()->pluck('action');
 
 
         return view('admin.audit_trails.index', compact('logs', 'users', 'actions'));
