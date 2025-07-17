@@ -84,6 +84,12 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'delete halaqohs']);
         Permission::firstOrCreate(['name' => 'assign students to halaqoh']); // Izin untuk menambahkan/menghapus santri dari halaqoh
 
+        // NEW: Izin untuk Manajemen Ruangan
+        Permission::firstOrCreate(['name' => 'view rooms']);
+        Permission::firstOrCreate(['name' => 'create rooms']);
+        Permission::firstOrCreate(['name' => 'edit rooms']);
+        Permission::firstOrCreate(['name' => 'delete rooms']);
+
 
         // --- 2. Buat Roles (Peran) dan Beri Izin (Permissions) ---
 

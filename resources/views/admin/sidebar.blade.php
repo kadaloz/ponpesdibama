@@ -94,6 +94,14 @@
                 </li>
             @endcan
 
+            @can('view rooms')
+                <li>
+                    <a href="{{ route('admin.rooms.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-home-modern class="w-5 h-5 mr-2" /> Manajemen Ruangan
+                    </a>
+                </li>
+            @endcan
+
             {{-- Pengaturan Sistem & Keamanan --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Pengaturan Sistem & Keamanan</p>

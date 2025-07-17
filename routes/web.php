@@ -18,6 +18,7 @@ use App\Http\Controllers\Public\GalleryPublicController; // NEW: Import Public G
 use App\Http\Controllers\Public\ApplicantPrintController; // NEW: Import ApplicantPrintController
 use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbRequirementController
 use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogController
+use App\Http\Controllers\Admin\RoomController;
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
@@ -268,13 +269,18 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');
     Route::put('ppdb-requirements/update', [PpdbRequirementController::class, 'update'])->name('ppdb-requirements.update')->middleware('permission:edit ppdb requirements');
 
-   Route::get('audit-trails', [AuditTrailController::class, 'index'])
+    Route::get('audit-trails', [AuditTrailController::class, 'index'])
     ->name('audit-trails.index')
     ->middleware('permission:view audit logs');
    
     Route::delete('audit-trails/purge', [AuditTrailController::class, 'purge'])
         ->name('audit-trails.purge')
         ->middleware('permission:purge audit logs'); 
+    
+    // Rute resource untuk Ruangan (Room)
+    // Diperbarui: Menggunakan middleware 'permission:manage rooms'
+    Route::resource('rooms', RoomController::class);
+
 
 
     // Rute Profil Admin
