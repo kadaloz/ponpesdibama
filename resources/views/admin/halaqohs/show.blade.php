@@ -6,7 +6,7 @@
                 <x-heroicon-o-academic-cap class="h-6 w-6 text-white mr-2" />
                 <h1 class="text-lg sm:text-xl font-bold text-white">Detail Halaqoh: {{ $halaqoh->name }}</h1>
             </div>
-            <a href="{{ route('halaqoh.index') }}"
+            <a href="{{ route('admin.halaqohs.index') }}"
                class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-white text-teal-700 hover:bg-teal-100">
                 <x-heroicon-o-arrow-left class="h-4 w-4 mr-1" />
                 Kembali
@@ -69,13 +69,13 @@
 
         {{-- Footer Aksi --}}
         <div class="bg-gray-50 px-5 py-3 flex flex-wrap justify-end gap-3 border-t">
-            <a href="{{ route('halaqoh.edit', $halaqoh->id) }}"
+            <a href="{{ route('admin.halaqohs.edit', $halaqoh->id) }}"
                class="inline-flex items-center px-3 py-1.5 text-sm font-medium rounded-md bg-indigo-600 text-white hover:bg-indigo-700">
                 <x-heroicon-o-pencil-square class="h-4 w-4 mr-1" />
                 Edit
             </a>
 
-            <form action="{{ route('halaqoh.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
+            <form action="{{ route('admin.halaqohs.destroy', $halaqoh->id) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus halaqoh ini?');">
                 @csrf
                 @method('DELETE')
                 <button type="submit"
