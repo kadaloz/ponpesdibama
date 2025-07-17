@@ -17,6 +17,7 @@ class Halaqoh extends Model
         'end_date',
         'status',
         'student_limit',
+        'period', // Tambahkan kolom period
     ];
 
     protected $casts = [

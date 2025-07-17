@@ -43,6 +43,17 @@
         <p class="text-xs text-gray-500 mt-1">Gunakan untuk memfilter santri pulang-pergi sesuai periode pilihannya.</p>
     </div>
 
+    {{--Batas Maksimal Santri (Kuota)--}}
+    <div class="mb-4">
+        <label for="student_limit" class="block font-semibold mb-2">Batas Maksimal Santri (Kuota)</label>
+        <input type="number" name="student_limit" id="student_limit" min="1"
+            class="w-full border border-gray-300 rounded-lg shadow-sm px-4 py-2"
+            value="{{ old('student_limit', $halaqoh->student_limit ?? '') }}"
+            placeholder="Contoh: 18">
+        <p class="text-sm text-gray-500 mt-1">Isi dengan jumlah maksimal santri dalam halaqoh ini. Boleh dikosongkan untuk tanpa batas.</p>
+    </div>
+
+
     {{-- Status Halaqoh --}}
     <div>
         <label for="status" class="block font-medium text-sm text-gray-700">Status</label>

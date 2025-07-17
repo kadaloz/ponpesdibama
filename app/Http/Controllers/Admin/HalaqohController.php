@@ -10,11 +10,21 @@ use Illuminate\Http\Request;
 
 class HalaqohController extends Controller
 {
-    public function index()
+    public function index(Request $request)
     {
-        $halaqohs = Halaqoh::with('teacher')->latest()->paginate(10);
+        $query = Halaqoh::with('teacher')
+                ->withCount('students')  // Hitung jumlah santri per halaqoh
+                ->latest();
+
+        if ($request->filled('period')) {
+        $query->where('period', $request->period);
+    }
+
+        $halaqohs = $query->paginate(10);
+
         return view('admin.halaqohs.index', compact('halaqohs'));
     }
+
 
     public function create()
     {
@@ -32,6 +42,8 @@ class HalaqohController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'student_limit' => 'nullable|integer|min:1',
             'status' => 'required|in:active,inactive,completed',
+            'period' => 'nullable|in:Sore,Malam', // Validasi untuk period
+            
         ]);
 
         Halaqoh::create($request->all());
@@ -59,6 +71,7 @@ class HalaqohController extends Controller
             'end_date' => 'nullable|date|after_or_equal:start_date',
             'student_limit' => 'nullable|integer|min:1',
             'status' => 'required|in:active,inactive,completed',
+            'period' => 'nullable|in:Sore,Malam',
         ]);
 
         $halaqoh->update($request->all());

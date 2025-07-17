@@ -43,74 +43,74 @@ class ApplicantController extends Controller
      */
     public function store(Request $request)
     {
-$request->validate([
-    'g-recaptcha-response' => ['required'],
-    'full_name' => 'required|string|max:255',
-    'gender' => 'required|string|in:Laki-laki,Perempuan',
-    'place_of_birth' => 'nullable|string|max:255',
-    'date_of_birth' => 'nullable|date',
-    'nisn' => ['nullable', 'digits:10'],
-    'last_education' => 'nullable|string|max:255',
-    'school_origin' => 'nullable|string|max:255',
-    'parent_name' => 'required|string',
-    'parent_phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
-    'parent_email' => 'nullable|string|email|max:255',
-    'parent_occupation' => 'nullable|string|max:255',
-    'address' => 'required|string',
-    'province' => 'required|string',
-    'city' => 'required|string',
-    'district' => 'required|string',
-    'village' => 'required|string',
-    'chosen_program' => 'nullable|string|max:255',
-        'ppdb_type' => [
-        'required',
-        'string',
-        Rule::in(enum_values(PpdbType::class)),
-    ],
-    'halaqoh_period' => [
-        'required_if:ppdb_type,Pulang-Pergi',
-        Rule::in(enum_values(HalaqohPeriod::class)),
-    ],
-    'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-    'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-    'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
-    'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
-], [
-    'halaqoh_period.required_if' => 'Periode halaqoh wajib diisi jika memilih tipe Pulang-Pergi.',
-    'halaqoh_period.in' => 'Periode halaqoh harus dipilih antara Sore atau Malam.',
-    'parent_phone.regex' => 'Nomor HP orang tua harus berupa angka dan panjang 10–15 digit.',
-    'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
-]);
+        $request->validate([
+            'g-recaptcha-response' => ['required'],
+            'full_name' => 'required|string|max:255',
+            'gender' => 'required|string|in:Laki-laki,Perempuan',
+            'place_of_birth' => 'nullable|string|max:255',
+            'date_of_birth' => 'nullable|date',
+            'nisn' => ['nullable', 'digits:10'],
+            'last_education' => 'nullable|string|max:255',
+            'school_origin' => 'nullable|string|max:255',
+            'parent_name' => 'required|string',
+            'parent_phone' => ['required', 'regex:/^\+?[0-9]{10,15}$/'],
+            'parent_email' => 'nullable|string|email|max:255',
+            'parent_occupation' => 'nullable|string|max:255',
+            'address' => 'required|string',
+            'province' => 'required|string',
+            'city' => 'required|string',
+            'district' => 'required|string',
+            'village' => 'required|string',
+            'chosen_program' => 'nullable|string|max:255',
+            'ppdb_type' => [
+                'required',
+                'string',
+                Rule::in(enum_values(PpdbType::class)),
+            ],
+            'halaqoh_period' => [
+                'required_if:ppdb_type,Pulang-Pergi',
+                Rule::in(enum_values(HalaqohPeriod::class)),
+            ],
+            'document_akta' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'document_kk' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'document_ijazah' => 'nullable|file|mimes:pdf,jpg,png|max:2048',
+            'document_photo' => 'nullable|file|mimes:jpg,png|max:1024',
+        ], [
+            'halaqoh_period.required_if' => 'Periode halaqoh wajib diisi jika memilih tipe Pulang-Pergi.',
+            'halaqoh_period.in' => 'Periode halaqoh harus dipilih antara Sore atau Malam.',
+            'parent_phone.regex' => 'Nomor HP orang tua harus berupa angka dan panjang 10–15 digit.',
+            'nisn.digits' => 'NISN harus terdiri dari 10 digit angka.',
+        ]);
 
-// ✅ Validasi tambahan: pastikan tipe pendaftaran yang dipilih memang dibuka
-$settings = Setting::pluck('value', 'key')->toArray();
+        // ✅ Validasi tambahan: pastikan tipe pendaftaran yang dipilih memang dibuka
+        $settings = Setting::pluck('value', 'key')->toArray();
 
-$ppdbType = $request->input('ppdb_type');
-$asramaOpen = filter_var($settings['ppdb_asrama_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
-$pulangPergiOpen = filter_var($settings['ppdb_pulang_pergi_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $ppdbType = $request->input('ppdb_type');
+        $asramaOpen = filter_var($settings['ppdb_asrama_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+        $pulangPergiOpen = filter_var($settings['ppdb_pulang_pergi_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
 
-if (
-    ($ppdbType === 'Asrama' && !$asramaOpen) ||
-    ($ppdbType === 'Pulang-Pergi' && !$pulangPergiOpen)
-) {
-    return back()
-        ->withErrors(['ppdb_type' => 'Tipe pendaftaran ini sedang tidak dibuka.'])
-        ->withInput();
-}
+        if (
+            ($ppdbType === 'Asrama' && !$asramaOpen) ||
+            ($ppdbType === 'Pulang-Pergi' && !$pulangPergiOpen)
+        ) {
+            return back()
+                ->withErrors(['ppdb_type' => 'Tipe pendaftaran ini sedang tidak dibuka.'])
+                ->withInput();
+        }
 
 
         // ✅ Verifikasi token reCAPTCHA ke Google
         $response = Http::asForm()->post('https://www.google.com/recaptcha/api/siteverify', [
-        'secret' => config('services.recaptcha.secret'),
-        'response' => $request->input('g-recaptcha-response'),
-        'remoteip' => $request->ip(),
+            'secret' => config('services.recaptcha.secret'),
+            'response' => $request->input('g-recaptcha-response'),
+            'remoteip' => $request->ip(),
         ]);
 
         $result = $response->json();
 
-    if (!($result['success'] ?? false) || ($result['score'] ?? 0) < 0.5) {
-        return back()->withErrors(['captcha' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'])->withInput();
-    }
+        if (!($result['success'] ?? false) || ($result['score'] ?? 0) < 0.5) {
+            return back()->withErrors(['captcha' => 'Verifikasi reCAPTCHA gagal. Silakan coba lagi.'])->withInput();
+        }
 
         $data = $request->except(['_token']);
         $data['status'] = 'pending';
@@ -136,7 +136,7 @@ if (
         $applicant = Applicant::create($data);
 
         return redirect()->route('ppdb.success', ['reg_num' => $applicant->registration_number])
-                         ->with('success', 'Pendaftaran Anda berhasil dikirim! Silakan tunggu konfirmasi dari kami.');
+            ->with('success', 'Pendaftaran Anda berhasil dikirim! Silakan tunggu konfirmasi dari kami.');
     }
 
     /**
@@ -276,7 +276,7 @@ if (
                     $request->ip(),
                     $request->userAgent()
                 );
-                
+
                 return redirect()->route('admin.applicants.index')->with('success', 'Pendaftar berhasil diterima dan data santri dibuat!');
             }
         }
@@ -319,7 +319,7 @@ if (
             request()->ip(),
             request()->userAgent()
         );
-        
+
         return redirect()->route('admin.applicants.index')->with('success', 'Data pendaftar berhasil dihapus!');
     }
 
