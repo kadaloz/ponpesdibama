@@ -145,7 +145,7 @@
     <button type="submit"
             class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
         {{-- Heroicon: Save --}}
-        <x-heroicon-o-save class="h-5 w-5 mr-2" />
+        <x-heroicon-o-server class="h-5 w-5 mr-2" />
         Simpan Data Halaqoh
     </button>
 </div>
