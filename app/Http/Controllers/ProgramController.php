@@ -47,6 +47,7 @@ class ProgramController extends Controller
         record_audit(
             'create_program',
             'Program baru berhasil dibuat: ' . $data['name'],
+            auth()->user()->id ?? null, // Simpan ID user yang membuat
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()

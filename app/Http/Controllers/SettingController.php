@@ -105,7 +105,8 @@ class SettingController extends Controller
         // Catat audit trail untuk pembaruan pengaturan
         record_audit(
             'update_settings',
-            'Pengaturan berhasil diperbarui oleh ' . auth()->user()->name,
+            'Pengaturan berhasil diperbarui oleh ' . (auth()->user()->name ?? 'Guest'),
+            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()

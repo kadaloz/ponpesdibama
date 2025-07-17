@@ -38,6 +38,7 @@ class AuthenticatedSessionController extends Controller
                 record_audit(
                     'login',
                     'User logged in: ' . $user->name,
+                    $user->id, // Simpan ID user yang login
                     $user->name,
                     $request->ip(),
                     $request->userAgent()

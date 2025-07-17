@@ -69,6 +69,7 @@ class TeacherController extends Controller
         record_audit(
             'create_teacher',
             'Pengajar baru berhasil dibuat: ' . $teacher->full_name,
+            auth()->user()->id ?? null, // Simpan ID user yang membuat
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()
@@ -128,6 +129,7 @@ class TeacherController extends Controller
         record_audit(
             'update_teacher',
             'Data pengajar berhasil diperbarui: ' . $teacher->full_name,
+            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()
@@ -146,6 +148,7 @@ class TeacherController extends Controller
         record_audit(
             'delete_teacher',
             'Data pengajar berhasil dihapus: ' . $teacher->full_name,
+            auth()->user()->id ?? null, // Simpan ID user yang menghapus
             auth()->user()->name ?? 'Guest',
             request()->ip(),
             request()->userAgent()

@@ -272,6 +272,7 @@ class ApplicantController extends Controller
                 record_audit(
                     'convert_applicant_to_student',
                     'Pendaftar berhasil dikonversi menjadi santri: ' . $applicant->full_name,
+                    auth()->user()->id ?? null,
                     auth()->user()->name ?? 'Guest',
                     $request->ip(),
                     $request->userAgent()
@@ -284,6 +285,7 @@ class ApplicantController extends Controller
         record_audit(
             'update_applicant',
             'Data pendaftar berhasil diperbarui: ' . $applicant->full_name,
+            auth()->user()->id ?? null,
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()
@@ -315,6 +317,7 @@ class ApplicantController extends Controller
         record_audit(
             'delete_applicant',
             'Data pendaftar berhasil dihapus: ' . $applicant->full_name,
+            auth()->user()->id ?? null,
             auth()->user()->name ?? 'Guest',
             request()->ip(),
             request()->userAgent()

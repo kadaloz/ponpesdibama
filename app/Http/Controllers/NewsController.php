@@ -73,6 +73,7 @@ class NewsController extends Controller
         record_audit(
             'create_news',
             'Berita baru berhasil dibuat: ' . $data['title'],
+            auth()->user()->id ?? null, // Simpan ID user yang membuat
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()

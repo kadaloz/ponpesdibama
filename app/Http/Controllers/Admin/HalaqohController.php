@@ -8,6 +8,7 @@ use App\Models\Teacher;
 use App\Models\Student;
 use Illuminate\Http\Request;
 
+
 class HalaqohController extends Controller
 {
     public function index(Request $request)
@@ -47,6 +48,15 @@ class HalaqohController extends Controller
         ]);
 
         Halaqoh::create($request->all());
+        // Catat audit trail untuk pembuatan halaqoh
+        record_audit(
+            'create_halaqoh',
+            'Halaqoh baru berhasil dibuat: ' . $request->name,
+            auth()->user()->id ?? null, // Simpan ID user yang membuat
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.halaqohs.index')->with('success', 'Halaqoh baru berhasil dibuat.');
     }
@@ -75,6 +85,15 @@ class HalaqohController extends Controller
         ]);
 
         $halaqoh->update($request->all());
+        // Catat audit trail untuk pembaruan halaqoh
+        record_audit(
+            'update_halaqoh',
+            'Halaqoh berhasil diperbarui: ' . $halaqoh->name,
+            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return redirect()->route('admin.halaqohs.index')->with('success', 'Data halaqoh berhasil diperbarui.');
     }
@@ -90,6 +109,15 @@ class HalaqohController extends Controller
 {
     // Hapus santri dari halaqoh via pivot
     $halaqoh->students()->detach($student->id);
+    // Catat audit trail untuk penghapusan santri dari halaqoh
+    record_audit(
+        'remove_student_from_halaqoh',
+        'Santri ' . $student->name . ' berhasil dihapus dari halaqoh: ' . $halaqoh->name,
+        auth()->user()->id ?? null, // Simpan ID user yang menghapus
+        auth()->user()->name ?? 'Guest',
+        request()->ip(),
+        request()->userAgent()
+    );
 
     return redirect()->back()->with('success', 'Santri berhasil dihapus dari halaqoh.');
 }

@@ -96,6 +96,7 @@ class PermissionController extends Controller
         record_audit(
             'update_permissions',
             'Izin untuk peran ' . $role->name . ' berhasil diperbarui oleh ' . auth()->user()->name,
+            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
             auth()->user()->name ?? 'Guest',
             request()->ip(),
             request()->userAgent()

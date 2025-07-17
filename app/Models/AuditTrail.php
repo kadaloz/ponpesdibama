@@ -11,7 +11,7 @@ class AuditTrail extends Model
 
     protected $fillable = [
         'user_id', // Pastikan ini ada di $fillable
-        'user_name', // Opsional, jika Anda menyimpan nama user langsung
+        'user_name', // Jika Anda menyimpan nama user, pastikan ini ada
         'action',
         'description',
         'ip_address',

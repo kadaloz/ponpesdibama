@@ -33,6 +33,15 @@ class ProfileController extends Controller
         }
 
         $request->user()->save();
+        // Catat audit trail untuk pembaruan profil
+        record_audit(
+            'update_profile',
+            'Profil berhasil diperbarui oleh ' . ($request->user()->name ?? 'Guest'),
+            $request->user()->id ?? null, // Simpan ID user yang mengupdate
+            $request->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return Redirect::route('admin.profile.edit')->with('status', 'profile-updated');
     }
@@ -54,6 +63,15 @@ class ProfileController extends Controller
 
         $request->session()->invalidate();
         $request->session()->regenerateToken();
+        // Catat audit trail untuk penghapusan akun
+        record_audit(
+            'delete_account',
+            'Akun berhasil dihapus: ' . $user->name,
+            $user->id, // Simpan ID user yang menghapus akun
+            $user->name,
+            $request->ip(),
+            $request->userAgent()
+        );
 
         return Redirect::to('/');
     }

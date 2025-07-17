@@ -192,6 +192,7 @@ class GalleryController extends Controller
         record_audit(
             'update_gallery',
             'Album galeri berhasil diperbarui: ' . $data['title'],
+            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()

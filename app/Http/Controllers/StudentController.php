@@ -142,6 +142,7 @@ class StudentController extends Controller
         record_audit(
             'create_student',
             'Buat Data Santri Baru dengan NIS: ' . $data['nis'],
+            auth()->user()->id ?? null,
             auth()->user()->name ?? 'Guest',
             $request->ip(),
             $request->userAgent()
@@ -257,6 +258,7 @@ public function update(Request $request, Student $student)
     record_audit(
         'update_student',
         'Update Data Santri dengan NIS: ' . $student->nis,
+        auth()->user()->id ?? null,
         auth()->user()->name ?? 'Guest',
         $request->ip(),
         $request->userAgent()
