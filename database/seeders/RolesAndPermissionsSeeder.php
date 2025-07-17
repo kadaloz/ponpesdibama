@@ -54,6 +54,7 @@ class RolesAndPermissionsSeeder extends Seeder
 
         // Izin untuk melihat dan mengelola audit logs
         Permission::firstOrCreate(['name' => 'view audit logs']);
+        Permission::firstOrCreate(['name' => 'purge audit logs']); // Izin untuk menghapus audit logs
 
         // Manajemen Akun Pengguna (CRUD Users & Roles)
         Permission::firstOrCreate(['name' => 'manage users']);
