@@ -77,7 +77,7 @@ document.addEventListener("DOMContentLoaded", function () {
         placeholder: 'Ketik nama atau NIS santri...',
         load: function(query, callback) {
             if (!query.length) return callback();
-            fetch(`/api/students/search?q=${encodeURIComponent(query)}`)
+            fetch(`admin/api/students/search?q=${encodeURIComponent(query)}`)
                 .then(response => response.json())
                 .then(callback)
                 .catch(() => callback());
