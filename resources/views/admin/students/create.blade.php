@@ -1,364 +1,63 @@
 {{-- resources/views/admin/students/create.blade.php --}}
 @extends('layouts.admin')
 
-@section('title', 'Tambah Santri Baru')
+@section('title', 'Tambah Data Santri Baru')
 
-@section('header_admin', 'Tambah Santri Baru')
+@section('header_admin', 'Tambah Data Santri')
 
 @section('admin_content')
-    <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
-        <div class="p-6 text-gray-900">
-            <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
-                @csrf
-
-                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2">Data Santri</h3>
-                <div>
-                    <label for="name" class="block text-sm font-medium text-gray-700">Nama Lengkap</label>
-                    <input type="text" name="name" id="name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('name') }}" required>
-                    @error('name')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
+    <div class="max-w-4xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+            {{-- Header --}}
+            <div class="bg-teal-600 px-6 py-4 flex items-center justify-between">
+                <div class="flex items-center">
+                    <x-heroicon-o-user-plus class="h-8 w-8 text-white mr-3" /> {{-- Ikon untuk tambah --}}
+                    <h1 class="text-2xl font-bold text-white">Tambah Data Santri Baru</h1>
                 </div>
-
-                <div>
-                    <label for="nis" class="block text-sm font-medium text-gray-700">Nomor Induk Santri (NIS) (Opsional, akan dibuat otomatis)</label>
-                    <input type="text" name="nis" id="nis" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('nis') }}">
-                    @error('nis')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="gender" class="block text-sm font-medium text-gray-700">Jenis Kelamin</label>
-                    <select name="gender" id="gender" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" required>
-                        <option value="">Pilih Jenis Kelamin</option>
-                        <option value="Laki-laki" {{ old('gender') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                        <option value="Perempuan" {{ old('gender') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                    </select>
-                    @error('gender')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="place_of_birth" class="block text-sm font-medium text-gray-700">Tempat Lahir</label>
-                        <input type="text" name="place_of_birth" id="place_of_birth" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('place_of_birth') }}">
-                        @error('place_of_birth')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="date_of_birth" class="block text-sm font-medium text-gray-700">Tanggal Lahir</label>
-                        <input type="date" name="date_of_birth" id="date_of_birth" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('date_of_birth') }}">
-                        @error('date_of_birth')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <div>
-                    <label for="nisn" class="block text-sm font-medium text-gray-700">NISN (Nomor Induk Siswa Nasional) (Opsional)</label>
-                    <input type="text" name="nisn" id="nisn" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('nisn') }}">
-                    @error('nisn')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-                    <div>
-                        <label for="last_education" class="block text-sm font-medium text-gray-700">Pendidikan Terakhir (Opsional)</label>
-                        <input type="text" name="last_education" id="last_education" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('last_education') }}">
-                        @error('last_education')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                    <div>
-                        <label for="school_origin" class="block text-sm font-medium text-gray-700">Asal Sekolah (Opsional)</label>
-                        <input type="text" name="school_origin" id="school_origin" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('school_origin') }}">
-                        @error('school_origin')
-                            <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                        @enderror
-                    </div>
-                </div>
-
-                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Data Orang Tua / Wali</h3>
-                <div>
-                    <label for="parent_name" class="block text-sm font-medium text-gray-700">Nama Ayah / Wali (Opsional)</label>
-                    <input type="text" name="parent_name" id="parent_name" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('parent_name') }}">
-                    @error('parent_name')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="parent_phone" class="block text-sm font-medium text-gray-700">Nomor HP / WhatsApp Orang Tua / Wali (Opsional)</label>
-                    <input type="text" name="parent_phone" id="parent_phone" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('parent_phone') }}">
-                    @error('parent_phone')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="parent_email" class="block text-sm font-medium text-gray-700">Email Orang Tua / Wali (Opsional)</label>
-                    <input type="email" name="parent_email" id="parent_email" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('parent_email') }}">
-                    @error('parent_email')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="parent_occupation" class="block text-sm font-medium text-gray-700">Pekerjaan Orang Tua / Wali (Opsional)</label>
-                    <input type="text" name="parent_occupation" id="parent_occupation" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('parent_occupation') }}">
-                    @error('parent_occupation')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-<h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Informasi Alamat Santri</h3>
-
-{{-- Alamat Lengkap --}}
-<div class="mb-4">
-    <label for="address" class="block text-sm font-semibold text-gray-700 mb-1">Alamat Lengkap</label>
-    <textarea name="address" id="address" rows="3"
-        class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"
-        placeholder="Contoh: Jl. Merpati No. 45, Desa Aikmel">{{ old('address') }}</textarea>
-    @error('address')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-</div>
-
-{{-- Wilayah --}}
-<div class="grid grid-cols-1 md:grid-cols-2 gap-4">
-    {{-- Provinsi --}}
-    <div>
-        <label for="province" class="block text-sm font-semibold text-gray-700 mb-1">Provinsi (Opsional)</label>
-        <select name="province" id="province"
-            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-            <option value="">Pilih Provinsi</option>
-        </select>
-        @error('province')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-    </div>
-
-    {{-- Kabupaten/Kota --}}
-    <div>
-        <label for="city" class="block text-sm font-semibold text-gray-700 mb-1">Kabupaten/Kota (Opsional)</label>
-        <select name="city" id="city"
-            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-            <option value="">Pilih Kabupaten/Kota</option>
-        </select>
-        @error('city')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-    </div>
-
-    {{-- Kecamatan --}}
-    <div>
-        <label for="district" class="block text-sm font-semibold text-gray-700 mb-1">Kecamatan (Opsional)</label>
-        <select name="district" id="district"
-            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-            <option value="">Pilih Kecamatan</option>
-        </select>
-        @error('district')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-    </div>
-
-    {{-- Kelurahan --}}
-    <div>
-        <label for="village" class="block text-sm font-semibold text-gray-700 mb-1">Kelurahan/Desa (Opsional)</label>
-        <select name="village" id="village"
-            class="appearance-none w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-            <option value="">Pilih Kelurahan/Desa</option>
-        </select>
-        @error('village')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
-    </div>
-</div>
-
-
-
-                {{-- Foto Santri --}}
-                <div class="pt-4 border-t border-gray-200">
-                    <label for="photo" class="block text-sm font-medium text-gray-700">Foto Santri (Opsional, Maks. 2MB)</label>
-                    <input type="file" name="photo" id="photo" class="mt-1 block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100" accept="image/*">
-                    @error('photo')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-                
-                <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Data Akademik & Status Santri</h3>
-                <div>
-                    <label for="admission_year" class="block text-sm font-medium text-gray-700">Tahun Masuk</label>
-                    <input type="number" name="admission_year" id="admission_year" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('admission_year', date('Y')) }}">
-                    @error('admission_year')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div>
-                    <label for="category" class="block text-sm font-medium text-gray-700">Kategori Santri</label>
-                    <select name="category" id="category" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="">Pilih Kategori</option>
-                        <option value="Tahfidz" {{ old('category') == 'Tahfidz' ? 'selected' : '' }}>Tahfidz</option>
-                        <option value="Kitab Kuning" {{ old('category') == 'Kitab Kuning' ? 'selected' : '' }}>Kitab Kuning</option>
-                        <option value="Umum" {{ old('category') == 'Umum' ? 'selected' : '' }}>Umum</option>
-                    </select>
-                    @error('category')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
- {{-- Tipe Santri --}}
-            <div>
-                <label for="type" class="block text-sm font-medium text-gray-700">Tipe Santri</label>
-                <select name="type" id="type"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                    <option value="">Pilih Tipe</option>
-                    <option value="Asrama" {{ old('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
-                    <option value="Pulang-Pergi" {{ old('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
-                </select>
-                @error('type')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
+                <a href="{{ route('admin.students.index') }}"
+                   class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-teal-500 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                    <x-heroicon-o-arrow-left class="h-5 w-5 mr-2" />
+                    Kembali ke Daftar
+                </a>
             </div>
 
-            {{-- Jadwal Sore / Malam --}}
-            <div id="halaqoh-period-group-student" class="hidden">
-                <label for="halaqoh_period" class="block text-sm font-medium text-gray-700">Jadwal Pulang-Pergi</label>
-                <select name="halaqoh_period" id="halaqoh_period"
-                    class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                    <option value="">Pilih Jadwal</option>
-                    <option value="Sore" {{ old('halaqoh_period') == 'Sore' ? 'selected' : '' }}>Sore</option>
-                    <option value="Malam" {{ old('halaqoh_period') == 'Malam' ? 'selected' : '' }}>Malam</option>
-                </select>
-                @error('halaqoh_period')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
+            <div class="p-6 text-gray-900">
+                @if (session('success'))
+                    <div class="bg-green-100 border border-green-400 text-green-700 px-5 py-3 rounded-lg relative mb-6 shadow-sm flex items-center" role="alert">
+                        <x-heroicon-o-check-circle class="h-5 w-5 mr-2" />
+                        <span class="block sm:inline">{{ session('success') }}</span>
+                    </div>
+                @endif
+                @if (session('error'))
+                    <div class="bg-red-100 border border-red-400 text-red-700 px-5 py-3 rounded-lg relative mb-6 shadow-sm flex items-center" role="alert">
+                        <x-heroicon-o-exclamation-circle class="h-5 w-5 mr-2" />
+                        <span class="block sm:inline">{{ session('error') }}</span>
+                    </div>
+                @endif
+
+                <form action="{{ route('admin.students.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+                    @csrf
+
+                    {{-- Memanggil komponen form --}}
+                    <x-forms.santri-form :halaqohPeriods="$halaqohPeriods" /> {{-- $student tidak perlu dilewatkan karena ini create --}}
+
+                    <div class="mt-8 flex justify-end space-x-4 border-t pt-6 border-gray-200">
+                        <a href="{{ route('admin.students.index') }}"
+                           class="inline-flex items-center px-6 py-3 border border-gray-300 text-base font-medium rounded-md shadow-sm text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                            <x-heroicon-o-x-mark class="h-5 w-5 mr-2" />
+                            Batal
+                        </a>
+                        <button type="submit"
+                                class="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-teal-600 hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
+                            <x-heroicon-o-plus class="h-5 w-5 mr-2" />
+                            Tambah Santri
+                        </button>
+                    </div>
+                </form>
             </div>
-
-
-                <div>
-                    <label for="status" class="block text-sm font-medium text-gray-700">Status Santri</label>
-                    <select name="status" id="status" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-                        <option value="aktif" {{ old('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                        <option value="non-aktif" {{ old('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
-                        <option value="lulus" {{ old('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
-                    </select>
-                    @error('status')
-                        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                    @enderror
-                </div>
-
-                <div class="flex items-center justify-end mt-4">
-                    <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition ease-in-out duration-150 mr-2">
-                        Batal
-                    </a>
-                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-500 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-600 focus:bg-teal-600 active:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition ease-in-out duration-150">
-                        Simpan Santri
-                    </button>
-                </div>
-            </form>
         </div>
     </div>
+
+    {{-- Memanggil komponen script --}}
+    <x-scripts.region-scripts /> {{-- $student tidak perlu dilewatkan karena ini create --}}
 @endsection
-
-@push('scripts')
-<script>
-document.addEventListener('DOMContentLoaded', function () {
-    const provinsiSelect = document.getElementById('province');
-    const kabupatenSelect = document.getElementById('city');
-    const kecamatanSelect = document.getElementById('district');
-    const kelurahanSelect = document.getElementById('village');
-    const typeSelect = document.getElementById('type');
-
-    const selectedProv = "{{ old('province') }}";
-    const selectedKab = "{{ old('city') }}";
-    const selectedKec = "{{ old('district') }}";
-    const selectedKel = "{{ old('village') }}";
-
-    // Load Provinces
-    fetch('/api/provinces')
-        .then(res => res.json())
-        .then(provinces => {
-            provinces.forEach(prov => {
-                const option = new Option(prov, prov, false, prov === selectedProv);
-                provinsiSelect.appendChild(option);
-            });
-            if (selectedProv) updateCities(selectedProv);
-        })
-        .catch(() => alert('❌ Gagal memuat data provinsi.'));
-
-    provinsiSelect.addEventListener('change', function () {
-        updateCities(this.value);
-        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-    });
-
-    kabupatenSelect.addEventListener('change', function () {
-        updateDistricts(provinsiSelect.value, this.value);
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-    });
-
-    kecamatanSelect.addEventListener('change', function () {
-        updateVillages(provinsiSelect.value, kabupatenSelect.value, this.value);
-    });
-
-    function updateCities(provinsi) {
-        kabupatenSelect.innerHTML = '<option value="">Pilih Kabupaten/Kota</option>';
-        fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
-            .then(res => res.json())
-            .then(cities => {
-                cities.forEach(kab => {
-                    const option = new Option(kab, kab, false, kab === selectedKab);
-                    kabupatenSelect.appendChild(option);
-                });
-                if (selectedKab) updateDistricts(provinsi, selectedKab);
-            })
-            .catch(() => alert('❌ Gagal memuat data kota/kabupaten.'));
-    }
-
-    function updateDistricts(provinsi, kota) {
-        kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
-        fetch(`/api/districts?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}`)
-            .then(res => res.json())
-            .then(districts => {
-                districts.forEach(kec => {
-                    const option = new Option(kec, kec, false, kec === selectedKec);
-                    kecamatanSelect.appendChild(option);
-                });
-                if (selectedKec) updateVillages(provinsi, kota, selectedKec);
-            })
-            .catch(() => alert('❌ Gagal memuat data kecamatan.'));
-    }
-
-    function updateVillages(provinsi, kota, kecamatan) {
-        kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
-        fetch(`/api/villages?province=${encodeURIComponent(provinsi)}&city=${encodeURIComponent(kota)}&district=${encodeURIComponent(kecamatan)}`)
-            .then(res => res.json())
-            .then(villages => {
-                villages.forEach(kel => {
-                    const option = new Option(kel, kel, false, kel === selectedKel);
-                    kelurahanSelect.appendChild(option);
-                });
-            })
-            .catch(() => alert('❌ Gagal memuat data kelurahan.'));
-    }
-
-    // Fungsi Toggle Halaqoh Period (Dropdown Tipe Santri)
-    function toggleHalaqohPeriodStudent() {
-        const selectedType = typeSelect.value;
-        const halaqohPeriodGroup = document.getElementById('halaqoh-period-group-student');
-        const halaqohPeriodSelect = document.getElementById('halaqoh_period');
-
-        if (selectedType === 'Pulang-Pergi') {
-            halaqohPeriodGroup.classList.remove('hidden');
-            halaqohPeriodSelect.setAttribute('required', 'required');
-        } else {
-            halaqohPeriodGroup.classList.add('hidden');
-            halaqohPeriodSelect.removeAttribute('required');
-            halaqohPeriodSelect.value = '';
-        }
-    }
-
-    // Jalankan fungsi toggle saat halaman dimuat dan saat tipe berubah
-    toggleHalaqohPeriodStudent();
-    typeSelect.addEventListener('change', toggleHalaqohPeriodStudent);
-});
-</script>
-
-@endpush
-
