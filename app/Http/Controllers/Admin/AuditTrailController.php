@@ -26,7 +26,7 @@ class AuditTrailController extends Controller
     
     public function index(Request $request)
     {
-        $query = AuditLog::query();
+        $query = AuditTrail::query();
 
         // Pencarian berdasarkan 'search'
         if ($request->filled('search')) {
@@ -81,7 +81,7 @@ class AuditTrailController extends Controller
         $dateToPurge = Carbon::parse($request->input('purge_date'));
 
         // Hapus log yang lebih tua dari tanggal yang ditentukan
-        $deletedCount = AuditLog::where('created_at', '<', $dateToPurge)->delete();
+        $deletedCount = AuditTrail::where('created_at', '<', $dateToPurge)->delete();
 
         return redirect()->route('admin.audit-trails.index')
                          ->with('success', "{$deletedCount} log audit trail berhasil dihapus yang lebih tua dari {$dateToPurge->format('d F Y')}.");
