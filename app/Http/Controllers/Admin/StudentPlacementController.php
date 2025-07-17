@@ -81,9 +81,12 @@ class StudentPlacementController extends Controller
         $room = Room::findOrFail($validatedData['room_id']);
 
         // Validasi: Tipe Santri Harus 'asrama'
-        if ($student->type !== 'asrama') {
+        if (strtolower($student->type) !== 'asrama') { 
+        // ATAU, jika Anda yakin hanya 'Asrama' dan 'asrama' yang ada:
+        if ($student->type !== 'asrama' && $student->type !== 'Asrama') {
             return redirect()->back()->withInput()->with('error', 'Santri ini bukan tipe asrama dan tidak bisa ditempatkan di kamar.');
-        }
+        }}
+        
 
         // Validasi: Jenis kelamin santri harus sesuai dengan jenis kamar
         if ($student->gender !== $room->gender_type) {
