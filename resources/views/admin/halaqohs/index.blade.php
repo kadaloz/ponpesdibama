@@ -17,7 +17,7 @@
         {{-- Filter Periode --}}
         <form method="GET" class="mb-4 flex items-center space-x-3">
             <label for="period" class="font-semibold text-sm">Filter Periode:</label>
-            <select name="period" id="period" onchange="this.form.submit()" class="border border-gray-300 rounded px-3 py-1">
+            <select name="period" id="period" onchange="this.form.submit()" class="border border-gray-300 rounded px-4 py-1">
                 <option value="">Semua</option>
                 <option value="Sore" {{ request('period') == 'Sore' ? 'selected' : '' }}>Sore</option>
                 <option value="Malam" {{ request('period') == 'Malam' ? 'selected' : '' }}>Malam</option>
