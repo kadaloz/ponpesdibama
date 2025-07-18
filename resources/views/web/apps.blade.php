@@ -36,7 +36,7 @@
     <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.png') }}">
 
     <script type="application/ld+json">
-    {!! json_encode([
+{!! json_encode([
     '@context' => 'https://schema.org',
     '@type' => 'EducationalOrganization',
     'name' => 'Pondok Pesantren Diniyah Baitul Makmur Aikmel',
@@ -56,9 +56,9 @@
         'postalCode' => '83653',
         'addressCountry' => 'ID',
     ],
-    'hasMap' => 'https://www.google.com/maps/embed?...' // ganti dengan link asli peta Anda
-    ], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
-    </script>
+    'hasMap' => 'https://www.google.com/maps/embed?...'
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
+</script>
 
 
     {{-- Styles & Fonts --}}
