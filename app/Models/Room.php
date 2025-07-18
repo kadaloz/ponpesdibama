@@ -34,4 +34,9 @@ class Room extends Model
     {
         return $this->currentStudents->count();
     }
+    // Relasi untuk mendapatkan barang yang ada di kamar ini
+    public function items()
+    {
+        return $this->hasMany(RoomItem::class);
+    }    
 }
