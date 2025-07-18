@@ -28,13 +28,12 @@
     <meta name="twitter:description" content="@yield('meta_description')"/>
     <meta name="twitter:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
 
-    {{-- Favicon --}}
-    {{-- Pastikan `dibama.ico` dan `dibama.png` ada di `public/storage/images/logo/` --}}
+
     <link rel="icon" href="{{ asset('storage/images/logo/dibama.ico') }}" sizes="32x32">
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('storage/images/logo/dibama.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.png') }}">
 
-    {{-- Structured Data (Perbarui alamat sesuai data aktual) --}}
+ 
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
@@ -60,8 +59,6 @@
     }
     </script>
 
-    {{-- Styles & Fonts --}}
-    {{-- Pastikan Vite terinstal dan berjalan (npm run dev/build) --}}
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400;1,700&display=swap" rel="stylesheet">
@@ -166,26 +163,24 @@
             display: none !important;
         }
     </style>
-    @stack('styles') {{-- Untuk CSS tambahan per halaman --}}
-    @stack('head') {{-- Untuk elemen tambahan di dalam <head> --}}
+    @stack('styles')
+    @stack('head')
 </head>
 <body class="bg-gray-50 text-gray-800">
-    {{-- Header Section (Berisi navigasi utama) --}}
+
     @include('web.header') 
 
-    {{-- Main Content Section --}}
+
     <main>
-        @yield('main_content') {{-- Ini adalah tempat konten spesifik halaman akan dimasukkan --}}
+        @yield('main_content')
     </main>
 
-    {{-- Modal (Jika Anda punya modal global) --}}
+
     @include('web.modal') 
 
     {{-- Footer Section --}}
     @include('web.footer') 
 
-    {{-- Scripts per halaman yang ditambahkan via @push('scripts') --}}
-    @stack('scripts')
 
 
 </body>
