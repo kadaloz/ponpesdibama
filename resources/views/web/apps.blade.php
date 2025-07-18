@@ -179,15 +179,7 @@
     class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-xl backdrop-blur-md transition-all duration-300"
     style="display: none;" 
 >
-    {{-- WhatsApp Icon + Text --}}
-    <a href="https://wa.me/6281916577540?text=Assalamu'alaikum%20saya%20ingin%20bertanya%20tentang%20PPDB%20PonpesDIBAMA"
-       target="_blank" rel="noopener noreferrer" class="flex items-center gap-2">
-        <svg class="w-6 h-6 shrink-0" fill="currentColor" viewBox="0 0 32 32">
-            <path fill="#FFFFFF" d="M16 .5C7.438.5.5 7.438.5 16c0 2.798.73 5.434 2.074 7.735L.5 31.5l7.916-2.057A15.412 15.412 0 0016 31.5c8.562 0 15.5-6.938 15.5-15.5S24.562.5 16 .5zm0 28.375c-2.488 0-4.93-.662-7.074-1.914l-.51-.294-4.688 1.22 1.25-4.6-.324-.523A13.181 13.181 0 012.812 16C2.812 8.895 8.895 2.812 16 2.812S29.188 8.895 29.188 16 23.105 28.875 16 28.875z"/>
-            <path fill="#FFFFFF" d="M23.292 19.69l-2.583-.734a1.074 1.074 0 00-1.034.279l-.845.865a11.072 11.072 0 01-5.154-5.155l.865-.845c.286-.286.385-.703.28-1.034l-.735-2.584a1.074 1.074 0 00-1.005-.748c-.057 0-.115.005-.173.017l-2.72.575a1.074 1.074 0 00-.796.796c-.223.98-.34 2.005-.34 3.064 0 5.662 4.61 10.272 10.272 10.272 1.059 0 2.085-.117 3.064-.34a1.074 1.074 0 00.796-.796l.575-2.72a1.074 1.074 0 00-.748-1.006z"/>
-        </svg>
-        <span class="hidden sm:inline text-sm font-medium">Hubungi Admin</span>
-    </a>
+ 
 
 
 </div>
