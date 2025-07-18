@@ -20,7 +20,7 @@ use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbReq
 use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogController
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentPlacementController; // NEW: Import StudentPlacementController
-use App\Http\Controllers\ItemController; 
+use App\Http\Controllers\Admin\ItemController; // <<< ADD '/Admin' HERE
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
