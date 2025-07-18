@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Room;
+use App\Models\StudentRoomPlacement; // Pastikan ini ada jika Anda ingin memeriksa penempatan santri
+use App\Models\Item; // Pastikan ini ada jika Anda ingin memeriksa barang
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule; // Pastikan ini ada
 

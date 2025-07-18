@@ -37,6 +37,6 @@ class Room extends Model
     // Relasi untuk mendapatkan barang yang ada di kamar ini
     public function items()
     {
-        return $this->hasMany(RoomItem::class);
+        return $this->hasMany(Item::class);
     }    
 }
