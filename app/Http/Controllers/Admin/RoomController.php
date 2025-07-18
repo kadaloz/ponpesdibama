@@ -157,8 +157,8 @@ class RoomController extends Controller
 
         // Dapatkan semua santri yang saat ini tidak memiliki kamar aktif
         // ATAU santri yang sudah ada di kamar ini (untuk memungkinkan penghapusan)
-        $availableStudents = Student::whereDoesntHave('currentRoomPlacement')
-                                    ->orWhereHas('currentRoomPlacement', function ($query) use ($room) {
+        $availableStudents = Student::whereDoesntHave('currentPlacement')
+                                    ->orWhereHas('currentPlacement', function ($query) use ($room) {
                                         $query->where('room_id', $room->id);
                                     })
                                     ->orderBy('name')
