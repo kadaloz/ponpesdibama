@@ -20,6 +20,7 @@ use App\Http\Controllers\Admin\PpdbRequirementController; // NEW: Import PpdbReq
 use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogController
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentPlacementController; // NEW: Import StudentPlacementController
+use App\Http\Controllers\ItemController; 
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
@@ -283,6 +284,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::resource('rooms', RoomController::class);
     Route::get('rooms/{room}/assign', [RoomController::class, 'assignForm'])->name('rooms.assign.form');
     Route::post('rooms/{room}/assign', [RoomController::class, 'assignStudents'])->name('rooms.assign.students');
+    Route::resource('items', ItemController::class);
     // Rute untuk Penempatan Santri
     Route::get('/placements', [StudentPlacementController::class, 'index'])->name('placements.index') ->middleware('permission:view placements');
     Route::get('/placements/create', [StudentPlacementController::class, 'create'])->name('placements.create')  ->middleware('permission:create placements');
