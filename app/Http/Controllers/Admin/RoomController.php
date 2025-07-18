@@ -74,7 +74,12 @@ class RoomController extends Controller
      */
     public function show(Room $room)
     {
+        // Untuk admin, detail biasanya di halaman edit. Redirect saja.
+        // Jika ingin menampilkan detail, bisa buat view khusus
+        // return view('admin.rooms.show', compact('room'));
+        $room->load(['currentStudents', 'items']); // Pastikan 'items' juga dimuat jika Anda ingin menampilkannya
         return view('admin.rooms.show', compact('room'));
+        
     }
 
     /**

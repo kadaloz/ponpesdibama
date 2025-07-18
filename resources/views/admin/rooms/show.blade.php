@@ -42,15 +42,48 @@
                 </div>
             </div>
 
-            {{-- TODO: Bagian untuk menampilkan santri yang menempati kamar ini --}}
+            ---
+
+            {{-- Bagian untuk menampilkan santri yang menempati kamar ini --}}
             <div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
                 <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
-                    <x-heroicon-o-users class="h-6 w-6 text-gray-600 mr-2" /> Santri Penghuni (Akan Datang)
+                    {{-- Gunakan currentOccupancy() dari model Room Anda --}}
+                    <x-heroicon-o-users class="h-6 w-6 text-gray-600 mr-2" /> Santri Penghuni ({{ $room->currentOccupancy() }}/{{ $room->capacity }})
                 </h4>
-                <p class="text-gray-600 italic">Fitur penempatan santri akan ditambahkan di bagian selanjutnya.</p>
+                @if ($room->currentStudents->isNotEmpty()) {{-- Perhatikan ini: currentStudents --}}
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Santri</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">NIS</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($room->currentStudents as $placement) {{-- Perhatikan ini: $placement --}}
+                                    <tr>
+                                        {{-- Akses data santri melalui objek placement --}}
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $placement->student->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $placement->student->nis }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="text-gray-600 italic">Belum ada santri yang menempati kamar ini.</p>
+                @endif
+                <div class="mt-4 text-right">
+                     <a href="{{ route('admin.rooms.assign.form', $room) }}" class="inline-flex items-center px-4 py-2 bg-purple-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-purple-700 focus:bg-purple-700 active:bg-purple-800 focus:outline-none focus:ring-2 focus:ring-purple-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+                        <x-heroicon-o-user-plus class="w-4 h-4 mr-2 -ml-1" />
+                        Atur Penghuni
+                    </a>
+                </div>
             </div>
 
-            {{-- TODO: Bagian untuk menampilkan inventaris di kamar ini --}}
+            ---
+
+            {{-- Bagian untuk menampilkan inventaris di kamar ini (belum ada perubahan, tetap placeholder untuk saat ini) --}}
             <div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
                 <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
                     <x-heroicon-o-archive-box class="h-6 w-6 text-gray-600 mr-2" /> Inventaris Kamar (Akan Datang)
