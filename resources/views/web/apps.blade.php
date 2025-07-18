@@ -189,13 +189,7 @@
         <span class="hidden sm:inline text-sm font-medium">Hubungi Admin</span>
     </a>
 
-    <button @click="show = false" title="Tutup"
-            class="ml-2 text-white hover:text-gray-200 transition-all duration-300 focus:outline-none">
-        <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
-             viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
-        </svg>
-    </button>
+
 </div>
 
 
