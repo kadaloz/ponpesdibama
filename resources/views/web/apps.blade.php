@@ -36,28 +36,28 @@
     <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.png') }}">
 
     <script type="application/ld+json">
-{
-    "@context": "https://schema.org",
-    "@type": "EducationalOrganization",
-    "name": "Pondok Pesantren Diniyah Baitul Makmur Aikmel",
-    "url": "https://ponpesdibama.com",
-    "logo": "{{ asset('storage/images/logo/dibama.png') }}",  {{-- Use asset() helper for dynamic path --}}
-    "description": "Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur'ani dan berakhlak mulia.",
-    "contactPoint": {
-        "@type": "ContactPoint",
-        "telephone": "+6281916577540",
-        "contactType": "Customer Support"
-    },
-    "address": {
-        "@type": "PostalAddress",
-        "streetAddress": "Jl. Raya Aikmel - Terara, Kec. Aikmel, Kab. Lombok Timur",
-        "addressLocality": "Aikmel",
-        "addressRegion": "Nusa Tenggara Barat",
-        "postalCode": "83653",
-        "addressCountry": "ID"
-    },
-    "hasMap": "https://www.google.com/maps/embed?..." {{-- REMEMBER TO REPLACE WITH YOUR ACTUAL GOOGLE MAPS EMBED URL --}}
-}
+{!! json_encode([
+    '@context' => 'https://schema.org',
+    '@type' => 'EducationalOrganization',
+    'name' => 'Pondok Pesantren Diniyah Baitul Makmur Aikmel',
+    'url' => url('/'),
+    'logo' => asset('storage/images/logo/dibama.png'),
+    'description' => 'Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur\'ani dan berakhlak mulia.',
+    'contactPoint' => [
+        '@type' => 'ContactPoint',
+        'telephone' => '+6281916577540',
+        'contactType' => 'Customer Support',
+    ],
+    'address' => [
+        '@type' => 'PostalAddress',
+        'streetAddress' => 'Jl. Raya Aikmel - Terara, Kec. Aikmel, Kab. Lombok Timur',
+        'addressLocality' => 'Aikmel',
+        'addressRegion' => 'Nusa Tenggara Barat',
+        'postalCode' => '83653',
+        'addressCountry' => 'ID',
+    ],
+    'hasMap' => 'https://www.google.com/maps/embed?...'
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
 </script>
 
 
