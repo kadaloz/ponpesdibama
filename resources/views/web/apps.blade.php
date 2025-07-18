@@ -35,6 +35,30 @@
     <link rel="icon" type="image/png" sizes="192x192" href="{{ asset('storage/images/logo/dibama.png') }}">
     <link rel="apple-touch-icon" href="{{ asset('storage/images/logo/dibama.png') }}">
 
+<script type="application/ld+json">
+{
+    "@context": "https://schema.org",
+    "@type": "EducationalOrganization",
+    "name": "Pondok Pesantren Diniyah Baitul Makmur Aikmel",
+    "url": "{{ url('/') }}",
+    "logo": "{{ asset('storage/images/logo/dibama.png') }}",
+    "description": "Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur'ani dan berakhlak mulia.",
+    "contactPoint": {
+        "@type": "ContactPoint",
+        "telephone": "+6281916577540",
+        "contactType": "Customer Support"
+    },
+    "address": {
+        "@type": "PostalAddress",
+        "streetAddress": "Jl. Raya Aikmel - Terara, Kec. Aikmel, Kab. Lombok Timur",
+        "addressLocality": "Aikmel",
+        "addressRegion": "Nusa Tenggara Barat",
+        "postalCode": "83653",
+        "addressCountry": "ID"
+    },
+    "hasMap": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.7410000000005!2d116.480000!3d-8.625000!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2z4bm84bm84bm84bm8!5e0!3m2!1sid!2sid!4v1678888888888!5m2!1sid!2sid" {{-- Contoh: **PASTIKAN UNTUK MEMPERBARUI DENGAN URL PETA ASLI ANDA** --}}
+}
+</script>
 
     {{-- Styles & Fonts --}}
     {{-- Ensure Vite is running (npm run dev or npm run build) --}}
