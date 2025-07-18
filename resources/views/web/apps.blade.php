@@ -178,7 +178,6 @@
 
     @include('web.modal') 
 
-    {{-- Footer Section --}}
     @include('web.footer') 
 
 
