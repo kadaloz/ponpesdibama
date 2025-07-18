@@ -82,6 +82,12 @@
                     Pendaftaran
                 </a>
             </li>
+        @else
+            <li>
+                <a href="#pendaftaran" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">
+                    Pendaftaran Tutup
+                </a>
+            </li>
         @endif
         <li>
             <a href="#galeri" class="nav-link px-3 py-1.5 rounded-full hover:bg-teal-100 transition">Galeri</a>
@@ -452,9 +458,6 @@
     </div>
 </section>
 
-
-@endsection
-
 @push('scripts')
 <script>
     document.addEventListener("DOMContentLoaded", () => {
@@ -569,3 +572,5 @@
     });
 </script>
 @endpush
+@endsection
+
