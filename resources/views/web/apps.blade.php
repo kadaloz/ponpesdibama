@@ -65,9 +65,10 @@
         body { font-family: 'Inter', sans-serif; }
         /* Custom styles for section titles */
         .section-title {
-            @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-12 {{-- Margin bawah ditingkatkan --}}
-                   bg-clip-text text-transparent bg-gradient-to-r from-teal-700 to-blue-700
-                   drop-shadow-xl; {{-- Efek bayangan ditingkatkan --}}
+            @apply text-4xl md:text-5xl lg:text-6xl font-extrabold text-center mb-12;
+            /* Margin bawah ditingkatkan */
+            @apply bg-clip-text text-transparent bg-gradient-to-r from-teal-700 to-blue-700 drop-shadow-xl;
+            /* Efek bayangan ditingkatkan */
         }
         /* Apply rounded corners to images */
         img {
@@ -167,7 +168,7 @@
 {{-- Floating WhatsApp Button with Delay & Animation --}}
 <div
     x-data="{ show: false }"
-    x-init="setTimeout(() => show = true, 3000)" {{-- Delay 3 detik --}}
+    x-init="setTimeout(() => show = true, 3000)"
     x-show="show"
     x-transition:enter="transition ease-out duration-700"
     x-transition:enter-start="opacity-0 translate-y-10 scale-90"
@@ -176,7 +177,7 @@
     x-transition:leave-start="opacity-100 translate-y-0 scale-100"
     x-transition:leave-end="opacity-0 translate-y-10 scale-90"
     class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-green-500 hover:bg-green-600 text-white px-4 py-3 rounded-full shadow-xl backdrop-blur-md transition-all duration-300"
-    style="display: none;" {{-- Alpine akan mengatur visibilitas --}}
+    style="display: none;" 
 >
     {{-- WhatsApp Icon + Text --}}
     <a href="https://wa.me/6281916577540?text=Assalamu'alaikum%20saya%20ingin%20bertanya%20tentang%20PPDB%20PonpesDIBAMA"
@@ -188,7 +189,6 @@
         <span class="hidden sm:inline text-sm font-medium">Hubungi Admin</span>
     </a>
 
-    {{-- Close Button --}}
     <button @click="show = false" title="Tutup"
             class="ml-2 text-white hover:text-gray-200 transition-all duration-300 focus:outline-none">
         <svg class="w-4 h-4" fill="none" stroke="currentColor" stroke-width="2"
