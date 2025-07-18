@@ -15,7 +15,7 @@
     <!-- Background Text (Responsive) -->
     <div class="absolute inset-0 flex items-center justify-center text-center select-none pointer-events-none z-0">
         <h1 class="text-[9vw] sm:text-[7vw] md:text-[5vw] lg:text-[4vw] font-extrabold tracking-wider text-white opacity-10 blur-sm whitespace-nowrap">
-            @Bait El Makmur
+            Bait El Makmur
         </h1>
     </div>
 
