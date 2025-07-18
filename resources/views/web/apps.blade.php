@@ -163,8 +163,6 @@
             display: none !important;
         }
     </style>
-    @stack('styles')
-    @stack('head')
 </head>
 <body class="bg-gray-50 text-gray-800">
 
