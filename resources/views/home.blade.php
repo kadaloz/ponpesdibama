@@ -521,25 +521,19 @@
             getDailyAdviceBtn.disabled = true;
 
             try {
-                const prompt = "Berikan satu nasihat singkat Islami atau kutipan Al-Quran/Hadits beserta terjemahan/maknanya dalam bahasa Indonesia. Batasi hingga 500 karakter.";
-                const chatHistory = [{ role: "user", parts: [{ text: prompt }] }];
-                const payload = { contents: chatHistory };
-                const apiKey = "AIzaSyDxC3Qv2HIKFtg3wVI5Cbr9jVZacVwI7YI";
-                const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=${apiKey}`;
-
-                const response = await fetch(apiUrl, {
-                    method: 'POST',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(payload)
+                // Call your backend endpoint to get daily advice
+                const response = await fetch('/api/daily-advice', {
+                    method: 'GET',
+                    headers: { 'Accept': 'application/json' }
                 });
 
                 if (!response.ok) {
                     const errorData = await response.json();
-                    throw new Error(`Error API: ${response.status} - ${errorData.error?.message || 'Unknown error'}`);
+                    throw new Error(`Error API: ${response.status} - ${errorData.message || 'Unknown error'}`);
                 }
 
                 const result = await response.json();
-                const text = result?.candidates?.[0]?.content?.parts?.[0]?.text;
+                const text = result?.advice;
 
                 if (text) {
                     dailyAdviceOutput.textContent = text;
