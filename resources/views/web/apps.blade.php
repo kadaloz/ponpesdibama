@@ -9,7 +9,31 @@
     <title>@yield('title', 'Pondok Pesantren Dibama - Pendidikan Islam Unggul')</title>
 
 
-
+ 
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "EducationalOrganization",
+        "name": "Pondok Pesantren Diniyah Baitul Makmur Aikmel",
+        "url": "{{ url('/') }}",
+        "logo": "{{ asset('storage/images/logo/dibama.png') }}",
+        "description": "Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur'ani dan berakhlak mulia.",
+        "contactPoint": {
+            "@type": "ContactPoint",
+            "telephone": "+6281916577540", {{-- Format tanpa spasi atau tanda hubung untuk telepon --}}
+            "contactType": "Customer Support"
+        },
+        "address": {
+            "@type": "PostalAddress",
+            "streetAddress": "Jl. Raya Aikmel - Terara, Kec. Aikmel", {{-- Contoh: Perbarui ini --}}
+            "addressLocality": "Aikmel",
+            "addressRegion": "Nusa Tenggara Barat",
+            "postalCode": "83653",
+            "addressCountry": "ID"
+        },
+        "hasMap": "https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.381239871545!2d116.4841643147841!3d-8.683050993510507!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dcc3941a5f6e80b%3A0xc6c4d7e2c9e7e7e!2sPondok%20Pesantren%20Diniyah%20Baitul%20Makmur%20Aikmel!5e0!3m2!1sen!2sid!4v1678888888888!5m2!1sen!2sid" {{-- Ganti dengan URL peta aktual Anda --}}
+    }
+    </script>
 
     @vite(['resources/css/app.css', 'resources/js/app.js'])
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700&display=swap" rel="stylesheet">
