@@ -8,28 +8,23 @@
 @section('main_content')
     {{-- Konten halaman --}}
 
-<!-- Hero Section -->
 <section id="beranda"
          class="relative bg-gradient-to-r from-teal-700 to-emerald-700 text-white py-8 sm:py-12 md:py-20 flex items-center justify-center min-h-[50vh] md:min-h-[60vh] lg:min-h-[70vh] rounded-b-3xl shadow-2xl overflow-hidden">
 
-    <!-- Background Text (Responsive) -->
     <div class="absolute inset-0 flex items-center justify-center text-center select-none pointer-events-none z-0">
         <h1 class="text-[9vw] sm:text-[7vw] md:text-[5vw] lg:text-[4vw] font-extrabold tracking-wider text-white opacity-10 blur-sm whitespace-nowrap">
             @Bait El Makmur
         </h1>
     </div>
 
-    <!-- Content -->
     <div class="relative z-10 text-center px-6 max-w-4xl mx-auto animate-fade-in-up">
     
-        <!-- Logo Institusi -->
         <div class="flex justify-center items-center mb-6">
             <img src="{{ asset('storage/images/logo/pondok.png') }}"
                  alt="Logo Pondok"
                  class="h-20 sm:h-24 md:h-28 lg:h-32 xl:h-36 w-auto max-w-[180px] rounded-md shadow-xl transition-transform duration-300 ease-in-out">
         </div>
 
-        <!-- Judul Utama -->
         <h1 class="text-4xl sm:text-5xl lg:text-6xl xl:text-7xl font-extrabold text-white text-center leading-tight tracking-tight drop-shadow-xl mb-10">
             <span class="block mb-1">Selamat Datang di</span>
             <span class="block text-yellow-300 mb-1">Website Resmi</span>
@@ -37,14 +32,12 @@
             <span class="block text-yellow-300">Diniyah Baitul Makmur Aikmel</span>
         </h1>
 
-        <!-- Motto -->
         <p class="text-lg sm:text-xl md:text-2xl italic text-white/90 text-center leading-relaxed max-w-2xl mx-auto px-4 font-medium">
             <span class="block">Mendidik <span class="text-yellow-200 font-semibold">Generasi Qur'ani</span>,</span>
             <span class="block">Berakhlak <span class="text-yellow-200 font-semibold">Islami</span>,</span>
             <span class="block">untuk <span class="text-yellow-200 font-semibold">Membangun Negeri</span>.</span>
         </p>
 
-        <!-- CTA Button -->
         <a href="#program"
            class="inline-flex items-center justify-center mt-10 px-8 py-4 bg-white text-teal-700 font-semibold text-base md:text-lg rounded-full shadow-xl hover:bg-teal-50 transition-transform duration-300 transform hover:scale-105 ring-2 ring-white/30 animate-bounce">
             Lihat Program Kami
@@ -58,7 +51,6 @@
 </section>
 
 
-<!-- Redesigned Floating Navigation -->
 <nav class="sticky top-[80px] z-40 mx-auto mt-6 max-w-max px-6 py-3 bg-white/80 backdrop-blur-md border border-gray-200 shadow-lg rounded-full transition-all duration-300 hover:shadow-xl">
     <ul class="flex flex-wrap justify-center items-center gap-2 md:gap-4 text-sm md:text-base font-medium text-teal-800">
         <li>
@@ -99,17 +91,13 @@
 </nav>
 
 
-<!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
     <div class="container mx-auto px-6">
-        <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-extrabold text-teal-700 mb-14 drop-shadow-sm">
             Profil Pondok Pesantren
         </h2>
 
-        <!-- Content Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <!-- Image -->
             <div class="relative group overflow-hidden rounded-2xl shadow-2xl border-8 border-teal-200 transform transition duration-300 hover:scale-105">
                 @if ($pondokPhoto)
                     <img src="{{ asset('storage/' . $pondokPhoto) }}" alt="Foto Pondok Dibama"
@@ -121,18 +109,15 @@
                 @endif
             </div>
 
-            <!-- Text Content -->
             <div class="text-lg leading-relaxed text-gray-700">
                 <div class="mb-6 prose max-w-none">
                     {!! $aboutUsContent !!}
                 </div>
 
-                <!-- Highlighted Quote -->
                 <blockquote class="pl-5 border-l-4 border-teal-600 italic text-teal-800 font-semibold mb-8">
                     {{ $missionQuote }}
                 </blockquote>
 
-                <!-- Call to Action -->
                 <a href="#kontak"
                    class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-teal-600 text-white font-semibold text-base shadow-lg hover:bg-teal-700 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                     <span>Bergabung Bersama Kami</span>
@@ -148,12 +133,10 @@
 </section>
 
 
-<!-- Key Features/Why Choose Us Section -->
 <section class="py-20 md:py-32 bg-teal-50 rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
     <div class="container mx-auto px-6 text-center">
         <h2 class="section-title text-center text-3xl md:text-4xl font-bold text-teal-700 mb-12">Mengapa Memilih PonpesDIBAMA?</h2>
         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
-            <!-- Sanad Muttashil -->
             <div class="flex flex-col items-center p-8 bg-white rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 border border-teal-100">
                 <div class="bg-teal-500 rounded-full p-4 mb-4 shadow-md">
                     <x-heroicon-o-book-open class="w-10 h-10 text-white" />
@@ -162,7 +145,6 @@
                 <p class="text-gray-700 text-center">Sanad yang Muttashil langsung bersambung hingga Rasulullah ﷺ.</p>
             </div>
 
-            <!-- Adab, Ilmu, Akhlak -->
             <div class="flex flex-col items-center p-8 bg-white rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 border border-teal-100">
                 <div class="bg-teal-500 rounded-full p-4 mb-4 shadow-md">
                     <x-heroicon-o-academic-cap class="w-10 h-10 text-white" />
@@ -171,7 +153,6 @@
                 <p class="text-gray-700 text-center">Fokus utama pada pembentukan karakter islami yang beradab.</p>
             </div>
 
-            <!-- Hafalan Mutqin -->
             <div class="flex flex-col items-center p-8 bg-white rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 border border-teal-100">
                 <div class="bg-teal-500 rounded-full p-4 mb-4 shadow-md">
                     <x-heroicon-o-clipboard class="w-10 h-10 text-white" />
@@ -180,7 +161,6 @@
                 <p class="text-gray-700 text-center">Hafalan Al-Qur'an yang mutqin, kuat, dan terjaga dengan baik.</p>
             </div>
 
-            <!-- Bahasa Arab -->
             <div class="flex flex-col items-center p-8 bg-white rounded-2xl shadow-xl transform transition-transform duration-300 hover:scale-105 border border-teal-100">
                 <div class="bg-teal-500 rounded-full p-4 mb-4 shadow-md">
                     <x-heroicon-o-language class="w-10 h-10 text-white" />
@@ -192,7 +172,6 @@
     </div>
 </section>
 
-<!-- Programs Section -->
 <section id="program" class="py-20 md:py-32 bg-teal-50 rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
     <div class="container mx-auto px-4 md:px-6">
         <h2 class="text-center text-3xl md:text-4xl font-extrabold text-teal-700 mb-14 drop-shadow-sm">Program Pendidikan Unggulan</h2>
@@ -213,7 +192,6 @@
                     @endforeach
                 </div>
 
-                <!-- Custom navigation -->
                 <div class="flex justify-center mt-10 gap-6">
                     <button class="swiper-button-prev group transition-all">
                         <svg class="w-10 h-10 text-teal-600 group-hover:text-teal-800 transition" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
@@ -233,7 +211,6 @@
 
 
 
-    <!-- Daily Advice Section -->
     <section id="nasihat-harian" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up"> {{-- Padding, rounded, shadow lebih menonjol --}}
         <div class="container mx-auto px-6 text-center">
             <h2 class="section-title text-center text-3xl md:text-4xl font-bold text-teal-700 mb-12">Nasihat Harian ✨</h2>
@@ -252,17 +229,13 @@
     </section>
 
 
-<!-- News & Announcements Section -->
 <section id="berita" class="py-20 md:py-32 bg-teal-50 rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
     <div class="container mx-auto px-6">
-        <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-bold text-teal-700 mb-12 drop-shadow-sm">Berita & Pengumuman Terbaru</h2>
 
         <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
             @forelse ($latestNews as $newsItem)
-                <!-- News Card -->
                 <div class="bg-white rounded-2xl border border-gray-100 shadow-md hover:shadow-xl overflow-hidden transition-transform duration-300 hover:scale-[1.02]">
-                    <!-- News Image -->
                     <div class="w-full h-56 overflow-hidden">
                         <img
                             src="{{ $newsItem->image ? asset('storage/' . $newsItem->image) : 'https://placehold.co/700x400/D5F5E3/000000?text=No+Image' }}"
@@ -271,7 +244,6 @@
                         >
                     </div>
 
-                    <!-- News Content -->
                     <div class="p-6">
                         <span class="text-sm text-gray-500 block mb-2">
                             {{ $newsItem->published_at ? \Carbon\Carbon::parse($newsItem->published_at)->format('d M Y') : 'Tanggal Tidak Tersedia' }}
@@ -293,7 +265,6 @@
             @endforelse
         </div>
 
-        <!-- CTA Button -->
         <div class="text-center mt-12">
             <a href="{{ url('/berita') }}"
                class="inline-flex items-center px-8 py-4 bg-teal-600 text-white font-semibold text-sm uppercase rounded-full tracking-wide shadow-lg hover:bg-teal-700 hover:scale-105 transition transform duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400">
@@ -303,8 +274,7 @@
     </div>
 </section>
 
- <!-- Call to Action for Enrollment (Moved after Pendaftaran Section) -->
-    {{-- Tombol "Daftar Sekarang!" juga dikontrol oleh isPpdbOpen --}}
+ {{-- Tombol "Daftar Sekarang!" juga dikontrol oleh isPpdbOpen --}}
     @if ($isPpdbOpen)
         <section id="pendaftaran" class="py-20 md:py-32 bg-teal-600 text-white text-center rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
             <div class="container mx-auto px-6">
@@ -338,20 +308,16 @@
         </section>
     @endif
 
-<!-- Gallery Section -->
 <section id="galeri" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
     <div class="container mx-auto px-6">
-        <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-bold text-teal-700 mb-12 drop-shadow-sm">Galeri Kegiatan Pondok</h2>
 
         @if ($galleries->isEmpty())
             <p class="text-gray-600 text-center py-6 text-lg">Belum ada album galeri yang dipublikasi.</p>
         @else
-            <!-- Gallery Grid -->
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
                 @foreach ($galleries as $gallery)
                     <div class="bg-white rounded-2xl border border-gray-100 shadow-md hover:shadow-xl overflow-hidden transition-all duration-300 hover:scale-[1.02]">
-                        <!-- Cover Image -->
                         <div class="w-full h-48 overflow-hidden">
                             <img
                                 src="{{ $gallery->cover_image ? asset('storage/' . $gallery->cover_image) : 'https://placehold.co/600x400/D5F5E3/000000?text=No+Cover' }}"
@@ -360,7 +326,6 @@
                             >
                         </div>
 
-                        <!-- Text Content -->
                         <div class="p-6 text-center">
                             <h3 class="text-xl font-bold text-teal-700 mb-2">{{ $gallery->title }}</h3>
                             <p class="text-gray-600 text-base mb-4 leading-relaxed">
@@ -378,7 +343,6 @@
                 @endforeach
             </div>
 
-            <!-- CTA Button -->
             <div class="mt-12 text-center">
                 <a href="{{ route('public.galleries.index') }}"
                    class="inline-flex items-center px-8 py-4 bg-teal-600 text-white font-semibold text-sm uppercase rounded-full tracking-wide shadow-lg hover:bg-teal-700 hover:scale-105 transition transform duration-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-400">
@@ -390,19 +354,15 @@
 </section>
 
     
-<!-- Redesigned Contact Section with Inline WhatsApp Logo -->
 <section id="kontak" class="py-24 bg-gradient-to-br from-teal-700 to-teal-800 text-white rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-20 animate-fade-in-up">
     <div class="container mx-auto px-6">
 
-        <!-- Section Title -->
         <div class="text-center mb-16">
             <h2 class="text-4xl md:text-5xl font-extrabold drop-shadow-xl section-title">Hubungi Kami</h2>
             <p class="mt-4 text-lg text-teal-100">Kami siap membantu Anda dengan informasi dan layanan terbaik</p>
         </div>
 
-        <!-- Contact Info -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-12 text-center text-base md:text-lg font-medium">
-            <!-- Address -->
             <div class="flex flex-col items-center space-y-4">
                 <div class="bg-yellow-400 bg-opacity-20 p-4 rounded-full shadow-md">
                     <x-heroicon-o-map-pin class="w-10 h-10 text-yellow-300" />
@@ -410,7 +370,6 @@
                 <p class="leading-relaxed max-w-xs">{{ $contactAddress }}</p>
             </div>
 
-            <!-- Phone -->
             <div class="flex flex-col items-center space-y-4">
                 <div class="bg-yellow-400 bg-opacity-20 p-4 rounded-full shadow-md">
                     <x-heroicon-o-phone class="w-10 h-10 text-yellow-300" />
@@ -418,7 +377,6 @@
                 <p>{{ $contactPhone }}</p>
             </div>
 
-            <!-- Email -->
             <div class="flex flex-col items-center space-y-4">
                 <div class="bg-yellow-400 bg-opacity-20 p-4 rounded-full shadow-md">
                     <x-heroicon-o-envelope class="w-10 h-10 text-yellow-300" />
@@ -427,12 +385,10 @@
             </div>
         </div>
 
-        <!-- WhatsApp CTA -->
         <div class="mt-16 text-center">
             <a href="https://wa.me/6281916577540?text=Assalamu'alaikum%2C%20saya%20ingin%20bertanya%20tentang%20PPDB%20PonpesDIBAMA"
                target="_blank"
                class="inline-flex items-center px-8 py-4 bg-green-500 hover:bg-green-600 text-white text-base md:text-lg font-semibold rounded-full shadow-lg transition-all transform hover:scale-105">
-                <!-- WhatsApp Inline SVG -->
                 <svg class="w-6 h-6 mr-3" viewBox="0 0 32 32" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
                     <path fill="#FFFFFF" d="M16 .5C7.438.5.5 7.438.5 16c0 2.798.73 5.434 2.074 7.735L.5 31.5l7.916-2.057A15.412 15.412 0 0016 31.5c8.562 0 15.5-6.938 15.5-15.5S24.562.5 16 .5zm0 28.375c-2.488 0-4.93-.662-7.074-1.914l-.51-.294-4.688 1.22 1.25-4.6-.324-.523A13.181 13.181 0 012.812 16C2.812 8.895 8.895 2.812 16 2.812S29.188 8.895 29.188 16 23.105 28.875 16 28.875z"/>
                     <path fill="#FFFFFF" d="M23.292 19.69l-2.583-.734a1.074 1.074 0 00-1.034.279l-.845.865a11.072 11.072 0 01-5.154-5.155l.865-.845c.286-.286.385-.703.28-1.034l-.735-2.584a1.074 1.074 0 00-1.005-.748c-.057 0-.115.005-.173.017l-2.72.575a1.074 1.074 0 00-.796.796c-.223.98-.34 2.005-.34 3.064 0 5.662 4.61 10.272 10.272 10.272 1.059 0 2.085-.117 3.064-.34a1.074 1.074 0 00.796-.796l.575-2.72a1.074 1.074 0 00-.748-1.006z"/>
@@ -441,7 +397,6 @@
             </a>
         </div>
 
-        <!-- Location Map -->
         <div class="mt-20">
             <h3 class="text-2xl md:text-3xl font-bold text-center mb-6">Lokasi Kami</h3>
             <div class="w-full h-80 bg-gray-100 rounded-xl shadow-xl overflow-hidden border-4 border-white">
@@ -465,11 +420,11 @@
         const getDailyAdviceBtn = document.getElementById('getDailyAdviceBtn');
         const dailyAdviceOutput = document.getElementById('dailyAdviceOutput');
         const dailyAdviceSpinner = document.getElementById('dailyAdviceSpinner');
-        const generateActivityBtn = document.getElementById('generateActivityBtn');
-        const activityModal = document.getElementById('activityModal');
-        const closeActivityModal = document.getElementById('closeActivityModal');
-        const activityIdeaContent = document.getElementById('activityIdeaContent');
-        const activityModalSpinner = document.getElementById('activityModalSpinner');
+        // const generateActivityBtn = document.getElementById('generateActivityBtn'); // This was commented out or missing context
+        // const activityModal = document.getElementById('activityModal'); // This was commented out or missing context
+        // const closeActivityModal = document.getElementById('closeActivityModal'); // This was commented out or missing context
+        // const activityIdeaContent = document.getElementById('activityIdeaContent'); // This was commented out or missing context
+        // const activityModalSpinner = document.getElementById('activityModalSpinner'); // This was commented out or missing context
 
         // === SMOOTH SCROLLING FOR INTERNAL LINKS ===
         document.querySelectorAll('a[href^="#"]').forEach(anchor => {
@@ -555,22 +510,13 @@
                 dailyAdviceOutput.textContent = 'Terjadi kesalahan saat mengambil nasihat: ' + error.message;
             } finally {
                 dailyAdviceSpinner.classList.add('hidden');
-                getDailyAdviceBtn.disabled = false;
+                // *** PERBAIKAN DI SINI ***
+                getDailyAdviceBtn.disabled = false; // Lengkapi baris ini
             }
         });
-
-        // === MODAL HANDLING ===
-        closeActivityModal?.addEventListener('click', () => {
-            activityModal.style.display = 'none';
-        });
-
-        window.addEventListener('click', (event) => {
-            if (event.target === activityModal) {
-                activityModal.style.display = 'none';
-            }
-        });
+        // Pastikan Anda menutup semua kurung kurawal di sini
     });
 </script>
 @endpush
-@endsection
 
+@endsection
