@@ -75,7 +75,7 @@
 
 <div class="mt-4 text-right">
         {{-- Tombol untuk menambah inventaris baru ke kamar ini --}}
-        <a href="{{ route('admin.rooms.assign.form', $room) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+        <a href="{{ route('admin.rooms.assign.form', $room) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
             <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
             Atur Penghuni
         </a>
