@@ -38,26 +38,41 @@
 <script type="application/ld+json">
 {!! json_encode([
     '@context' => 'https://schema.org',
-    '@type' => 'EducationalOrganization',
-    'name' => 'Pondok Pesantren Diniyah Baitul Makmur Aikmel',
-    'url' => url('/'),
-    'logo' => asset('storage/images/logo/dibama.png'),
-    'description' => 'Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur\'ani dan berakhlak mulia.',
-    'contactPoint' => [
-        '@type' => 'ContactPoint',
-        'telephone' => '+62-819-1657-7540',
-        'contactType' => 'Customer Support',
-    ],
-    'address' => [
-        '@type' => 'PostalAddress',
-        'streetAddress' => 'Jl. Raya Aikmel - Terara, Kec. Aikmel, Kab. Lombok Timur',
-        'addressLocality' => 'Aikmel',
-        'addressRegion' => 'Nusa Tenggara Barat',
-        'postalCode' => '83653',
-        'addressCountry' => 'ID',
+    '@graph' => [
+        [
+            '@type' => 'EducationalOrganization',
+            'name' => 'Pondok Pesantren Diniyah Baitul Makmur Aikmel',
+            'url' => url('/'),
+            'logo' => asset('storage/images/logo/dibama.png'),
+            'description' => 'Website resmi Pondok Pesantren DIBAMA Aikmel.',
+            'contactPoint' => [
+                '@type' => 'ContactPoint',
+                'telephone' => '+6281916577540',
+                'contactType' => 'Customer Support',
+            ],
+            'address' => [
+                '@type' => 'PostalAddress',
+                'streetAddress' => 'Jl. Raya Aikmel - Terara, Kab. Lombok Timur',
+                'addressLocality' => 'Aikmel',
+                'addressRegion' => 'Nusa Tenggara Barat',
+                'postalCode' => '83653',
+                'addressCountry' => 'ID',
+            ]
+        ],
+        [
+            '@type' => 'WebSite',
+            'name' => 'Pondok Pesantren DIBAMA',
+            'url' => url('/'),
+            'potentialAction' => [
+                '@type' => 'SearchAction',
+                'target' => url('/search?q={search_term_string}'),
+                'query-input' => 'required name=search_term_string',
+            ]
+        ]
     ]
-], JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT) !!}
+], JSON_UNESCAPED_SLASHES|JSON_UNESCAPED_UNICODE|JSON_PRETTY_PRINT) !!}
 </script>
+
 
 
 
