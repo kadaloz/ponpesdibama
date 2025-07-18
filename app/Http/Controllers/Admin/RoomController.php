@@ -8,6 +8,7 @@ use App\Models\StudentRoomPlacement; // Pastikan ini ada jika Anda ingin memerik
 use App\Models\Item; // Pastikan ini ada jika Anda ingin memeriksa barang
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule; // Pastikan ini ada
+use Illuminate\Support\Facades\DB; // Untuk transaksi database
 
 
 class RoomController extends Controller
@@ -146,5 +147,100 @@ class RoomController extends Controller
         );
 
         return redirect()->route('admin.rooms.index')->with('success', 'Kamar berhasil dihapus!');
+    }
+
+     public function assignForm(Room $room)
+    {
+        // Muat santri yang saat ini menghuni kamar ini (untuk ditampilkan di formulir)
+        $room->load('currentStudents.student'); // Load relasi student di dalam currentStudents
+
+        // Dapatkan semua santri yang saat ini tidak memiliki kamar aktif
+        // ATAU santri yang sudah ada di kamar ini (untuk memungkinkan penghapusan)
+        $availableStudents = Student::whereDoesntHave('currentRoomPlacement')
+                                    ->orWhereHas('currentRoomPlacement', function ($query) use ($room) {
+                                        $query->where('room_id', $room->id);
+                                    })
+                                    ->orderBy('name')
+                                    ->get();
+
+        return view('admin.rooms.assign', compact('room', 'availableStudents'));
+    }
+
+    /**
+     * Tangani logika penyimpanan penetapan santri ke kamar.
+     */
+    public function assignStudents(Request $request, Room $room)
+    {
+        $request->validate([
+            'student_ids' => 'nullable|array',
+            'student_ids.*' => 'exists:students,id',
+        ]);
+
+        $selectedStudentIds = $request->input('student_ids', []); // ID santri yang dipilih dari formulir
+
+        // Gunakan transaksi database untuk memastikan semua operasi berhasil atau tidak sama sekali
+        DB::transaction(function () use ($room, $selectedStudentIds) {
+            // Nonaktifkan semua penempatan aktif yang ADA DI KAMAR INI
+            StudentRoomPlacement::where('room_id', $room->id)
+                                ->where('is_active', true)
+                                ->update(['is_active' => false, 'end_date' => now()]);
+
+            // Nonaktifkan penempatan aktif santri yang tidak lagi dipilih
+            // Ini penting jika santri dipindahkan dari kamar lain ke kamar ini
+            // atau jika mereka dihapus dari kamar ini dan tidak dimasukkan ke kamar lain
+            StudentRoomPlacement::whereIn('student_id',
+                                    StudentRoomPlacement::where('is_active', true)
+                                                        ->pluck('student_id')
+                                                        ->diff($selectedStudentIds) // Santri yang aktif tapi tidak dipilih lagi
+                                    )
+                                ->update(['is_active' => false, 'end_date' => now()]);
+
+
+            // Aktifkan atau buat penempatan baru untuk santri yang dipilih
+            foreach ($selectedStudentIds as $studentId) {
+                // Cari penempatan aktif yang sudah ada untuk santri ini di kamar ini
+                // Atau penempatan tidak aktif yang masih bisa diaktifkan kembali
+                $placement = StudentRoomPlacement::firstOrNew([
+                    'student_id' => $studentId,
+                    'room_id' => $room->id,
+                    'is_active' => true, // Coba cari yang sudah aktif di kamar ini
+                ]);
+
+                // Jika tidak ditemukan yang aktif di kamar ini, cari yang tidak aktif untuk santri ini
+                if (!$placement->exists) {
+                     $placement = StudentRoomPlacement::where('student_id', $studentId)
+                                                      ->where('room_id', $room->id) // Cari di kamar yang sama
+                                                      ->orderByDesc('end_date') // Ambil yang terbaru jika ada beberapa riwayat
+                                                      ->firstOrNew();
+                }
+
+                $placement->room_id = $room->id;
+                $placement->student_id = $studentId;
+                $placement->start_date = $placement->start_date ?? now(); // Jika baru, set start_date
+                $placement->end_date = null; // Aktifkan kembali (tidak ada end_date)
+                $placement->is_active = true;
+                $placement->save();
+
+                // Pastikan kamar diperbarui statusnya jika kapasitas terpenuhi
+                if ($room->currentOccupancy() >= $room->capacity) {
+                    $room->status = 'full';
+                } else {
+                    $room->status = 'available';
+                }
+                $room->save();
+            }
+
+            // Update status kamar jika ada santri yang dikeluarkan dan kamar jadi available
+            if (count($selectedStudentIds) < $room->capacity && $room->status == 'full') {
+                 $room->status = 'available';
+                 $room->save();
+            } elseif (count($selectedStudentIds) == 0 && $room->status != 'available') {
+                 $room->status = 'available'; // Jika semua santri dikeluarkan
+                 $room->save();
+            }
+        });
+
+
+        return redirect()->route('admin.rooms.show', $room)->with('success', 'Penghuni kamar berhasil diperbarui.');
     }
 }
