@@ -168,19 +168,6 @@
 </head>
 <body class="bg-gray-50 text-gray-800">
 
-    @include('web.header') 
-
-
-    <main>
-        @yield('main_content')
-    </main>
-
-
-    @include('web.modal') 
-
-    @include('web.footer') 
-
-
 
 </body>
 </html>
