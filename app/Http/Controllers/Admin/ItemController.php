@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Http\Controllers\Controller;
 use App\Models\Item;   // Don't forget to import the Item Model
 use App\Models\Room;   // Don't forget to import the Room Model
 use App\Models\Student; // Don't forget to import the Student Model if you use it for assigned_to_student_id
