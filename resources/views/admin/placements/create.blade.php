@@ -78,74 +78,81 @@
     document.addEventListener('DOMContentLoaded', function () {
         const loadingText = document.getElementById('students-loading');
         const roomSelect = document.getElementById('room_id');
+        const studentSelect = document.getElementById('student_id');
 
         let studentsData = [];
 
-        const tomSelect = new TomSelect('#student_id', {
-            valueField: 'id',
-            labelField: 'name',
-            searchField: ['name', 'nis'],
-            placeholder: 'Cari dan pilih santri...',
-            load: function(query, callback) {
-                if (studentsData.length > 0) {
-                    callback(studentsData);
-                    return;
-                }
-
-                loadingText.classList.remove('hidden');
-
-                fetch('/api/available-students')
-                    .then(response => response.json())
-                    .then(data => {
-                        loadingText.classList.add('hidden');
-
-                        studentsData = data.map(student => ({
-                            id: student.id,
-                            name: `${student.name} (NIS: ${student.nis}) - ${student.gender}`
-                        }));
-
+        if (studentSelect) {
+            const tomSelect = new TomSelect('#student_id', {
+                valueField: 'id',
+                labelField: 'name',
+                searchField: ['name', 'nis'],
+                placeholder: 'Cari dan pilih santri...',
+                load: function(query, callback) {
+                    if (studentsData.length > 0) {
                         callback(studentsData);
-                    })
-                    .catch(() => callback());
-            },
-            onChange: function() {
-                filterRooms();
-            }
-        });
-
-        function filterRooms() {
-            const selectedValue = tomSelect.getValue();
-            const selectedStudent = studentsData.find(s => s.id == selectedValue);
-
-            const studentGenderMatch = selectedStudent?.name?.match(/-\s*(\w+)$/);
-            const studentGender = studentGenderMatch ? studentGenderMatch[1].toLowerCase() : null;
-
-            Array.from(roomSelect.options).forEach(option => {
-                option.style.display = '';
-                if (option.value === "") return;
-
-                const roomGender = option.dataset.gender?.toLowerCase();
-                const roomCapacity = parseInt(option.dataset.capacity);
-                const roomOccupancy = parseInt(option.dataset.occupancy);
-
-                if (studentGender && roomGender !== studentGender) {
-                    option.style.display = 'none';
-                } else {
-                    if (roomOccupancy >= roomCapacity) {
-                        option.disabled = true;
-                        if (!option.textContent.includes('(PENUH)')) {
-                            option.textContent += ' (PENUH)';
-                        }
-                    } else {
-                        option.disabled = false;
-                        option.textContent = option.textContent.replace(' (PENUH)', '');
+                        return;
                     }
+
+                    loadingText.classList.remove('hidden');
+
+                    fetch('/api/available-students')
+                        .then(response => response.json())
+                        .then(data => {
+                            loadingText.classList.add('hidden');
+
+                            studentsData = data.map(student => ({
+                                id: student.id,
+                                name: `${student.name} (NIS: ${student.nis}) - ${student.gender}`
+                            }));
+
+                            callback(studentsData);
+                            filterRooms(); // Ensure rooms are filtered after data is loaded
+                        })
+                        .catch(() => {
+                            loadingText.classList.add('hidden');
+                            callback();
+                        });
+                },
+                onChange: function() {
+                    filterRooms();
                 }
             });
 
-            const selectedRoom = roomSelect.selectedOptions[0];
-            if (selectedRoom && (selectedRoom.style.display === 'none' || selectedRoom.disabled)) {
-                roomSelect.value = "";
+            function filterRooms() {
+                const selectedValue = tomSelect.getValue();
+                const selectedStudent = studentsData.find(s => s.id == selectedValue);
+
+                const studentGenderMatch = selectedStudent?.name?.match(/-\s*(\w+)$/);
+                const studentGender = studentGenderMatch ? studentGenderMatch[1].toLowerCase() : null;
+
+                Array.from(roomSelect.options).forEach(option => {
+                    option.style.display = '';
+                    if (option.value === "") return;
+
+                    const roomGender = option.dataset.gender?.toLowerCase();
+                    const roomCapacity = parseInt(option.dataset.capacity);
+                    const roomOccupancy = parseInt(option.dataset.occupancy);
+
+                    if (studentGender && roomGender !== studentGender) {
+                        option.style.display = 'none';
+                    } else {
+                        if (roomOccupancy >= roomCapacity) {
+                            option.disabled = true;
+                            if (!option.textContent.includes('(PENUH)')) {
+                                option.textContent += ' (PENUH)';
+                            }
+                        } else {
+                            option.disabled = false;
+                            option.textContent = option.textContent.replace(' (PENUH)', '');
+                        }
+                    }
+                });
+
+                const selectedRoom = roomSelect.selectedOptions[0];
+                if (selectedRoom && (selectedRoom.style.display === 'none' || selectedRoom.disabled)) {
+                    roomSelect.value = "";
+                }
             }
         }
     });
