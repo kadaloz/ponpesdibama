@@ -30,8 +30,6 @@
                         @if (isset($students) && $students->isEmpty())
                             <p class="mt-2 text-sm text-gray-500">Tidak ada santri yang belum ditempatkan.</p>
                         @endif
-                            <p class="mt-2 text-sm text-gray-500">Tidak ada santri yang belum ditempatkan.</p>
-                        @endif
                     </div>
 
                     <div>
