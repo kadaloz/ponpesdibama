@@ -106,10 +106,7 @@
 
                         callback(studentsData);
                     })
-                    .catch(() => {
-                        loadingText.textContent = '❌ Gagal memuat data santri.';
-                        callback();
-                    });
+                    .catch(() => callback());
             },
             onChange: function() {
                 filterRooms();
