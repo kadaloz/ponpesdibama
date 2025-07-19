@@ -330,6 +330,17 @@ public function destroy(Student $student)
         }
     }
 
+public function getAvailableStudents(Request $request)
+{
+    $students = Student::whereDoesntHave('currentPlacement')
+                ->where('status', 'aktif')
+                ->orderBy('name')
+                ->select('id', 'name', 'nis', 'gender')
+                ->get();
+
+    return response()->json($students);
+}
+
     /**
      * Generate a unique NIS.
      */

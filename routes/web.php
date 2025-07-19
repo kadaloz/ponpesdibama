@@ -267,15 +267,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     }));
 })->middleware('auth');
 
-Route::get('/api/available-students', function () {
-    $students = Student::whereDoesntHave('placement') // Belum ditempatkan
-                ->where('status', 'aktif')
-                ->select('id', 'name', 'nis', 'gender')
-                ->orderBy('name')
-                ->get();
+Route::get('/api/available-students', [StudentController::class, 'getAvailableStudents'])
+    ->name('api.available-students');
 
-    return response()->json($students);
-})->middleware(['auth', 'can:view students']);
 
     // Rute untuk mengelola syarat PPDB (PpdbRequirementController)
     Route::get('ppdb-requirements/edit', [PpdbRequirementController::class, 'edit'])->name('ppdb-requirements.edit')->middleware('permission:edit ppdb requirements');

@@ -86,9 +86,14 @@
             loadingText.classList.remove('hidden');
             studentSelect.innerHTML = '<option value="">-- Pilih Santri --</option>';
 
-            fetch('/api/available-students')
+            fetch('{{ route('api.available-students') }}')  // ✅ Pastikan route ini ada
                 .then(response => response.json())
                 .then(students => {
+                    if (students.length === 0) {
+                        loadingText.textContent = '❌ Tidak ada santri tersedia.';
+                        return;
+                    }
+
                     students.forEach(student => {
                         const option = document.createElement('option');
                         option.value = student.id;
@@ -106,22 +111,24 @@
 
         function filterRooms() {
             const selectedStudentOption = studentSelect.options[studentSelect.selectedIndex];
-            const studentGender = selectedStudentOption ? selectedStudentOption.textContent.match(/Jenis Kelamin: (\w+)/)?.[1] : null;
+            const studentGender = selectedStudentOption
+                ? selectedStudentOption.textContent.match(/Jenis Kelamin: (\w+)/)?.[1]?.toLowerCase()
+                : null;
 
             Array.from(roomSelect.options).forEach(option => {
                 option.style.display = '';
                 if (option.value === "") return;
 
-                const roomGender = option.dataset.gender;
+                const roomGender = option.dataset.gender?.toLowerCase();
                 const roomCapacity = parseInt(option.dataset.capacity);
                 const roomOccupancy = parseInt(option.dataset.occupancy);
 
-                if (studentGender && roomGender !== studentGender.toLowerCase()) {
+                if (studentGender && roomGender !== studentGender) {
                     option.style.display = 'none';
                 } else {
                     if (roomOccupancy >= roomCapacity) {
                         option.disabled = true;
-                        if (!option.textContent.includes('PENUH')) {
+                        if (!option.textContent.includes('(PENUH)')) {
                             option.textContent += ' (PENUH)';
                         }
                     } else {
@@ -131,8 +138,8 @@
                 }
             });
 
-            if (roomSelect.selectedOptions.length > 0 &&
-                (roomSelect.selectedOptions[0].style.display === 'none' || roomSelect.selectedOptions[0].disabled)) {
+            const selectedOption = roomSelect.selectedOptions[0];
+            if (selectedOption && (selectedOption.style.display === 'none' || selectedOption.disabled)) {
                 roomSelect.value = "";
             }
         }
@@ -143,5 +150,6 @@
     });
 </script>
 @endpush
+
 
 @endsection
