@@ -87,7 +87,7 @@
             load: function(query, callback) {
                 loadingText.classList.remove('hidden');
 
-                fetch('api.available-students')
+                fetch('/api/available-students')
                     .then(response => response.json())
                     .then(data => {
                         loadingText.classList.add('hidden');
