@@ -79,22 +79,32 @@
         const loadingText = document.getElementById('students-loading');
         const roomSelect = document.getElementById('room_id');
 
+        let studentsData = [];
+
         const tomSelect = new TomSelect('#student_id', {
             valueField: 'id',
             labelField: 'name',
             searchField: ['name', 'nis'],
             placeholder: 'Cari dan pilih santri...',
             load: function(query, callback) {
+                if (studentsData.length > 0) {
+                    callback(studentsData);
+                    return;
+                }
+
                 loadingText.classList.remove('hidden');
 
                 fetch('/api/available-students')
                     .then(response => response.json())
                     .then(data => {
                         loadingText.classList.add('hidden');
-                        callback(data.map(student => ({
+
+                        studentsData = data.map(student => ({
                             id: student.id,
                             name: `${student.name} (NIS: ${student.nis}) - ${student.gender}`
-                        })));
+                        }));
+
+                        callback(studentsData);
                     })
                     .catch(() => {
                         loadingText.textContent = '❌ Gagal memuat data santri.';
@@ -107,8 +117,10 @@
         });
 
         function filterRooms() {
-            const selectedOption = tomSelect.getItem(tomSelect.getValue());
-            const studentGenderMatch = selectedOption?.innerText?.match(/-\s*(\w+)$/);
+            const selectedValue = tomSelect.getValue();
+            const selectedStudent = studentsData.find(s => s.id == selectedValue);
+
+            const studentGenderMatch = selectedStudent?.name?.match(/-\s*(\w+)$/);
             const studentGender = studentGenderMatch ? studentGenderMatch[1].toLowerCase() : null;
 
             Array.from(roomSelect.options).forEach(option => {
@@ -142,7 +154,4 @@
     });
 </script>
 @endpush
-
-
-
 @endsection
