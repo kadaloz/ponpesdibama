@@ -267,7 +267,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     }));
 })->middleware('auth');
 
-Route::get('/admin/api/available-students', function () {
+Route::get('/api/available-students', function () {
     $students = Student::whereDoesntHave('placement') // Belum ditempatkan
                 ->where('status', 'aktif')
                 ->select('id', 'name', 'nis', 'gender')
