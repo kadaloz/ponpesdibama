@@ -50,12 +50,10 @@
             </li>
 
             {{-- Submenu Asrama --}}
-            {{-- Cek izin untuk salah satu dari sub-item di sini, atau izin induk jika Anda memilikinya --}}
             @canany(['view rooms', 'view placements', 'view items'])
-            {{-- Menggunakan `request()->routeIs()` untuk mengaktifkan menu jika salah satu sub-menu aktif --}}
             <li class="relative">
                 <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') || request()->routeIs('admin.items.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}"
-                   x-data="{ open: {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') || request()->routeIs('admin.items.*') ? 'true' : 'false' }} }" {{-- Untuk toggle submenu dengan Alpine.js --}}
+                   x-data="{ open: {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') || request()->routeIs('admin.items.*') ? 'true' : 'false' }} }" {{-- CORRECTED LINE --}}
                    @click="open = !open">
                    <x-heroicon-o-building-office-2 class="w-5 h-5 mr-2" />
                    Manajemen Asrama
@@ -78,7 +76,7 @@
                             </a>
                         </li>
                     @endcan
-                    @can('view items') {{-- Menambahkan link Inventaris juga di sini, jika relevan dengan asrama --}}
+                    @can('view items')
                         <li>
                             <a href="{{ route('admin.items.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.items.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
                                 <x-heroicon-o-archive-box class="w-5 h-5 mr-2" /> Inventaris Asrama
@@ -88,7 +86,6 @@
                 </ul>
             </li>
             @endcanany
-            {{-- Akhir Submenu Asrama --}}
 
             {{-- Konten & Website --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
@@ -139,25 +136,6 @@
                     </a>
                 </li>
             @endcan
-
-            {{-- Manajemen Ruangan dan Penempatan Asrama yang lama dihapus di sini --}}
-            {{--
-            @can('view rooms')
-                <li>
-                    <a href="{{ route('admin.rooms.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-home-modern class="w-5 h-5 mr-2" /> Manajemen Ruangan
-                    </a>
-                </li>
-            @endcan
-
-            @can('view placements')
-                <li>
-                    <a href="{{ route('admin.placements.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.placements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-building-library class="w-5 h-5 mr-2" /> Penempatan Asrama
-                    </a>
-                </li>
-            @endcan
-            --}}
 
             {{-- Pengaturan Sistem & Keamanan --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
