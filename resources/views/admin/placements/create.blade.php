@@ -86,7 +86,7 @@
             loadingText.classList.remove('hidden');
             studentSelect.innerHTML = '<option value="">-- Pilih Santri --</option>';
 
-            fetch('{{ route('api.available-students') }}')  // ✅ Pastikan route ini ada
+            fetch('{{ route('admin.api.available-students') }}')  // ✅ Pastikan route ini ada
                 .then(response => response.json())
                 .then(students => {
                     if (students.length === 0) {
