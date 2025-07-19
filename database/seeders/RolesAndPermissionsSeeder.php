@@ -98,8 +98,14 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'view placements history']); // Izin untuk melihat riwayat penempatan santri
         Permission::firstOrCreate(['name' => 'manage placements']); // Izin untuk mengelola penempatan santri
         Permission::firstOrCreate(['name' => 'view placements in room']); // Izin untuk melihat penempatan santri di ruangan tertentu
-        
-        
+
+        // --- NEW: Izin untuk Manajemen Inventaris ---
+        Permission::firstOrCreate(['name' => 'view items']);
+        Permission::firstOrCreate(['name' => 'create items']);
+        Permission::firstOrCreate(['name' => 'edit items']);
+        Permission::firstOrCreate(['name' => 'delete items']);
+        Permission::firstOrCreate(['name' => 'assign items to room']); // Izin untuk menetapkan item ke kamar
+        Permission::firstOrCreate(['name' => 'assign items to student']); // Izin untuk menetapkan item ke santri
 
 
         // --- 2. Buat Roles (Peran) dan Beri Izin (Permissions) ---
@@ -116,7 +122,10 @@ class RolesAndPermissionsSeeder extends Seeder
             'view applicants', 'edit applicants', 'delete applicants',
             'view general management',
             'manage own profile',
-            'view halaqohs', 'create halaqohs', 'edit halaqohs', 'delete halaqohs', 'assign students to halaqoh', 'edit ppdb requirements' // Sekretaris bisa mengelola halaqoh
+            'view halaqohs', 'create halaqohs', 'edit halaqohs', 'delete halaqohs', 'assign students to halaqoh', 'edit ppdb requirements',
+            // Tambahkan izin Rooms & Placements jika Sekretaris perlu melihatnya
+            // 'view rooms',
+            // 'view placements',
         ]);
 
         // Role Mudabbir (untuk semua pengajar, laki-laki atau perempuan)
@@ -127,7 +136,30 @@ class RolesAndPermissionsSeeder extends Seeder
             'view general management',
             'manage own profile',
             'view teachers', 'create teachers', 'edit teachers', 'delete teachers',
-            'view halaqohs', 'edit halaqohs', 'assign students to halaqoh', // Mudabbir bisa melihat, mengedit halaqoh yang dia ajar, dan menetapkan santri
+            'view halaqohs', 'edit halaqohs', 'assign students to halaqoh',
+
+            // --- Izin untuk Manajemen Ruangan (Baru ditambahkan) ---
+            'view rooms',
+            'create rooms',
+            'edit rooms',
+            'delete rooms',
+
+            // --- Izin untuk Manajemen Penempatan Santri (Baru ditambahkan) ---
+            'view placements',
+            'create placements',
+            'edit placements',
+            'delete placements',
+            'view placements history',
+            'manage placements',
+            'view placements in room',
+
+            // --- Izin untuk Manajemen Inventaris (Baru ditambahkan, jika Mudabbir mengelola inventaris kamar) ---
+            'view items',
+            'create items',
+            'edit items',
+            'delete items',
+            'assign items to room',
+            'assign items to student',
         ]);
 
         // Hapus peran 'mudabbiroh' lama jika ada

@@ -28,14 +28,6 @@
                 </li>
             @endcan
 
-            @can('view placements') {{-- Tambahkan ini --}}
-                <li>
-                    <a href="{{ route('admin.placements.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.placements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                        <x-heroicon-o-building-library class="w-5 h-5 mr-2" /> Penempatan Asrama
-                    </a>
-                </li>
-            @endcan
-
             @can('view applicants')
                 <li>
                     <a href="{{ route('admin.applicants.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.applicants.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
@@ -51,6 +43,52 @@
                     </a>
                 </li>
             @endcan
+
+            {{-- Kategori baru: Asrama --}}
+            <li class="mt-6 pt-4 border-t border-teal-700">
+                <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Asrama</p>
+            </li>
+
+            {{-- Submenu Asrama --}}
+            {{-- Cek izin untuk salah satu dari sub-item di sini, atau izin induk jika Anda memilikinya --}}
+            @canany(['view rooms', 'view placements', 'view items'])
+            {{-- Menggunakan `request()->routeIs()` untuk mengaktifkan menu jika salah satu sub-menu aktif --}}
+            <li class="relative">
+                <a href="#" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') || request()->routeIs('admin.items.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}"
+                   x-data="{ open: {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') || request()->routeIs('admin.items.*') ? 'true' : 'false' }} }" {{-- Untuk toggle submenu dengan Alpine.js --}}
+                   @click="open = !open">
+                   <x-heroicon-o-building-office-2 class="w-5 h-5 mr-2" />
+                   Manajemen Asrama
+                   <x-heroicon-o-chevron-down class="w-4 h-4 ml-auto transform transition-transform duration-200" :class="{ 'rotate-180': open }" />
+                </a>
+                <ul x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100"
+                    x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95"
+                    class="ml-6 mt-1 space-y-1">
+                    @can('view rooms')
+                        <li>
+                            <a href="{{ route('admin.rooms.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                                <x-heroicon-o-home-modern class="w-5 h-5 mr-2" /> Ruangan Asrama
+                            </a>
+                        </li>
+                    @endcan
+                    @can('view placements')
+                        <li>
+                            <a href="{{ route('admin.placements.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.placements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                                <x-heroicon-o-users class="w-5 h-5 mr-2" /> Penempatan Santri
+                            </a>
+                        </li>
+                    @endcan
+                    @can('view items') {{-- Menambahkan link Inventaris juga di sini, jika relevan dengan asrama --}}
+                        <li>
+                            <a href="{{ route('admin.items.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.items.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                                <x-heroicon-o-archive-box class="w-5 h-5 mr-2" /> Inventaris Asrama
+                            </a>
+                        </li>
+                    @endcan
+                </ul>
+            </li>
+            @endcanany
+            {{-- Akhir Submenu Asrama --}}
 
             {{-- Konten & Website --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
@@ -102,6 +140,8 @@
                 </li>
             @endcan
 
+            {{-- Manajemen Ruangan dan Penempatan Asrama yang lama dihapus di sini --}}
+            {{--
             @can('view rooms')
                 <li>
                     <a href="{{ route('admin.rooms.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.rooms.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
@@ -109,6 +149,15 @@
                     </a>
                 </li>
             @endcan
+
+            @can('view placements')
+                <li>
+                    <a href="{{ route('admin.placements.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.placements.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
+                        <x-heroicon-o-building-library class="w-5 h-5 mr-2" /> Penempatan Asrama
+                    </a>
+                </li>
+            @endcan
+            --}}
 
             {{-- Pengaturan Sistem & Keamanan --}}
             <li class="mt-6 pt-4 border-t border-teal-700">
