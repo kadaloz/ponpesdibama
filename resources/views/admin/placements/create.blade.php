@@ -19,14 +19,13 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="student_id" class="block text-sm font-medium text-gray-700">Pilih Santri <span class="text-red-500">*</span></label>
-                        <select name="student_id" id="student_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500 @error('student_id') border-red-500 @enderror" required>
+                            <select name="student_id" id="student_id"
+                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500"
+                                    required>
                             <option value="">-- Pilih Santri --</option>
-                            @foreach ($students as $student)
-                                <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                                    {{ $student->name }} (NIS: {{ $student->nis }}) - Jenis Kelamin: {{ ucfirst($student->gender) }}
-                                </option>
-                            @endforeach
-                        </select>
+                            </select>
+                        <p id="students-loading" class="mt-2 text-sm text-gray-500 hidden">Memuat data santri...</p>
+
                         @error('student_id')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -76,51 +75,73 @@
         </div>
     </div>
 
-    @push('scripts')
-    <script>
-        document.addEventListener('DOMContentLoaded', function () {
-            const studentSelect = document.getElementById('student_id');
-            const roomSelect = document.getElementById('room_id');
+@push('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const studentSelect = document.getElementById('student_id');
+        const roomSelect = document.getElementById('room_id');
+        const loadingText = document.getElementById('students-loading');
 
-            function filterRooms() {
-                const selectedStudentOption = studentSelect.options[studentSelect.selectedIndex];
-                const studentGender = selectedStudentOption ? selectedStudentOption.textContent.match(/Jenis Kelamin: (\w+)/)?.[1] : null;
+        function fetchStudents() {
+            loadingText.classList.remove('hidden');
+            studentSelect.innerHTML = '<option value="">-- Pilih Santri --</option>';
 
-                // Reset room options first
-                Array.from(roomSelect.options).forEach(option => {
-                    option.style.display = ''; // Show all
-                    if (option.value === "") return; // Skip "Pilih Kamar" option
+            fetch('/admin/api/available-students')
+                .then(response => response.json())
+                .then(students => {
+                    students.forEach(student => {
+                        const option = document.createElement('option');
+                        option.value = student.id;
+                        option.textContent = `${student.name} (NIS: ${student.nis}) - Jenis Kelamin: ${student.gender}`;
+                        studentSelect.appendChild(option);
+                    });
 
-                    const roomGender = option.dataset.gender;
-                    const roomCapacity = parseInt(option.dataset.capacity);
-                    const roomOccupancy = parseInt(option.dataset.occupancy);
-
-                    // Filter by gender
-                    if (studentGender && roomGender !== studentGender.toLowerCase()) {
-                        option.style.display = 'none';
-                    } else {
-                        // Mark if full
-                        if (roomOccupancy >= roomCapacity) {
-                            option.disabled = true;
-                            option.textContent = option.textContent + ' (PENUH)';
-                        } else {
-                            option.disabled = false;
-                            option.textContent = option.textContent.replace(' (PENUH)', ''); // Remove if was marked full
-                        }
-                    }
+                    loadingText.classList.add('hidden');
+                })
+                .catch(error => {
+                    console.error('Gagal memuat data santri:', error);
+                    loadingText.textContent = '❌ Gagal memuat data santri.';
                 });
+        }
 
-                // Re-select if previously selected room is now hidden/disabled
-                if (roomSelect.selectedOptions.length > 0 && roomSelect.selectedOptions[0].style.display === 'none' || roomSelect.selectedOptions[0].disabled) {
-                    roomSelect.value = ""; // Deselect
+        function filterRooms() {
+            const selectedStudentOption = studentSelect.options[studentSelect.selectedIndex];
+            const studentGender = selectedStudentOption ? selectedStudentOption.textContent.match(/Jenis Kelamin: (\w+)/)?.[1] : null;
+
+            Array.from(roomSelect.options).forEach(option => {
+                option.style.display = '';
+                if (option.value === "") return;
+
+                const roomGender = option.dataset.gender;
+                const roomCapacity = parseInt(option.dataset.capacity);
+                const roomOccupancy = parseInt(option.dataset.occupancy);
+
+                if (studentGender && roomGender !== studentGender.toLowerCase()) {
+                    option.style.display = 'none';
+                } else {
+                    if (roomOccupancy >= roomCapacity) {
+                        option.disabled = true;
+                        if (!option.textContent.includes('PENUH')) {
+                            option.textContent += ' (PENUH)';
+                        }
+                    } else {
+                        option.disabled = false;
+                        option.textContent = option.textContent.replace(' (PENUH)', '');
+                    }
                 }
+            });
+
+            if (roomSelect.selectedOptions.length > 0 &&
+                (roomSelect.selectedOptions[0].style.display === 'none' || roomSelect.selectedOptions[0].disabled)) {
+                roomSelect.value = "";
             }
+        }
 
-            studentSelect.addEventListener('change', filterRooms);
+        studentSelect.addEventListener('change', filterRooms);
 
-            // Initial filter when page loads if an old value is present
-            filterRooms();
-        });
-    </script>
-    @endpush
+        fetchStudents();
+    });
+</script>
+@endpush
+
 @endsection
