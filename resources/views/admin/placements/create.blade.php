@@ -4,6 +4,8 @@
 @section('header_admin', 'Tempatkan Santri ke Kamar Asrama')
 
 @section('admin_content')
+    <!-- TomSelect CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/tom-select/dist/css/tom-select.bootstrap5.min.css" rel="stylesheet">
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
             <h3 class="text-2xl font-bold text-teal-700 mb-6">Form Penempatan Santri Baru</h3>
@@ -22,12 +24,12 @@
 <select id="student_id" name="student_id" placeholder="Cari santri..." autocomplete="off">
     <option value="">Pilih Santri...</option>
 </select>
-<span id="students-loading" class="text-sm text-gray-500 hidden">Memuat data santri...</span>
-  
                         @error('student_id')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
-                        @if ($students->isEmpty())
+                        @if (isset($students) && $students->isEmpty())
+                            <p class="mt-2 text-sm text-gray-500">Tidak ada santri yang belum ditempatkan.</p>
+                        @endif
                             <p class="mt-2 text-sm text-gray-500">Tidak ada santri yang belum ditempatkan.</p>
                         @endif
                     </div>
@@ -71,9 +73,11 @@
                 </div>
             </form>
         </div>
-    </div>
-
 @push('scripts')
+<!-- TomSelect JS -->
+<script src="https://cdn.jsdelivr.net/npm/tom-select/dist/js/tom-select.complete.min.js"></script>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
 <script>
     document.addEventListener('DOMContentLoaded', function () {
         const loadingText = document.getElementById('students-loading');
