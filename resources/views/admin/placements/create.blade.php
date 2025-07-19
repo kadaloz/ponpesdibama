@@ -86,7 +86,7 @@
             loadingText.classList.remove('hidden');
             studentSelect.innerHTML = '<option value="">-- Pilih Santri --</option>';
 
-            fetch('/admin/api/available-students')
+            fetch('/api/available-students')
                 .then(response => response.json())
                 .then(students => {
                     students.forEach(student => {
