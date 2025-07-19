@@ -19,13 +19,11 @@
                 <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <div>
                         <label for="student_id" class="block text-sm font-medium text-gray-700">Pilih Santri <span class="text-red-500">*</span></label>
-                            <select name="student_id" id="student_id"
-                                class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 focus:ring-teal-500 focus:border-teal-500"
-                                    required>
-                            <option value="">-- Pilih Santri --</option>
-                            </select>
-                        <p id="students-loading" class="mt-2 text-sm text-gray-500 hidden">Memuat data santri...</p>
-
+<select id="student_id" name="student_id" placeholder="Cari santri..." autocomplete="off">
+    <option value="">Pilih Santri...</option>
+</select>
+<span id="students-loading" class="text-sm text-gray-500 hidden">Memuat data santri...</span>
+  
                         @error('student_id')
                             <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                         @enderror
@@ -78,42 +76,40 @@
 @push('scripts')
 <script>
     document.addEventListener('DOMContentLoaded', function () {
-        const studentSelect = document.getElementById('student_id');
-        const roomSelect = document.getElementById('room_id');
         const loadingText = document.getElementById('students-loading');
+        const roomSelect = document.getElementById('room_id');
 
-        function fetchStudents() {
-            loadingText.classList.remove('hidden');
-            studentSelect.innerHTML = '<option value="">-- Pilih Santri --</option>';
+        const tomSelect = new TomSelect('#student_id', {
+            valueField: 'id',
+            labelField: 'name',
+            searchField: ['name', 'nis'],
+            placeholder: 'Cari dan pilih santri...',
+            load: function(query, callback) {
+                loadingText.classList.remove('hidden');
 
-            fetch('{{ url('/api/available-students') }}')
-                .then(response => response.json())
-                .then(students => {
-                    if (students.length === 0) {
-                        loadingText.textContent = '❌ Tidak ada santri tersedia.';
-                        return;
-                    }
-
-                    students.forEach(student => {
-                        const option = document.createElement('option');
-                        option.value = student.id;
-                        option.textContent = `${student.name} (NIS: ${student.nis}) - Jenis Kelamin: ${student.gender}`;
-                        studentSelect.appendChild(option);
+                fetch('{{ route('api.available-students') }}')
+                    .then(response => response.json())
+                    .then(data => {
+                        loadingText.classList.add('hidden');
+                        callback(data.map(student => ({
+                            id: student.id,
+                            name: `${student.name} (NIS: ${student.nis}) - ${student.gender}`
+                        })));
+                    })
+                    .catch(() => {
+                        loadingText.textContent = '❌ Gagal memuat data santri.';
+                        callback();
                     });
-
-                    loadingText.classList.add('hidden');
-                })
-                .catch(error => {
-                    console.error('Gagal memuat data santri:', error);
-                    loadingText.textContent = '❌ Gagal memuat data santri.';
-                });
-        }
+            },
+            onChange: function() {
+                filterRooms();
+            }
+        });
 
         function filterRooms() {
-            const selectedStudentOption = studentSelect.options[studentSelect.selectedIndex];
-            const studentGender = selectedStudentOption
-                ? selectedStudentOption.textContent.match(/Jenis Kelamin: (\w+)/)?.[1]?.toLowerCase()
-                : null;
+            const selectedOption = tomSelect.getItem(tomSelect.getValue());
+            const studentGenderMatch = selectedOption?.innerText?.match(/-\s*(\w+)$/);
+            const studentGender = studentGenderMatch ? studentGenderMatch[1].toLowerCase() : null;
 
             Array.from(roomSelect.options).forEach(option => {
                 option.style.display = '';
@@ -138,18 +134,15 @@
                 }
             });
 
-            const selectedOption = roomSelect.selectedOptions[0];
-            if (selectedOption && (selectedOption.style.display === 'none' || selectedOption.disabled)) {
+            const selectedRoom = roomSelect.selectedOptions[0];
+            if (selectedRoom && (selectedRoom.style.display === 'none' || selectedRoom.disabled)) {
                 roomSelect.value = "";
             }
         }
-
-        studentSelect.addEventListener('change', filterRooms);
-
-        fetchStudents();
     });
 </script>
 @endpush
+
 
 
 @endsection

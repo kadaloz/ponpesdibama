@@ -267,11 +267,28 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     }));
 })->middleware('auth');
 
-Route::get('/api/available-students', function () {
-    return Student::whereDoesntHave('currentPlacement')
+Route::get('/api/available-students', function (Request $request) {
+    $search = $request->input('q');
+
+    $students = Student::query()
         ->where('status', 'aktif')
+        ->whereDoesntHave('currentPlacement')
+        ->when($search, function ($query, $search) {
+            $query->where(function ($q) use ($search) {
+                $q->where('name', 'like', '%' . $search . '%')
+                  ->orWhere('nis', 'like', '%' . $search . '%');
+            });
+        })
         ->orderBy('name')
+        ->limit(20)
         ->get(['id', 'name', 'nis', 'gender']);
+
+    return response()->json($students->map(function ($student) {
+        return [
+            'value' => $student->id,
+            'text' => "{$student->name} (NIS: {$student->nis}) - {$student->gender}",
+        ];
+    }));
 })->name('api.available-students')->middleware('auth');
 
 
