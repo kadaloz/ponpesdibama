@@ -214,39 +214,36 @@ public function assignStudents(Request $request, Room $room)
     $roomGender = $room->gender_type;
 
     if (count($selectedStudentIds) > $room->capacity) {
-    throw new \Exception("Gagal: Jumlah santri melebihi kapasitas maksimal kamar ({$room->capacity}).");
-}
-
+        throw new \Exception("Gagal: Jumlah santri melebihi kapasitas maksimal kamar ({$room->capacity}).");
+    }
 
     try {
         DB::beginTransaction();
 
-        // 🔻 Hapus santri yang tadinya menghuni kamar tetapi sekarang tidak tercentang
+        // Hapus santri yang keluar dari kamar
         StudentRoomPlacement::where('room_id', $room->id)
             ->whereNull('end_date')
             ->whereNotIn('student_id', $selectedStudentIds)
             ->update(['end_date' => now()]);
 
-        // 🔄 Proses santri yang dipilih di formulir
         foreach ($selectedStudentIds as $studentId) {
             $student = Student::find($studentId);
 
-            // ✅ Validasi jenis kelamin
+            // Validasi gender enum
+            $studentGender = $student->gender;
             if ($roomGender && $roomGender !== 'campur') {
-                $studentGender = ($student->gender === 'L') ? 'laki-laki' : 'perempuan';
-
                 if ($studentGender !== $roomGender) {
                     throw new \Exception("Santri {$student->name} memiliki jenis kelamin tidak sesuai dengan kamar.");
                 }
             }
 
-            // 🚫 Hapus penempatan aktif di kamar lain
+            // Hapus penempatan aktif di kamar lain
             StudentRoomPlacement::where('student_id', $studentId)
                 ->where('room_id', '!=', $room->id)
                 ->whereNull('end_date')
                 ->update(['end_date' => now()]);
 
-            // ✅ Buat penempatan baru jika belum ada
+            // Buat penempatan baru jika belum ada
             $alreadyInRoom = StudentRoomPlacement::where('student_id', $studentId)
                 ->where('room_id', $room->id)
                 ->whereNull('end_date')
@@ -262,38 +259,25 @@ public function assignStudents(Request $request, Room $room)
             }
         }
 
-        // 🔧 Update occupancy dan status
+        // Update occupancy dan status kamar
         $room->updateCurrentOccupancy();
+        $room->refresh(); // <--- pastikan data model fresh
         $room->status = ($room->current_occupancy >= $room->capacity) ? 'full' : 'available';
         $room->save();
 
-        // 📋 Audit Trail
-        record_audit(
-            'assign_students_to_room',
-            'Memperbarui penghuni kamar ' . $room->room_number,
-            auth()->id(),
-            auth()->user()->name ?? 'Guest',
-            $request->ip(),
-            $request->userAgent()
-        );
+        record_audit('assign_students_to_room', 'Memperbarui penghuni kamar ' . $room->room_number, auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
 
         DB::commit();
         return redirect()->route('admin.rooms.show', $room)->with('success', 'Penghuni kamar berhasil diperbarui.');
     } catch (\Exception $e) {
         DB::rollBack();
 
-        record_audit(
-            'assign_students_to_room_failed',
-            'Gagal memperbarui penghuni kamar: ' . $e->getMessage(),
-            auth()->id(),
-            auth()->user()->name ?? 'Guest',
-            $request->ip(),
-            $request->userAgent()
-        );
+        record_audit('assign_students_to_room_failed', 'Gagal memperbarui penghuni kamar: ' . $e->getMessage(), auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
 
         return redirect()->back()->with('error', $e->getMessage());
     }
 }
+
 
 
     /**
@@ -316,7 +300,6 @@ public function assignStudents(Request $request, Room $room)
 
         return view('admin.rooms.assign-items', compact('room', 'availableItems', 'currentRoomItemIds'));
     }
-    
 
     /**
      * Handle the logic for assigning items to a room.
