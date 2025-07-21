@@ -21,6 +21,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
 @section('admin_content')
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-8 text-gray-900">
+
         <h3 class="text-3xl font-extrabold text-teal-700 mb-8 text-center border-b pb-4">
             Atur Penghuni Kamar: {{ $room->room_number }} (Kapasitas: {{ $room->currentOccupancy() }}/{{ $room->capacity }})
         </h3>
@@ -45,6 +46,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
             @method('POST')
 
             <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                {{-- Kapasitas --}}
                 <template x-if="selectedCount() > remainingCapacity">
                     <div class="mb-4 text-red-600 font-semibold text-sm">
                         ⚠️ Jumlah yang dipilih melebihi kapasitas maksimal kamar!
@@ -56,6 +58,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                     </div>
                 </template>
 
+                {{-- Pencarian --}}
                 <div class="mb-4">
                     <label for="search_student" class="block text-gray-700 text-lg font-bold mb-2">Cari Santri:</label>
                     <input
@@ -67,6 +70,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                     >
                 </div>
 
+                {{-- Keterangan jika kosong --}}
                 <div x-show="filteredStudents().length === 0 && students.length > 0 && searchTerm !== ''" class="text-gray-600 italic mb-4">
                     Tidak ada santri yang cocok dengan pencarian Anda.
                 </div>
@@ -74,6 +78,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                     Tidak ada santri yang tersedia untuk dipilih (sesuai jenis kelamin kamar).
                 </div>
 
+                {{-- List Santri --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" x-show="filteredStudents().length > 0">
                     <template x-for="student in filteredStudents()" :key="student.id">
                         <div class="flex items-center p-3 border rounded-lg bg-white shadow-sm"
@@ -82,19 +87,16 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                                  'border-orange-400': student.is_other_room,
                                  'bg-gray-100': student.is_other_room
                              }">
-
-                            <input
-                                type="checkbox"
-                                :id="`student_${student.id}`"
-                                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                x-model="student.is_checked"
-                                :disabled="student.is_other_room"
-                            >
-
-                            <template x-if="student.is_checked && !student.is_other_room">
-                                <input type="hidden" name="student_ids[]" :value="student.id">
-                            </template>
-
+<input
+    type="checkbox"
+    name="student_ids[]"
+    :id="`student_${student.id}`"
+    :value="student.id"
+    class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+    x-model="student.is_checked"
+    :checked="student.is_checked"
+    :disabled="student.is_other_room"
+>
                             <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
                                 <span x-text="student.name"></span>
                                 <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
