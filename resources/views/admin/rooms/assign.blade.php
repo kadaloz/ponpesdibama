@@ -87,15 +87,16 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                                  'border-orange-400': student.is_other_room,
                                  'bg-gray-100': student.is_other_room
                              }">
-                            <input
-                                type="checkbox"
-                                name="student_ids[]"
-                                :id="`student_${student.id}`"
-                                :value="student.id"
-                                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                x-model="student.is_checked"
-                                :disabled="student.is_other_room"
-                            >
+<input
+    type="checkbox"
+    name="student_ids[]"
+    :id="`student_${student.id}`"
+    :value="student.id"
+    class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+    x-model="student.is_checked"
+    :checked="student.is_checked"
+    :disabled="student.is_other_room"
+>
                             <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
                                 <span x-text="student.name"></span>
                                 <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
