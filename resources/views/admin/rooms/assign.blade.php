@@ -15,27 +15,27 @@
                 @method('POST')
 
                 <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200"
-                    x-data="{ searchTerm: '',
-                                students: @json($availableStudents->map(function($student) use ($room) {
-                                    return [
-                                        'id' => $student->id,
-                                        'name' => $student->name,
-                                        'nis' => $student->nis,
-                                        'current_room_number' => $student->currentRoomPlacement->room->room_number ?? null,
-                                        'is_checked' => in_array($student->id, $room->currentStudents->pluck('student_id')->toArray()),
-                                        'is_current_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id == $room->id), // Santri sudah di kamar ini
-                                        'is_other_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id != $room->id) // Santri di kamar lain
-                                    ];
-                                })),
-                                filteredStudents() {
-                                    const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-                                    return this.students.filter(student =>
-                                        student.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-                                        student.nis.toLowerCase().includes(lowerCaseSearchTerm)
-                                    );
-                                }
-                             }"
-                >
+    x-data="{ searchTerm: '',
+               students: @json($availableStudents->map(function($student) use ($room) { // <--- Line 18 is likely this line or very close
+                   return [
+                       'id' => $student->id,
+                       'name' => $student->name,
+                       'nis' => $student->nis,
+                       'current_room_number' => $student->currentRoomPlacement->room->room_number ?? null,
+                       'is_checked' => in_array($student->id, $room->currentStudents->pluck('student_id')->toArray()),
+                       'is_current_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id == $room->id),
+                       'is_other_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id != $room->id)
+                   ];
+               })), // <-- Ensure this closing parenthesis and the comma are correct
+               filteredStudents() {
+                   const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
+                   return this.students.filter(student =>
+                       student.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+                       student.nis.toLowerCase().includes(lowerCaseSearchTerm)
+                   );
+               }
+             }"
+>
                     <div class="mb-4">
                         <label for="search_student" class="block text-gray-700 text-lg font-bold mb-2">Cari Santri:</label>
                         <input
