@@ -21,6 +21,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
 @section('admin_content')
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-8 text-gray-900">
+
         <h3 class="text-3xl font-extrabold text-teal-700 mb-8 text-center border-b pb-4">
             Atur Penghuni Kamar: {{ $room->room_number }} (Kapasitas: {{ $room->currentOccupancy() }}/{{ $room->capacity }})
         </h3>
@@ -35,12 +36,29 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                           student.name.toLowerCase().includes(term) ||
                           student.nis.toLowerCase().includes(term)
                       );
-                  }
+                  },
+                  selectedCount() {
+                      return this.students.filter(s => s.is_checked).length;
+                  },
+                  remainingCapacity: {{ $room->capacity }}
               }">
             @csrf
             @method('POST')
 
             <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
+                {{-- Kapasitas --}}
+                <template x-if="selectedCount() > remainingCapacity">
+                    <div class="mb-4 text-red-600 font-semibold text-sm">
+                        ⚠️ Jumlah yang dipilih melebihi kapasitas maksimal kamar!
+                    </div>
+                </template>
+                <template x-if="selectedCount() <= remainingCapacity">
+                    <div class="mb-4 text-green-600 font-semibold text-sm">
+                        ✅ Total santri dipilih: <span x-text="selectedCount()"></span> / {{ $room->capacity }}
+                    </div>
+                </template>
+
+                {{-- Pencarian --}}
                 <div class="mb-4">
                     <label for="search_student" class="block text-gray-700 text-lg font-bold mb-2">Cari Santri:</label>
                     <input
@@ -52,8 +70,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                     >
                 </div>
 
-                <label for="student_ids" class="block text-gray-700 text-lg font-bold mb-4 mt-6">Pilih Santri Penghuni:</label>
-
+                {{-- Keterangan jika kosong --}}
                 <div x-show="filteredStudents().length === 0 && students.length > 0 && searchTerm !== ''" class="text-gray-600 italic mb-4">
                     Tidak ada santri yang cocok dengan pencarian Anda.
                 </div>
@@ -61,9 +78,10 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                     Tidak ada santri yang tersedia untuk dipilih (sesuai jenis kelamin kamar).
                 </div>
 
+                {{-- List Santri --}}
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" x-show="filteredStudents().length > 0">
                     <template x-for="student in filteredStudents()" :key="student.id">
-                        <div class="flex items-center p-3 border border-gray-300 rounded-lg bg-white shadow-sm"
+                        <div class="flex items-center p-3 border rounded-lg bg-white shadow-sm"
                              :class="{
                                  'border-green-400': student.is_current_room,
                                  'border-orange-400': student.is_other_room,
@@ -82,10 +100,10 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                                 <span x-text="student.name"></span>
                                 <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
                                 <template x-if="student.is_other_room">
-                                    <br><span class="text-orange-500 text-xs font-semibold">(Saat ini di kamar: <span x-text="student.current_room_number"></span> – Pindahkan dulu)</span>
+                                    <br><span class="text-orange-500 text-xs font-semibold">(Kamar lain: <span x-text="student.current_room_number"></span>)</span>
                                 </template>
                                 <template x-if="student.is_current_room">
-                                    <br><span class="text-green-500 text-xs">(Sudah di kamar ini)</span>
+                                    <br><span class="text-green-500 text-xs">(Sudah di kamar ini – centang untuk tetap)</span>
                                 </template>
                             </label>
                         </div>
@@ -93,7 +111,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                 </div>
 
                 @error('student_ids')
-                    <p class="text-red-500 text-sm mt-2">{{ $message }}</p>
+                    <p class="text-red-500 text-sm mt-4">{{ $message }}</p>
                 @enderror
             </div>
 
