@@ -15,33 +15,31 @@
                 @method('POST')
 
                 <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200"
-                    x-data="{ searchTerm: '',
-                                // Data santri sudah difilter berdasarkan jenis kelamin dan status di controller
-                                students: @json($availableStudents->map(function($student) use ($currentRoomStudentIds, $room) {
-                                    return [
-                                        'id' => $student->id,
-                                        'name' => $student->name,
-                                        'nis' => $student->nis,
-                                        'gender' => $student->gender,
-                                        // --- PERBAIKAN DI SINI ---
-                                        'current_room_number' => $student->currentRoomPlacement?->room?->room_number, // Menggunakan optional chaining
-                                        // --- AKHIR PERBAIKAN ---
-                                        'is_checked' => in_array($student->id, $currentRoomStudentIds),
-                                        'is_current_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id == $room->id),
-                                        'is_other_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id != $room->id)
-                                    ];
-                                })),
-                                filteredStudents() {
-                                    const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
-                                    if (lowerCaseSearchTerm === '') {
-                                        return this.students;
-                                    }
-                                    return this.students.filter(student =>
-                                        student.name.toLowerCase().includes(lowerCaseSearchTerm) ||
-                                        student.nis.toLowerCase().includes(lowerCaseSearchTerm)
-                                    );
-                                }
-                             }"
+                    x-data="{
+                        searchTerm: '',
+                        students: @json($availableStudents->map(function($student) use ($currentRoomStudentIds, $room) {
+                            return [
+                                'id' => $student->id,
+                                'name' => $student->name,
+                                'nis' => $student->nis,
+                                'gender' => $student->gender,
+                                'current_room_number' => $student->currentRoomPlacement?->room?->room_number,
+                                'is_checked' => in_array($student->id, $currentRoomStudentIds),
+                                'is_current_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id == $room->id),
+                                'is_other_room' => ($student->currentRoomPlacement && $student->currentRoomPlacement->room_id != $room->id)
+                            ];
+                        })), // <<< Pastikan penutup kurung ini ada dan di posisi yang benar
+                        filteredStudents() {
+                            const lowerCaseSearchTerm = this.searchTerm.toLowerCase();
+                            if (lowerCaseSearchTerm === '') {
+                                return this.students;
+                            }
+                            return this.students.filter(student =>
+                                student.name.toLowerCase().includes(lowerCaseSearchTerm) ||
+                                student.nis.toLowerCase().includes(lowerCaseSearchTerm)
+                            );
+                        }
+                    }"
                 >
                     <div class="mb-4">
                         <label for="search_student" class="block text-gray-700 text-lg font-bold mb-2">Cari Santri:</label>
