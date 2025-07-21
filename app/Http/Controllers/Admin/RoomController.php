@@ -188,9 +188,9 @@ public function __construct()
                 // Sesuaikan 'gender' dengan nama kolom di tabel 'students'
                 // dan nilai 'Laki-laki'/'Perempuan' dengan data di DB Anda.
                 if ($roomGender === 'laki-laki') {
-                    $query->where('gender', 'L'); // Atau 'Laki-laki'
+                    $query->where('gender', 'laki-laki'); // Atau 'Laki-laki'
                 } elseif ($roomGender === 'perempuan') {
-                    $query->where('gender', 'P'); // Atau 'Perempuan'
+                    $query->where('gender', 'perempuan'); // Atau 'Perempuan'
                 }
                 // Jika ada 'Campur', tidak perlu filter jenis kelamin
             })
