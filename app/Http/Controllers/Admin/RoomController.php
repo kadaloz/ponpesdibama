@@ -211,6 +211,11 @@ public function assignStudents(Request $request, Room $room)
     ]);
 
     $selectedStudentIds = $validatedData['student_ids'] ?? [];
+    // Jika hanya terkirim satu elemen kosong (karena input hidden)
+    $selectedStudentIds = array_filter($selectedStudentIds);
+
+    // Jika kosong, konversi ke array kosong
+    $selectedStudentIds = array_values($selectedStudentIds);
     $roomGender = $room->gender_type;
 
     if (count($selectedStudentIds) > $room->capacity) {
