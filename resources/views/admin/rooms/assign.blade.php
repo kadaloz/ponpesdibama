@@ -92,7 +92,7 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                             >
 
                             <template x-if="student.is_checked && !student.is_other_room">
-                                <input type="hidden" name="student_ids[]" :value="student.id">
+                                <input type="hidden" name="student_ids[]" :value="">
                             </template>
 
                             <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
