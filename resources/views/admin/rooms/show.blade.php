@@ -58,11 +58,12 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($room->currentStudents as $placement)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $placement->student->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $placement->student->nis }}</td>
-                                    </tr>
+                               @foreach ($room->currentStudents as $student) {{-- Changed $placement to $student for clarity --}}
+                        <tr>
+                            {{-- Akses langsung data santri --}}
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $student->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $student->nis }}</td>
+                        </tr>
                                 @endforeach
                             </tbody>
                         </table>
