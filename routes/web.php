@@ -309,6 +309,10 @@ Route::get('/api/available-students', function (Request $request) {
     Route::resource('rooms', RoomController::class);
     Route::get('rooms/{room}/assign', [RoomController::class, 'assignForm'])->name('rooms.assign.form');
     Route::post('rooms/{room}/assign', [RoomController::class, 'assignStudents'])->name('rooms.assign.students');
+    Route::delete('rooms/{room}/remove-student/{student}', [RoomController::class, 'removeStudent'])
+    ->name('admin.rooms.remove.student')
+    ->middleware('permission:assign students to room');
+
     Route::resource('items', ItemController::class);
     // Rute untuk Penempatan Santri
     Route::get('/placements', [StudentPlacementController::class, 'index'])->name('placements.index') ->middleware('permission:view placements');

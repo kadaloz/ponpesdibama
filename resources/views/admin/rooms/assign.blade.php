@@ -42,7 +42,9 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                   remainingCapacity: {{ $room->capacity }}
               }">
             @csrf
-            @method('POST')
+
+            {{-- Input hidden untuk mengirim array kosong jika tidak ada pilihan --}}
+            <input type="hidden" name="student_ids[]" value="">
 
             <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
                 <template x-if="selectedCount() > remainingCapacity">
@@ -76,35 +78,51 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
 
                 <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4" x-show="filteredStudents().length > 0">
                     <template x-for="student in filteredStudents()" :key="student.id">
-                        <div class="flex items-center p-3 border rounded-lg bg-white shadow-sm"
+                        <div class="flex flex-col space-y-2 p-3 border rounded-lg bg-white shadow-sm"
                              :class="{
                                  'border-green-400': student.is_current_room,
                                  'border-orange-400': student.is_other_room,
                                  'bg-gray-100': student.is_other_room
                              }">
 
-                            <input
-                                type="checkbox"
-                                :id="`student_${student.id}`"
-                                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
-                                x-model="student.is_checked"
-                                :disabled="student.is_other_room"
-                            >
+                            <div class="flex items-center">
+                                <input
+                                    type="checkbox"
+                                    :id="`student_${student.id}`"
+                                    class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                    x-model="student.is_checked"
+                                    :disabled="student.is_other_room"
+                                >
 
-                            <template x-if="student.is_checked && !student.is_other_room">
-                                <input type="hidden" name="student_ids[]" :value="student.id">
+                                <template x-if="student.is_checked && !student.is_other_room">
+                                    <input type="hidden" name="student_ids[]" :value="student.id">
+                                </template>
+
+                                <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
+                                    <span x-text="student.name"></span>
+                                    <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
+                                    <template x-if="student.is_other_room">
+                                        <br><span class="text-orange-500 text-xs font-semibold">(Kamar lain: <span x-text="student.current_room_number"></span>)</span>
+                                    </template>
+                                    <template x-if="student.is_current_room">
+                                        <br><span class="text-green-500 text-xs">(Sudah di kamar ini)</span>
+                                    </template>
+                                </label>
+                            </div>
+
+                            <template x-if="student.is_current_room">
+                                <form :action="`{{ url('admin/rooms/'.$room->id.'/remove-student') }}/${student.id}`"
+                                      method="POST"
+                                      onsubmit="return confirm('Yakin ingin mengeluarkan santri ini?')">
+                                    @csrf
+                                    @method('DELETE')
+                                    <button type="submit"
+                                            class="text-red-500 text-xs underline">
+                                        🚫 Keluarkan dari kamar
+                                    </button>
+                                </form>
                             </template>
 
-                            <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
-                                <span x-text="student.name"></span>
-                                <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
-                                <template x-if="student.is_other_room">
-                                    <br><span class="text-orange-500 text-xs font-semibold">(Kamar lain: <span x-text="student.current_room_number"></span>)</span>
-                                </template>
-                                <template x-if="student.is_current_room">
-                                    <br><span class="text-green-500 text-xs">(Sudah di kamar ini – centang untuk tetap)</span>
-                                </template>
-                            </label>
                         </div>
                     </template>
                 </div>

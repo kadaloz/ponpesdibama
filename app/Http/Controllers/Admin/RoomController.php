@@ -273,6 +273,28 @@ public function assignStudents(Request $request, Room $room)
     }
 }
 
+public function removeStudent(Room $room, Student $student)
+{
+    // Akhiri penempatan aktif santri di kamar ini
+    StudentRoomPlacement::where('student_id', $student->id)
+        ->where('room_id', $room->id)
+        ->whereNull('end_date')
+        ->update(['end_date' => now()]);
+
+    // Audit Trail
+    record_audit(
+        'remove_student_from_room',
+        "Mengeluarkan santri {$student->name} dari kamar {$room->room_number}",
+        auth()->id(),
+        auth()->user()->name ?? 'Guest',
+        request()->ip(),
+        request()->userAgent()
+    );
+
+    return redirect()->back()->with('success', "Santri {$student->name} berhasil dikeluarkan dari kamar.");
+}
+
+
 
 
 
