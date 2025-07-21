@@ -42,7 +42,7 @@ class StudentPlacementController extends Controller
     public function create()
     {
        // Hanya santri dengan tipe 'asrama' DAN belum memiliki penempatan aktif
-        $students = Student::doesntHave('currentPlacement')
+        $students = Student::doesntHave('currentRoomPlacement')
                             ->where('type', 'asrama')
                             ->orderBy('name')
                             ->get();

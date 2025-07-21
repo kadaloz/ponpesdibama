@@ -316,6 +316,7 @@ public function assignStudents(Request $request, Room $room)
 
         return view('admin.rooms.assign-items', compact('room', 'availableItems', 'currentRoomItemIds'));
     }
+    
 
     /**
      * Handle the logic for assigning items to a room.
