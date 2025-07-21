@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Storage; // Pastikan ini di-import
 
 class Student extends Model
 {
@@ -14,17 +14,17 @@ class Student extends Model
         'applicant_id',
         'nis',
         'name',
-        'gender',
+        'gender', // Pastikan nilai di DB adalah 'L' atau 'P' (atau 'Laki-laki'/'Perempuan')
         'place_of_birth',
         'date_of_birth',
         'nisn',
         'last_education',
         'school_origin',
         'address',
-        'province', // Sudah ada
-        'city',     // Sudah ada
-        'district', // BARU DITAMBAHKAN
-        'village',  // BARU DITAMBAHKAN
+        'province',
+        'city',
+        'district',
+        'village',
         'parent_name',
         'parent_phone',
         'parent_email',
@@ -60,13 +60,51 @@ class Student extends Model
                     ->withTimestamps();
     }
 
+    /**
+     * Relasi ke penempatan kamar (semua riwayat penempatan).
+     */
+    public function placements()
+    {
+        return $this->hasMany(StudentRoomPlacement::class);
+    }
+
+    /**
+     * Relasi untuk mendapatkan penempatan kamar aktif saat ini (jika ada).
+     * Ini adalah relasi yang digunakan di RoomController dan assign.blade.php.
+     * Mengubah nama dari `currentPlacement` menjadi `currentRoomPlacement`
+     * agar konsisten dengan penggunaan sebelumnya.
+     */
+    public function currentRoomPlacement() // <<< NAMA RELASI DISESUAIKAN
+    {
+        return $this->hasOne(StudentRoomPlacement::class)->whereNull('end_date'); // Hanya yang aktif
+    }
+
+    /**
+     * Untuk mendapatkan kamar aktif santri (melalui penempatan aktif).
+     * Menggunakan hasOneThrough untuk akses langsung ke objek Room.
+     */
+    public function currentRoom()
+    {
+        return $this->hasOneThrough(
+            Room::class,
+            StudentRoomPlacement::class,
+            'student_id', // Foreign key on StudentRoomPlacement table
+            'id',         // Local key on Room table
+            'id',         // Local key on Student table
+            'room_id'     // Foreign key on StudentRoomPlacement table
+        )->where('student_room_placements.end_date', null); // Pastikan hanya yang aktif
+    }
+
     protected static function booted(): void
     {
         static::creating(function (Student $student) {
             if (empty($student->nis)) {
+                // Pastikan nilai gender yang masuk ke generateUniqueNis() sesuai
+                // dengan yang diharapkan oleh fungsi tersebut (misal: 'Laki-laki' atau 'Perempuan')
+                // Jika di DB 'L'/'P', Anda mungkin perlu mapping di sini.
                 $student->nis = self::generateUniqueNis(
                     $student->type ?? 'Pulang-Pergi',
-                    $student->gender ?? 'Laki-laki',
+                    $student->gender ?? 'Laki-laki', // Pastikan ini 'Laki-laki' atau 'Perempuan'
                     $student->admission_year ?? date('Y')
                 );
             }
@@ -75,6 +113,8 @@ class Student extends Model
 
     /**
      * Generate Unique NIS (DBM-[YEAR]-[TYPE]-[GENDER]-[XXXX])
+     * Pastikan $gender yang masuk ke sini adalah 'Laki-laki' atau 'Perempuan'
+     * agar substr($gender, 0, 1) menghasilkan 'L' atau 'P'.
      */
     public static function generateUniqueNis(string $type, string $gender, ?string $admissionYear = null): string
     {
@@ -92,7 +132,18 @@ class Student extends Model
             'Pulang-Pergi' => 'TPQ',
         ];
         $typeInitial = $typeInitialMap[$type] ?? 'TPQ';
-        $genderInitial = strtoupper(substr($gender, 0, 1));
+
+        // Pastikan $gender adalah 'Laki-laki' atau 'Perempuan'
+        $genderInitial = '';
+        if (strtolower($gender) === 'laki-laki') {
+            $genderInitial = 'L';
+        } elseif (strtolower($gender) === 'perempuan') {
+            $genderInitial = 'P';
+        } else {
+            // Handle unexpected gender value if necessary
+            $genderInitial = 'X'; // Default atau throw error
+        }
+
 
         $prefix = "DBM{$yearPart}{$typeInitial}{$genderInitial}";
 
@@ -106,28 +157,5 @@ class Student extends Model
             : 1;
 
         return $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
-    }
-
-     // Relasi ke penempatan kamar
-    public function placements()
-    {
-        return $this->hasMany(StudentRoomPlacement::class);
-    }
-
-    // Relasi untuk mendapatkan penempatan kamar aktif saat ini (jika ada)
-    public function currentPlacement()
-    {
-        return $this->hasOne(StudentRoomPlacement::class)->where('is_active', true);
-    }
-
-    // Untuk mendapatkan kamar aktif santri
-    public function currentRoom()
-    {
-        return $this->hasOneThrough(Room::class, StudentRoomPlacement::class,
-            'student_id', // Foreign key on StudentRoomPlacement table...
-            'id',         // Foreign key on Room table...
-            'id',         // Local key on Student table...
-            'room_id'     // Local key on StudentRoomPlacement table...
-        )->where('student_room_placements.is_active', true);
     }
 }

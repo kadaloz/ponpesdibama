@@ -272,7 +272,7 @@ Route::get('/api/available-students', function (Request $request) {
 
     $students = Student::query()
         ->where('status', 'aktif')
-        ->whereDoesntHave('currentPlacement')
+        ->whereDoesntHave('currentRoomPlacement')
         ->when($search, function ($query, $search) {
             $query->where(function ($q) use ($search) {
                 $q->where('name', 'like', '%' . $search . '%')
