@@ -46,10 +46,9 @@
             {{-- Bagian untuk menampilkan santri yang menempati kamar ini --}}
             <div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
                 <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
-                    {{-- Gunakan currentOccupancy() dari model Room Anda --}}
                     <x-heroicon-o-users class="h-6 w-6 text-gray-600 mr-2" /> Santri Penghuni ({{ $room->currentOccupancy() }}/{{ $room->capacity }})
                 </h4>
-                @if ($room->currentStudents->isNotEmpty()) {{-- Perhatikan ini: currentStudents --}}
+                @if ($room->currentStudents->isNotEmpty())
                     <div class="overflow-x-auto">
                         <table class="min-w-full divide-y divide-gray-200">
                             <thead class="bg-gray-100">
@@ -59,9 +58,8 @@
                                 </tr>
                             </thead>
                             <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($room->currentStudents as $placement) {{-- Perhatikan ini: $placement --}}
+                                @foreach ($room->currentStudents as $placement)
                                     <tr>
-                                        {{-- Akses data santri melalui objek placement --}}
                                         <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $placement->student->name }}</td>
                                         <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $placement->student->nis }}</td>
                                     </tr>
@@ -73,62 +71,61 @@
                     <p class="text-gray-600 italic">Belum ada santri yang menempati kamar ini.</p>
                 @endif
 
-<div class="mt-4 text-right">
-        {{-- Tombol untuk menambah inventaris baru ke kamar ini --}}
-        <a href="{{ route('admin.rooms.assign.form', $room) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-700 focus:bg-red-700 active:bg-red-800 focus:outline-none focus:ring-2 focus:ring-red-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
-            <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
-            Atur Penghuni
-        </a>
-    </div>
+                <div class="mt-4 text-right">
+                    {{-- Tombol "Atur Penghuni" diubah menjadi putih --}}
+                    <a href="{{ route('admin.rooms.assign.form', $room) }}" class="inline-flex items-center px-4 py-2 bg-white border border-gray-300 rounded-full font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-100 focus:bg-gray-100 active:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 transition ease-in-out duration-150 shadow-sm">
+                        <x-heroicon-o-user-plus class="w-4 h-4 mr-2 -ml-1" />
+                        Atur Penghuni
+                    </a>
+                </div>
             </div>
 
 
             {{-- Bagian untuk menampilkan inventaris di kamar ini --}}
-<div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
-    <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
-        <x-heroicon-o-archive-box class="h-6 w-6 text-gray-600 mr-2" /> Inventaris Kamar ({{ $room->items->count() }})
-    </h4>
-    @if ($room->items->isNotEmpty())
-        <div class="overflow-x-auto">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-100">
-                    <tr>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Seri</th>
-                        {{-- Anda bisa menambahkan kolom lain seperti Tanggal Perolehan jika diperlukan --}}
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    @foreach ($room->items as $item)
-                        <tr>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->name }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->condition }}</td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
-                                    ['Tersedia' => 'bg-green-100 text-green-800', 'Dipinjam' => 'bg-yellow-100 text-yellow-800', 'Rusak' => 'bg-red-100 text-red-800', 'Hilang' => 'bg-gray-100 text-gray-800'][$item->status] ?? 'bg-blue-100 text-blue-800'
-                                }}">
-                                    {{ $item->status }}
-                                </span>
-                            </td>
-                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->serial_number ?? '-' }}</td>
-                        </tr>
-                    @endforeach
-                </tbody>
-            </table>
-        </div>
-    @else
-        <p class="text-gray-600 italic">Tidak ada inventaris yang tercatat di kamar ini.</p>
-    @endif
-     <div class="mt-4 text-right">
-        {{-- Tombol untuk menambah inventaris baru ke kamar ini --}}
-        <a href="{{ route('admin.items.create', ['room_id' => $room->id]) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
-            <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
-            Tambah Inventaris Baru
-        </a>
-    </div>
-</div>
+            <div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
+                <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
+                    <x-heroicon-o-archive-box class="h-6 w-6 text-gray-600 mr-2" /> Inventaris Kamar ({{ $room->items->count() }})
+                </h4>
+                @if ($room->items->isNotEmpty())
+                    <div class="overflow-x-auto">
+                        <table class="min-w-full divide-y divide-gray-200">
+                            <thead class="bg-gray-100">
+                                <tr>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Seri</th>
+                                </tr>
+                            </thead>
+                            <tbody class="bg-white divide-y divide-gray-200">
+                                @foreach ($room->items as $item)
+                                    <tr>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->name }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->condition }}</td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
+                                                ['Tersedia' => 'bg-green-100 text-green-800', 'Dipinjam' => 'bg-yellow-100 text-yellow-800', 'Rusak' => 'bg-red-100 text-red-800', 'Hilang' => 'bg-gray-100 text-gray-800'][$item->status] ?? 'bg-blue-100 text-blue-800'
+                                            }}">
+                                                {{ $item->status }}
+                                            </span>
+                                        </td>
+                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->serial_number ?? '-' }}</td>
+                                    </tr>
+                                @endforeach
+                            </tbody>
+                        </table>
+                    </div>
+                @else
+                    <p class="text-gray-600 italic">Tidak ada inventaris yang tercatat di kamar ini.</p>
+                @endif
+                <div class="mt-4 text-right">
+                    {{-- Tombol untuk menambah inventaris baru ke kamar ini (tetap teal) --}}
+                    <a href="{{ route('admin.items.create', ['room_id' => $room->id]) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+                        <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
+                        Tambah Inventaris Baru
+                    </a>
+                </div>
+            </div>
 
 
             <div class="mt-10 text-center border-t pt-6 flex justify-end space-x-4">
