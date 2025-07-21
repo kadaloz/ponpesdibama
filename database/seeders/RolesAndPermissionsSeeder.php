@@ -98,6 +98,8 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'view placements history']); // Izin untuk melihat riwayat penempatan santri
         Permission::firstOrCreate(['name' => 'manage placements']); // Izin untuk mengelola penempatan santri
         Permission::firstOrCreate(['name' => 'view placements in room']); // Izin untuk melihat penempatan santri di ruangan tertentu
+        Permission::firstOrCreate(['name' => 'assign students to room']); // Izin untuk menetapkan santri ke kamar  
+        
 
         // --- NEW: Izin untuk Manajemen Inventaris ---
         Permission::firstOrCreate(['name' => 'view items']);

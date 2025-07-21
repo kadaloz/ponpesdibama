@@ -16,16 +16,15 @@ class RoomController extends Controller
     /**
      * Create a new controller instance.
      */
-    public function __construct()
-    {
-        // Middleware untuk melindungi seluruh controller berdasarkan izin
-        $this->middleware('permission:view rooms')->only(['index', 'show']);
-        $this->middleware('permission:create rooms')->only(['create', 'store']);
-        $this->middleware('permission:edit rooms')->only(['edit', 'update']);
-        $this->middleware('permission:delete rooms')->only(['destroy']);
-        // Tambahkan middleware untuk assignForm dan assignStudents
-        $this->middleware('permission:assign students to room')->only(['assignForm', 'assignStudents']);
-    }
+public function __construct()
+{
+    $this->middleware('permission:view rooms')->only(['index', 'show']);
+    $this->middleware('permission:create rooms')->only(['create', 'store']);
+    $this->middleware('permission:edit rooms')->only(['edit', 'update']);
+    $this->middleware('permission:delete rooms')->only(['destroy']);
+    $this->middleware('permission:assign students to room')->only(['assignForm', 'assignStudents']); // <-- This is likely the culprit
+    $this->middleware('permission:assign items to room')->only(['assignItemsForm', 'assignItems']);
+}
 
     /**
      * Display a listing of the resource.
