@@ -50,34 +50,55 @@
         <div class="flex-1 flex flex-col transition-all duration-300"
              :class="{ 'ml-64': sidebarOpen && window.innerWidth >= 768 }"> {{-- Konten utama bergeser ke kanan saat sidebar terbuka di desktop --}}
             {{-- Admin Top Bar --}}
-            <header class="bg-white shadow-md p-4 flex justify-between items-center border-b border-gray-200 sticky top-0 z-30 px-6 py-4"> {{-- Padding dan bayangan ditingkatkan --}}
-                {{-- Tombol Hamburger untuk Mobile dan Desktop --}}
-                <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600 p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1 transition-colors duration-200">
-                    <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
-                </button>
+<header class="bg-white shadow-md p-4 flex justify-between items-center border-b border-gray-200 sticky top-0 z-30 px-6 py-4">
+    {{-- Tombol Hamburger --}}
+    <button @click="sidebarOpen = !sidebarOpen" class="text-gray-600 p-2 rounded-lg hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-1 transition-colors duration-200">
+        <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+        </svg>
+    </button>
 
-                <h1 class="text-2xl font-bold text-gray-800 ml-4 hidden md:block">@yield('header_admin')</h1> {{-- Judul yang lebih besar, sembunyi di mobile --}}
-                
-                {{-- User Info dan Aksi --}}
-                <div class="flex items-center space-x-4">
-                    <span class="text-gray-700 font-medium text-lg hidden sm:block">Halo, {{ Auth::user()?->name }}</span> {{-- Teks sapaan lebih besar, sembunyi di mobile kecil --}}
+    <h1 class="text-2xl font-bold text-gray-800 ml-4 hidden md:block">@yield('header_admin')</h1>
 
-                    @role('admin|sekret|mudabbir')
-                        <a href="{{ route('admin.profile.edit') }}" class="flex items-center text-sm px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors duration-200">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path></svg>
-                            Profil
-                        </a>
-                    @endrole
+    {{-- Foto Profil, Nama, dan Aksi --}}
+    <div class="flex items-center space-x-4">
+        {{-- Foto Profil --}}
+        <img src="{{ Auth::user()->photo_path ? asset('storage/' . Auth::user()->photo_path) : asset('images/default-avatar.png') }}"
+             alt="Foto Profil"
+             class="w-10 h-10 rounded-full object-cover border border-gray-300 shadow-sm">
 
-                    <form method="POST" action="{{ route('logout') }}">
-                        @csrf
-                        <button type="submit" class="flex items-center text-sm px-3 py-1 rounded-md bg-red-500 hover:bg-red-600 text-white transition-colors duration-200">
-                            <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path></svg>
-                            Logout
-                        </button>
-                    </form>
-                </div>
-            </header>
+        {{-- Sapaan --}}
+        <span class="text-gray-700 font-medium text-sm hidden sm:block">
+            {{ Auth::user()->name }}
+        </span>
+
+        {{-- Tombol Profil --}}
+        @role('admin|sekret|mudabbir')
+            <a href="{{ route('admin.profile.edit') }}"
+               class="flex items-center text-xs px-3 py-1 rounded-md bg-gray-100 hover:bg-gray-200 text-gray-700 transition-colors duration-200">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"/>
+                </svg>
+                Profil
+            </a>
+        @endrole
+
+        {{-- Tombol Logout --}}
+        <form method="POST" action="{{ route('logout') }}">
+            @csrf
+            <button type="submit"
+                    class="flex items-center text-xs px-3 py-1 rounded-md bg-red-500 hover:bg-red-600 text-white transition-colors duration-200">
+                <svg class="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                          d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                </svg>
+                Logout
+            </button>
+        </form>
+    </div>
+</header>
+
 
             <div class="p-6 flex-1"> {{-- Area konten yang bisa di-scroll --}}
                 @yield('admin_content')
