@@ -63,7 +63,7 @@
     {{-- Foto Profil, Nama, dan Aksi --}}
     <div class="flex items-center space-x-4">
         {{-- Foto Profil --}}
-<img src="{{ Auth::user()->profile_photo_url }}"
+<img src="{{ $teacher->photo_path ? asset('storage/' . $teacher->photo_path) : asset('images/default-avatar.png') }}"
      alt="Foto Profil"
      class="w-10 h-10 rounded-full object-cover border border-gray-300 shadow-sm">
 
