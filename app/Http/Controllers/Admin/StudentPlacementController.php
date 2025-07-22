@@ -171,6 +171,14 @@ public function update(Request $request, StudentRoomPlacement $placement)
         $oldRoom = $placement->room;
         $message = '';
 
+        // 🔧 Cegah duplikat: bersihkan entri tak aktif selain baris ini
+        StudentRoomPlacement::where('student_id', $placement->student_id)
+            ->where('is_active', 0)
+            ->where('id', '<>', $placement->id)
+            ->update([
+                'updated_at' => now()
+            ]);
+
         if ($validatedData['action'] == 'move_room') {
             if (empty($validatedData['new_room_id'])) {
                 return redirect()->back()->withInput()->with('error', 'Pilih kamar baru untuk pindah.');
@@ -186,7 +194,7 @@ public function update(Request $request, StudentRoomPlacement $placement)
                 return redirect()->back()->withInput()->with('error', 'Kamar baru sudah penuh. Pilih kamar lain.');
             }
 
-            // Nonaktifkan semua penempatan aktif milik santri (termasuk yang sedang diubah)
+            // Nonaktifkan penempatan aktif milik santri
             StudentRoomPlacement::where('student_id', $student->id)
                 ->where('is_active', true)
                 ->update([
@@ -194,7 +202,7 @@ public function update(Request $request, StudentRoomPlacement $placement)
                     'is_active' => false,
                 ]);
 
-            // Pastikan tidak membuat duplikat
+            // Cek apakah sudah ada penempatan aktif di kamar tujuan
             $existingPlacement = StudentRoomPlacement::where('student_id', $student->id)
                 ->where('room_id', $newRoom->id)
                 ->where('is_active', true)
@@ -203,6 +211,7 @@ public function update(Request $request, StudentRoomPlacement $placement)
             if ($existingPlacement) {
                 $existingPlacement->update([
                     'start_date' => $existingPlacement->start_date ?? now()->toDateString(),
+                    'updated_at' => now()
                 ]);
             } else {
                 StudentRoomPlacement::create([
@@ -252,6 +261,7 @@ public function update(Request $request, StudentRoomPlacement $placement)
         return redirect()->back()->withInput()->with('error', 'Gagal memperbarui penempatan: ' . $e->getMessage());
     }
 }
+
 
 
     /**
