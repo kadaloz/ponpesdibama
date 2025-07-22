@@ -63,9 +63,23 @@
     {{-- Foto Profil, Nama, dan Aksi --}}
     <div class="flex items-center space-x-4">
         {{-- Foto Profil --}}
-<img src="{{ $teacher->photo_path ? asset('storage/' . $teacher->photo_path) : asset('images/default-avatar.png') }}"
-     alt="Foto Profil"
-     class="w-10 h-10 rounded-full object-cover border border-gray-300 shadow-sm">
+@php
+    $user = auth()->user();
+    $photoPath = $user->photo_path 
+                 ?? $user->teacher?->photo_path 
+                 ?? null;
+@endphp
+
+@if($photoPath)
+    <img src="{{ asset('storage/' . $photoPath) }}"
+         alt="Foto Profil"
+         class="w-10 h-10 rounded-full object-cover">
+@else
+    <img src="{{ asset('images/default-avatar.png') }}"
+         alt="Foto Default"
+         class="w-10 h-10 rounded-full object-cover opacity-50">
+@endif
+
 
 
         {{-- Sapaan --}}
