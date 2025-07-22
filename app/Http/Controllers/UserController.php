@@ -179,4 +179,23 @@ class UserController extends Controller
         $user->delete();
         return redirect()->route('admin.users.index')->with('success', 'Pengguna berhasil dihapus!');
     }
+
+    public function getProfilePhotoUrlAttribute()
+{
+    // Jika user terhubung ke teacher, gunakan foto teacher
+    if ($this->relationLoaded('teacher') || method_exists($this, 'teacher')) {
+        if ($this->teacher && $this->teacher->photo_path) {
+            return asset('storage/' . $this->teacher->photo_path);
+        }
+    }
+
+    // Jika tidak ada relasi atau foto teacher kosong, gunakan foto user langsung
+    if ($this->photo_path) {
+        return asset('storage/' . $this->photo_path);
+    }
+
+    // Jika keduanya tidak ada, gunakan default
+    return asset('images/default-avatar.png');
+}
+
 }
