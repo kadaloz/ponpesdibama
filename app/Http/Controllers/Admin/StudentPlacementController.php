@@ -171,13 +171,18 @@ public function update(Request $request, StudentRoomPlacement $placement)
         $oldRoom = $placement->room;
         $message = '';
 
-        // 🔧 Cegah duplikat: bersihkan entri tak aktif selain baris ini
-        StudentRoomPlacement::where('student_id', $placement->student_id)
-            ->where('is_active', 0)
-            ->where('id', '<>', $placement->id)
-            ->update([
-                'updated_at' => now()
-            ]);
+        // 🔥 Simpan riwayat sebelum menghapus
+        record_audit(
+            'delete_placement',
+            "Menghapus penempatan Santri {$student->name} dari Kamar {$oldRoom->room_number}. Start: {$placement->start_date}, End: {$placement->end_date}",
+            auth()->id(),
+            auth()->user()->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
+
+        // 🗑️ Hapus penempatan lama
+        $placement->delete();
 
         if ($validatedData['action'] == 'move_room') {
             if (empty($validatedData['new_room_id'])) {
@@ -194,33 +199,16 @@ public function update(Request $request, StudentRoomPlacement $placement)
                 return redirect()->back()->withInput()->with('error', 'Kamar baru sudah penuh. Pilih kamar lain.');
             }
 
-            // Nonaktifkan penempatan aktif milik santri
-            StudentRoomPlacement::where('student_id', $student->id)
-                ->where('is_active', true)
-                ->update([
-                    'end_date' => now()->toDateString(),
-                    'is_active' => false,
-                ]);
+            // 🚫 Bersihkan semua penempatan aktif milik santri
+            StudentRoomPlacement::where('student_id', $student->id)->delete();
 
-            // Cek apakah sudah ada penempatan aktif di kamar tujuan
-            $existingPlacement = StudentRoomPlacement::where('student_id', $student->id)
-                ->where('room_id', $newRoom->id)
-                ->where('is_active', true)
-                ->first();
-
-            if ($existingPlacement) {
-                $existingPlacement->update([
-                    'start_date' => $existingPlacement->start_date ?? now()->toDateString(),
-                    'updated_at' => now()
-                ]);
-            } else {
-                StudentRoomPlacement::create([
-                    'student_id' => $student->id,
-                    'room_id' => $newRoom->id,
-                    'start_date' => now()->toDateString(),
-                    'is_active' => true,
-                ]);
-            }
+            // 🏠 Buat penempatan baru
+            StudentRoomPlacement::create([
+                'student_id' => $student->id,
+                'room_id' => $newRoom->id,
+                'start_date' => now()->toDateString(),
+                'is_active' => true,
+            ]);
 
             $oldRoom->refresh(); 
             $newRoom->refresh(); 
@@ -237,17 +225,6 @@ public function update(Request $request, StudentRoomPlacement $placement)
                 return redirect()->back()->withInput()->with('error', 'Tanggal keluar harus diisi untuk mengakhiri penempatan.');
             }
 
-            $placement->update([
-                'end_date' => $validatedData['end_date'],
-                'is_active' => false,
-            ]);
-
-            $oldRoom->refresh();
-
-            if ($oldRoom->currentOccupancy() < $oldRoom->capacity || $oldRoom->currentOccupancy() === 0) {
-                $oldRoom->update(['status' => 'available']);
-            }
-
             record_audit('end_placement', "Mengakhiri penempatan Santri {$student->name} dari Kamar {$oldRoom->room_number} pada {$validatedData['end_date']}", auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
 
             $message = 'Penempatan santri berhasil diakhiri.';
@@ -261,6 +238,7 @@ public function update(Request $request, StudentRoomPlacement $placement)
         return redirect()->back()->withInput()->with('error', 'Gagal memperbarui penempatan: ' . $e->getMessage());
     }
 }
+
 
 
 
