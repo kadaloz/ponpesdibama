@@ -7,6 +7,19 @@
 <div class="bg-white shadow sm:rounded-lg p-8">
     <h2 class="text-2xl font-bold text-teal-700 mb-6 border-b pb-3">Profil Lengkap Pengajar</h2>
 
+    {{-- Foto Profil --}}
+<div class="mb-6 flex justify-center">
+    @if ($teacher->photo_path)
+        <img src="{{ asset('storage/' . $teacher->photo_path) }}"
+             alt="Foto {{ $teacher->full_name }}"
+             class="w-32 h-32 object-cover rounded-full border shadow">
+    @else
+        <img src="{{ asset('images/default-avatar.png') }}"
+             alt="Default Foto"
+             class="w-32 h-32 object-cover rounded-full border shadow opacity-60">
+    @endif
+</div>
+
     {{-- Ringkasan --}}
     <div class="bg-teal-50 border border-teal-200 rounded-lg p-6 mb-8">
         <h3 class="text-lg font-semibold text-teal-800 mb-4">Informasi Umum</h3>
@@ -69,6 +82,7 @@
             </div>
         </div>
     </div>
+    
 
     {{-- Tombol --}}
     <div class="mt-8 flex justify-end gap-3 border-t pt-6">
