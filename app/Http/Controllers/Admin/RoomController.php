@@ -210,13 +210,10 @@ public function assignStudents(Request $request, Room $room)
         'student_ids.*' => ['exists:students,id'],
     ]);
 
-    // Normalisasi input
     $studentIdsInput = $request->input('student_ids', []);
-    if (!is_array($studentIdsInput)) {
-        $selectedStudentIds = [];
-    } else {
-        $selectedStudentIds = array_filter($studentIdsInput);
-    }
+    $selectedStudentIds = is_array($studentIdsInput)
+        ? array_filter($studentIdsInput)
+        : [];
 
     if (count($selectedStudentIds) > $room->capacity) {
         throw new \Exception("Gagal: Jumlah santri melebihi kapasitas maksimal kamar ({$room->capacity}).");
@@ -225,15 +222,18 @@ public function assignStudents(Request $request, Room $room)
     try {
         DB::beginTransaction();
 
-        // Hapus penghuni yang sudah keluar
+        // Nonaktifkan penempatan santri yang sudah keluar dari kamar ini
         $query = StudentRoomPlacement::where('room_id', $room->id)
-            ->whereNull('end_date');
+            ->where('is_active', 1);
 
         if (!empty($selectedStudentIds)) {
             $query->whereNotIn('student_id', $selectedStudentIds);
         }
 
-        $query->update(['end_date' => now()]);
+        $query->update([
+            'is_active' => 0,
+            'end_date' => now(),
+        ]);
 
         foreach ($selectedStudentIds as $studentId) {
             $student = Student::find($studentId);
@@ -242,19 +242,34 @@ public function assignStudents(Request $request, Room $room)
                 throw new \Exception("Santri {$student->name} memiliki jenis kelamin tidak sesuai dengan kamar.");
             }
 
+            // Nonaktifkan penempatan aktif lain milik santri
             StudentRoomPlacement::where('student_id', $studentId)
-                ->where('room_id', '!=', $room->id)
-                ->whereNull('end_date')
-                ->update(['end_date' => now()]);
+                ->where('is_active', 1)
+                ->update([
+                    'is_active' => 0,
+                    'end_date' => now(),
+                ]);
 
-            StudentRoomPlacement::firstOrCreate([
-                'student_id' => $studentId,
-                'room_id' => $room->id,
-                'end_date' => null,
-            ], [
-                'start_date' => now(),
-                'end_date' => null,
-            ]);
+            // Cek apakah sudah ada penempatan aktif di kamar ini
+            $existing = StudentRoomPlacement::where('student_id', $studentId)
+                ->where('room_id', $room->id)
+                ->whereNull('end_date')
+                ->first();
+
+            if ($existing) {
+                $existing->update([
+                    'is_active' => 1,
+                    'start_date' => $existing->start_date ?? now(),
+                    'end_date' => null,
+                ]);
+            } else {
+                StudentRoomPlacement::create([
+                    'student_id' => $studentId,
+                    'room_id' => $room->id,
+                    'start_date' => now(),
+                    'is_active' => 1,
+                ]);
+            }
         }
 
         $room->updateCurrentOccupancy();
@@ -269,9 +284,11 @@ public function assignStudents(Request $request, Room $room)
     } catch (\Exception $e) {
         DB::rollBack();
         record_audit('assign_students_to_room_failed', 'Gagal memperbarui penghuni kamar: ' . $e->getMessage(), auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
+
         return redirect()->back()->with('error', $e->getMessage());
     }
 }
+
 
 public function removeStudent(Room $room, Student $student)
 {
