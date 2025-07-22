@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use Illuminate\Support\Facades\Storage;
 use App\Models\Teacher;
 use App\Models\User;
 use Illuminate\Http\Request;
@@ -113,51 +114,43 @@ class TeacherController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Teacher $teacher)
-    {
-        $request->validate([
-            'full_name' => 'required|string|max:255',
-            'nip' => 'nullable|string|max:255|unique:teachers,nip,' . $teacher->id,
-            'gender' => 'nullable|string|in:Laki-laki,Perempuan',
-            'place_of_birth' => 'nullable|string|max:255',
-            'date_of_birth' => 'nullable|date',
-            'phone_number' => 'nullable|string|max:50',
-            'specialization' => 'nullable|string|max:255',
-            'join_date' => 'nullable|date',
-            'status' => 'required|string|in:active,inactive',
-            'user_id' => [
-                'nullable',
-                'exists:users,id',
-                Rule::unique('teachers', 'user_id')->ignore($teacher->id, 'user_id'),
-            ],
-            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
-        ]);
+public function update(Request $request, Teacher $teacher)
+{
+    $validated = $request->validate([
+        'full_name' => 'required|string|max:255',
+        'nip' => 'nullable|string|max:255',
+        'photo' => 'nullable|image|max:2048', // Maksimal 2MB
+        'gender' => 'nullable|in:Laki-laki,Perempuan',
+        'place_of_birth' => 'nullable|string|max:255',
+        'date_of_birth' => 'nullable|date',
+        'phone_number' => 'nullable|string|max:255',
+        'specialization' => 'nullable|string|max:255',
+        'join_date' => 'nullable|date',
+        'status' => 'required|in:active,inactive',
+        'user_id' => 'nullable|exists:users,id',
+    ]);
 
-        $teacher->update($request->all());
+    // Update data dasar
+    $teacher->fill($validated);
 
-        // Jika ada foto baru, simpan dan update path-nya
-        if ($request->hasFile('photo')) {
-            $photoPath = $request->file('photo')->store('teachers_photos', 'public');
-            $teacher->photo_path = $photoPath;
-            $teacher->save();
-        }   
-        // Jika user_id diisi, pastikan pengajar ini terhubung dengan user tersebut
-        if ($request->filled('user_id')) {
-            $teacher->user_id = $request->user_id;
-            $teacher->save();
+    // Proses unggah foto jika ada
+    if ($request->hasFile('photo')) {
+        $photo = $request->file('photo');
+        $photoPath = $photo->store('teachers/photos', 'public'); // Simpan di storage/app/public/teachers/photos
+
+        // Hapus foto lama jika ada
+        if ($teacher->photo_path && Storage::disk('public')->exists($teacher->photo_path)) {
+            Storage::disk('public')->delete($teacher->photo_path);
         }
-        // Catat audit trail untuk pembaruan pengajar
-        record_audit(
-            'update_teacher',
-            'Data pengajar berhasil diperbarui: ' . $teacher->full_name,
-            auth()->user()->id ?? null, // Simpan ID user yang mengupdate
-            auth()->user()->name ?? 'Guest',
-            $request->ip(),
-            $request->userAgent()
-        );
 
-        return redirect()->route('admin.teachers.index')->with('success', 'Data pengajar berhasil diperbarui!');
+        // Simpan path foto baru
+        $teacher->photo_path = $photoPath;
     }
+
+    $teacher->save();
+
+    return redirect()->route('admin.teachers.index')->with('success', 'Data pengajar berhasil diperbarui.');
+}
 
     /**
      * Remove the specified resource from storage.

@@ -31,26 +31,31 @@
                 </div>
             </section>
 
-            {{-- Foto Profil --}}
-            <section>
-                <h4 class="text-lg font-semibold text-gray-700 mt-6 mb-3">Foto Profil</h4>
+           {{-- Foto Profil --}}
+<section>
+    <h4 class="text-lg font-semibold text-gray-700 mt-6 mb-3">Foto Profil</h4>
 
-                @if ($teacher->photo_path)
-                    <div class="mb-3">
-                        <img src="{{ asset('storage/' . $teacher->photo_path) }}" alt="Foto Profil"
-                             class="w-32 h-32 object-cover rounded-full border">
-                        <p class="text-sm text-gray-500 mt-1 italic">Foto profil saat ini.</p>
-                    </div>
-                @endif
+    @if ($teacher->photo_path)
+        <div class="mb-4 flex items-center space-x-4">
+            <img src="{{ asset('storage/' . $teacher->photo_path) }}"
+                 alt="Foto Profil"
+                 class="w-24 h-24 object-cover rounded-full border shadow">
+            <div>
+                <p class="text-sm text-gray-700">Foto profil saat ini.</p>
+                <p class="text-xs text-gray-500 italic">Anda dapat menggantinya dengan foto baru di bawah.</p>
+            </div>
+        </div>
+    @endif
 
-                <div>
-                    <x-input-label for="photo" value="Unggah Foto Baru (Opsional)" />
-                    <input type="file" name="photo" id="photo" accept="image/*"
-                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
-                    <x-input-error :messages="$errors->get('photo')" class="mt-1" />
-                    <p class="text-sm text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah foto.</p>
-                </div>
-            </section>
+    <div>
+        <x-input-label for="photo" value="Unggah Foto Baru" />
+        <input type="file" name="photo" id="photo" accept="image/*"
+               class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+        <x-input-error :messages="$errors->get('photo')" class="mt-1" />
+        <p class="text-xs text-gray-500 mt-1">Kosongkan jika tidak ingin mengganti foto.</p>
+    </div>
+</section>
+
 
             {{-- Data Pribadi --}}
             <section>
