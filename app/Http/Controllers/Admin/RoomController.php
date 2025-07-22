@@ -215,8 +215,9 @@ public function assignStudents(Request $request, Room $room)
         : [];
 
     if (count($selectedStudentIds) > $room->capacity) {
-        throw new \Exception("Gagal: Jumlah santri melebihi kapasitas maksimal kamar ({$room->capacity}).");
+    return redirect()->back()->withInput()->with('error', 'Gagal menyimpan: jumlah santri melebihi kapasitas maksimal kamar (' . $room->capacity . ').');
     }
+
 
     try {
         DB::beginTransaction();
