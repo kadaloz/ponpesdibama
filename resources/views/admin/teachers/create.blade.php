@@ -7,7 +7,8 @@
 @section('admin_content')
     <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
         <div class="p-6 text-gray-900">
-            <form action="{{ route('admin.teachers.store') }}" method="POST" class="space-y-6">
+            <form action="{{ route('admin.teachers.store') }}" method="POST" enctype="multipart/form-data" class="space-y-6">
+
                 @csrf
 
                 <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2">Informasi Pengajar</h3>
@@ -84,6 +85,7 @@
                         <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
                      @enderror
                 </div>
+                
 
                 <div class="pt-4 border-t border-gray-200">
                     <label for="user_id" class="block text-sm font-medium text-gray-700">Hubungkan Akun Pengguna (Opsional)</label>
