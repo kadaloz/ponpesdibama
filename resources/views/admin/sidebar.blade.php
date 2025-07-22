@@ -3,15 +3,17 @@
         <h2 class="text-2xl font-bold tracking-wide">Admin Panel</h2>
         <p class="text-teal-300 text-sm mt-1">PonpesDIBAMA.com</p>
     </div>
-    <div class="flex items-center justify-center mb-6">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full shadow-lg">
-        <div class="ml-4">
-            <h3 class="text-lg font-semibold">{{ auth()->user()->name }}</h3>
-            <p class="text-sm text-teal-300">{{ auth()->user()->email }}</p>
+
+    {{-- User Profile Section --}}
+    <div class="flex items-center justify-center mb-8 p-4 bg-teal-700/30 rounded-lg">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo Pengguna" class="w-20 h-20 rounded-full object-cover border-2 border-teal-400 shadow-md">
+        <div class="ml-5 text-left">
+            <h3 class="text-xl font-bold text-white mb-1 leading-tight">{{ auth()->user()->name }}</h3>
+            <p class="text-sm text-teal-200">{{ auth()->user()->email }}</p>
         </div>
     </div>
 
-    {{-- Navigasi utama sidebar --}}
+    {{-- Main Navigation --}}
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
         <ul class="space-y-2">
             {{-- Dashboard --}}
@@ -172,6 +174,7 @@
         </ul>
     </nav>
 
+    {{-- Footer Section --}}
     <div class="mt-auto pt-4 text-xs text-teal-300 text-center border-t border-teal-700">
         <p>&copy; {{ date('Y') }} PonpesDIBAMA.com</p>
         <p>Admin Panel v1.0</p>
