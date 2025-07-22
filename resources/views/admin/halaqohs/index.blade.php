@@ -8,10 +8,12 @@
     <div class="p-6 text-gray-900">
         <div class="flex items-center justify-between mb-6">
             <h3 class="text-2xl font-bold text-teal-700">Daftar Halaqoh</h3>
+            @can('create halaqohs')
             <a href="{{ route('admin.halaqohs.create') }}" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white rounded-lg hover:bg-teal-700 shadow">
                 <x-heroicon-o-plus class="w-5 h-5 mr-2" />
                 Tambah Halaqoh
             </a>
+            @endcan
         </div>
 
         {{-- Filter Periode --}}
@@ -64,50 +66,52 @@
                                     @endif
                                 </td>
                                 <td class="px-4 py-2 text-right space-x-2 flex justify-end items-center">
-    {{-- Kelola Santri --}}
-    <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}"
-       class="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium">
-        <x-heroicon-o-users class="w-4 h-4 mr-1" />
-        Kelola
-    </a>
+                                    @can('assign students to halaqoh')
+                                    <a href="{{ route('admin.halaqohs.manage_students', $halaqoh) }}"
+                                       class="inline-flex items-center text-teal-600 hover:text-teal-800 font-medium">
+                                        <x-heroicon-o-users class="w-4 h-4 mr-1" />
+                                        Kelola
+                                    </a>
+                                    @endcan
 
-    {{-- Edit --}}
-    <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}"
-       class="inline-flex items-center text-indigo-600 hover:text-indigo-900 font-medium">
-        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
-        Edit
-    </a>
+                                    @can('edit halaqohs')
+                                    <a href="{{ route('admin.halaqohs.edit', $halaqoh) }}"
+                                       class="inline-flex items-center text-indigo-600 hover:text-indigo-900 font-medium">
+                                        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+                                        Edit
+                                    </a>
+                                    @endcan
 
-    {{-- Detail --}}
-    <a href="{{ route('admin.halaqohs.show', $halaqoh) }}"
-       class="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium">
-        <x-heroicon-o-eye class="w-4 h-4 mr-1" />
-        Detail
-    </a>
+                                    @can('view halaqohs')
+                                    <a href="{{ route('admin.halaqohs.show', $halaqoh) }}"
+                                       class="inline-flex items-center text-gray-600 hover:text-gray-900 font-medium">
+                                        <x-heroicon-o-eye class="w-4 h-4 mr-1" />
+                                        Detail
+                                    </a>
+                                    @endcan
 
-    {{-- Hapus --}}
-    <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block">
-        @csrf
-        @method('DELETE')
-        <button type="submit"
-                onclick="return confirm('Yakin ingin menghapus halaqoh ini?')"
-                class="inline-flex items-center text-red-600 hover:text-red-800 font-medium">
-            <x-heroicon-o-trash class="w-4 h-4 mr-1" />
-            Hapus
-        </button>
-    </form>
-</td>
-
+                                    @can('delete halaqohs')
+                                    <form action="{{ route('admin.halaqohs.destroy', $halaqoh) }}" method="POST" class="inline-block">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit"
+                                                onclick="return confirm('Yakin ingin menghapus halaqoh ini?')"
+                                                class="inline-flex items-center text-red-600 hover:text-red-800 font-medium">
+                                            <x-heroicon-o-trash class="w-4 h-4 mr-1" />
+                                            Hapus
+                                        </button>
+                                    </form>
+                                    @endcan
+                                </td>
                             </tr>
                         @endforeach
                     </tbody>
                 </table>
             </div>
+
             {{-- Informasi jumlah data --}}
-            <div class="mt-6">
-                <p class="text-sm text-gray-500">
-                    Menampilkan {{ $halaqohs->firstItem() }} - {{ $halaqohs->lastItem() }} dari {{ $halaqohs->total() }} halaqoh
-                </p>
+            <div class="mt-6 text-sm text-gray-500">
+                Menampilkan {{ $halaqohs->firstItem() }} - {{ $halaqohs->lastItem() }} dari {{ $halaqohs->total() }} halaqoh
             </div>
 
             {{-- Navigasi pagination --}}
