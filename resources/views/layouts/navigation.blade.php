@@ -28,26 +28,25 @@
                 </div>
             </div>
 
-            <!-- Settings Dropdown -->
+            <!-- User Info with Photo -->
             <div class="hidden sm:flex sm:items-center sm:ms-6">
+                {{-- Foto Profil --}}
+                <img src="{{ Auth::user()->photo_path ? asset('storage/' . Auth::user()->photo_path) : asset('images/default-avatar.png') }}"
+                     alt="Foto Profil"
+                     class="w-10 h-10 rounded-full object-cover mr-3 border border-gray-300 shadow-sm">
+
+                {{-- Nama User --}}
+                <span class="text-sm font-semibold text-gray-700 mr-4">
+                    {{ Auth::user()?->name }}
+                </span>
+
+                {{-- Dropdown Menu --}}
                 <x-dropdown align="right" width="48">
                     <x-slot name="trigger">
                         <button class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-gray-500 bg-white hover:text-gray-700 focus:outline-none transition ease-in-out duration-150">
-                            
-                            {{-- Foto Profil --}}
-                            <img src="{{ Auth::user()->photo_path ? asset('storage/' . Auth::user()->photo_path) : asset('images/default-avatar.png') }}"
-                                 alt="Foto Profil"
-                                 class="w-8 h-8 rounded-full object-cover mr-2">
-
-                            {{-- Nama User --}}
-                            <div>{{ Auth::user()->name }}</div>
-
-                            {{-- Icon Dropdown --}}
-                            <div class="ms-1">
-                                <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                                    <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
-                                </svg>
-                            </div>
+                            <svg class="fill-current h-4 w-4" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                                <path fill-rule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clip-rule="evenodd" />
+                            </svg>
                         </button>
                     </x-slot>
 
@@ -80,46 +79,6 @@
                               d="M6 18L18 6M6 6l12 12" />
                     </svg>
                 </button>
-            </div>
-        </div>
-    </div>
-
-    <!-- Responsive Navigation Menu -->
-    <div :class="{'block': open, 'hidden': ! open}" class="hidden sm:hidden">
-        <div class="pt-2 pb-3 space-y-1">
-            @if(Auth::user() && !Auth::user()->hasRole('admin'))
-                @role('sekret')
-                    <x-responsive-nav-link :href="route('sekret.dashboard')" :active="request()->routeIs('sekret.dashboard')">
-                        {{ __('Dashboard Sekretaris') }}
-                    </x-responsive-nav-link>
-                @endrole
-                @role('mudabbir')
-                    <x-responsive-nav-link :href="route('mudabbir.dashboard')" :active="request()->routeIs('mudabbir.dashboard')">
-                        {{ __('Dashboard Mudabbir') }}
-                    </x-responsive-nav-link>
-                @endrole
-            @endif
-        </div>
-
-        <div class="pt-4 pb-1 border-t border-gray-200">
-            <div class="px-4">
-                <div class="font-medium text-base text-gray-800">{{ Auth::user()->name }}</div>
-                <div class="font-medium text-sm text-gray-500">{{ Auth::user()->email }}</div>
-            </div>
-
-            <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('admin.profile.edit')">
-                    {{ __('Profile') }}
-                </x-responsive-nav-link>
-
-                <form method="POST" action="{{ route('logout') }}">
-                    @csrf
-                    <x-responsive-nav-link :href="route('logout')"
-                                           onclick="event.preventDefault();
-                                                    this.closest('form').submit();">
-                        {{ __('Log Out') }}
-                    </x-responsive-nav-link>
-                </form>
             </div>
         </div>
     </div>
