@@ -221,25 +221,21 @@ public function assignStudents(Request $request, Room $room)
     try {
         DB::beginTransaction();
 
-        // 🗑️ Hapus penghuni lama yang tidak terpilih
-        $query = StudentRoomPlacement::where('room_id', $room->id)
-            ->where('is_active', true);
-
-        if (!empty($selectedStudentIds)) {
-            $query->whereNotIn('student_id', $selectedStudentIds);
-        }
-
-        $query->each(function ($placement) use ($request) {
-            record_audit(
-                'delete_placement',
-                "Menghapus penempatan lama Santri {$placement->student->name} dari Kamar {$placement->room->room_number}. Start: {$placement->start_date}, End: {$placement->end_date}",
-                auth()->id(),
-                auth()->user()->name ?? 'Guest',
-                $request->ip(),
-                $request->userAgent()
-            );
-            $placement->delete(); // Hapus baris langsung
-        });
+        // 🧹 Hapus penempatan lama di kamar ini jika santri tidak dipilih lagi
+        StudentRoomPlacement::where('room_id', $room->id)
+            ->where('is_active', true)
+            ->whereNotIn('student_id', $selectedStudentIds)
+            ->each(function ($placement) use ($request) {
+                record_audit(
+                    'delete_placement',
+                    "Menghapus penempatan Santri {$placement->student->name} dari Kamar {$placement->room->room_number}. Start: {$placement->start_date}",
+                    auth()->id(),
+                    auth()->user()->name ?? 'Guest',
+                    $request->ip(),
+                    $request->userAgent()
+                );
+                $placement->delete();
+            });
 
         foreach ($selectedStudentIds as $studentId) {
             $student = Student::find($studentId);
@@ -248,13 +244,13 @@ public function assignStudents(Request $request, Room $room)
                 throw new \Exception("Santri {$student->name} memiliki jenis kelamin tidak sesuai dengan kamar.");
             }
 
-            // 🔥 Hapus penempatan aktif lain milik santri ini
+            // 🔥 Hapus semua penempatan aktif santri untuk mencegah duplikasi
             StudentRoomPlacement::where('student_id', $studentId)
                 ->where('is_active', true)
                 ->each(function ($oldPlacement) use ($request) {
                     record_audit(
                         'delete_placement',
-                        "Menghapus penempatan aktif milik Santri {$oldPlacement->student->name} dari Kamar {$oldPlacement->room->room_number}. Start: {$oldPlacement->start_date}, End: {$oldPlacement->end_date}",
+                        "Menghapus penempatan aktif milik Santri {$oldPlacement->student->name} dari Kamar {$oldPlacement->room->room_number}. Start: {$oldPlacement->start_date}",
                         auth()->id(),
                         auth()->user()->name ?? 'Guest',
                         $request->ip(),
@@ -263,7 +259,7 @@ public function assignStudents(Request $request, Room $room)
                     $oldPlacement->delete();
                 });
 
-            // 🏠 Buat penempatan baru
+            // ⚡ Buat penempatan baru
             StudentRoomPlacement::create([
                 'student_id' => $studentId,
                 'room_id' => $room->id,
@@ -302,6 +298,7 @@ public function assignStudents(Request $request, Room $room)
         return redirect()->back()->with('error', $e->getMessage());
     }
 }
+
 
 
 public function removeStudent(Room $room, Student $student)
