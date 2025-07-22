@@ -4,15 +4,6 @@
         <p class="text-teal-300 text-sm mt-1">PonpesDIBAMA.com</p>
     </div>
 
-    {{-- User Profile Section --}}
-    <div class="flex items-center justify-center mb-8 p-4 bg-teal-700/30 rounded-lg">
-        <img src="{{ asset('images/logo.png') }}" alt="Logo Pengguna" class="w-20 h-20 rounded-full object-cover border-2 border-teal-400 shadow-md">
-        <div class="ml-5 text-left">
-            <h3 class="text-xl font-bold text-white mb-1 leading-tight">{{ auth()->user()->name }}</h3>
-            <p class="text-sm text-teal-200">{{ auth()->user()->email }}</p>
-        </div>
-    </div>
-
     {{-- Main Navigation --}}
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
         <ul class="space-y-2">
