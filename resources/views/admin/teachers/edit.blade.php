@@ -6,7 +6,7 @@
 @section('admin_content')
 <div class="bg-white shadow rounded-xl overflow-hidden">
     <div class="p-6 text-gray-900 space-y-8">
-        <form action="{{ route('admin.teachers.update', $teacher->id) }}" method="POST" class="space-y-6">
+        <form action="{{ route('admin.teachers.update', $teacher->id) }}" method="POST" class="space-y-6" enctype="multipart/form-data">
             @csrf
             @method('PUT')
 
@@ -28,6 +28,27 @@
                     <x-text-input id="nip" name="nip" type="text" class="w-full"
                         value="{{ old('nip', $teacher->nip) }}" />
                     <x-input-error :messages="$errors->get('nip')" class="mt-1" />
+                </div>
+            </section>
+
+            {{-- Foto Profil --}}
+            <section>
+                <h4 class="text-lg font-semibold text-gray-700 mt-6 mb-3">Foto Profil</h4>
+
+                @if ($teacher->photo_path)
+                    <div class="mb-3">
+                        <img src="{{ asset('storage/' . $teacher->photo_path) }}" alt="Foto Profil"
+                             class="w-32 h-32 object-cover rounded-full border">
+                        <p class="text-sm text-gray-500 mt-1 italic">Foto profil saat ini.</p>
+                    </div>
+                @endif
+
+                <div>
+                    <x-input-label for="photo" value="Unggah Foto Baru (Opsional)" />
+                    <input type="file" name="photo" id="photo" accept="image/*"
+                           class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                    <x-input-error :messages="$errors->get('photo')" class="mt-1" />
+                    <p class="text-sm text-gray-500 mt-1">Biarkan kosong jika tidak ingin mengubah foto.</p>
                 </div>
             </section>
 
