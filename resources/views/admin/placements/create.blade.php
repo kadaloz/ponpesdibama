@@ -84,31 +84,28 @@ document.addEventListener('DOMContentLoaded', function () {
     let studentsData = [];
 
     const tomSelect = new TomSelect('#student_id', {
-        valueField: 'id',
-        labelField: 'name',
-        searchField: ['name', 'nis'],
-        placeholder: 'Cari dan pilih santri...',
-        load: function(query, callback) {
-            if (!query.length) return callback();
-            loadingText.classList.remove('hidden');
+    valueField: 'value',
+    labelField: 'text',
+    searchField: ['text'],
+    placeholder: 'Cari dan pilih santri...',
+    load: function(query, callback) {
+        if (!query.length) return callback();
 
-            fetch(`/api/available-students?q=${encodeURIComponent(query)}`)
-                .then(response => response.json())
-                .then(data => {
-                    loadingText.classList.add('hidden');
-                    studentsData = data.map(s => ({
-                        id: s.id,
-                        name: `${s.name} (NIS: ${s.nis})`,
-                        gender: s.gender
-                    }));
-                    callback(studentsData);
-                })
-                .catch(() => callback());
-        },
-        onChange: function() {
-            filterRooms();
-        }
-    });
+        loadingText.classList.remove('hidden');
+
+        fetch(`/api/available-students?q=${encodeURIComponent(query)}`)
+            .then(response => response.json())
+            .then(data => {
+                loadingText.classList.add('hidden');
+                callback(data);
+            })
+            .catch(() => callback());
+    },
+    onChange: function() {
+        filterRooms();
+    }
+});
+
 
     function filterRooms() {
         const selectedValue = tomSelect.getValue();
