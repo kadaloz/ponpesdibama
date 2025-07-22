@@ -75,7 +75,7 @@
          alt="Foto Profil"
          class="w-10 h-10 rounded-full object-cover">
 @else
-    <img src="{{ asset('images/default-avatar.jpg') }}"
+    <img src="{{ asset('storage/images/default-avatar.jpg') }}"
          alt="Foto Default"
          class="w-10 h-10 rounded-full object-cover opacity-50">
 @endif
