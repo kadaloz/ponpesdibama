@@ -3,6 +3,15 @@
         <h2 class="text-2xl font-bold tracking-wide">Admin Panel</h2>
         <p class="text-teal-300 text-sm mt-1">PonpesDIBAMA.com</p>
     </div>
+    <div class="flex items-center justify-center mb-6">
+        <img src="{{ asset('images/logo.png') }}" alt="Logo" class="w-16 h-16 rounded-full shadow-lg">
+        <div class="ml-4">
+            <h3 class="text-lg font-semibold">{{ auth()->user()->name }}</h3>
+            <p class="text-sm text-teal-300">{{ auth()->user()->email }}</p>
+        </div>
+    </div>
+
+    {{-- Navigation Links --}}
 
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
         <ul class="space-y-2">
