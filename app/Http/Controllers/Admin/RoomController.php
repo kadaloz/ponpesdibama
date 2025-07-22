@@ -221,25 +221,21 @@ public function assignStudents(Request $request, Room $room)
     try {
         DB::beginTransaction();
 
-        // Ambil semua santri dengan penempatan aktif yang saat ini menghuni kamar
-        $existingPlacements = StudentRoomPlacement::where('room_id', $room->id)
+        // 🧹 Hapus penempatan lama di kamar ini jika santri tidak dipilih lagi
+        StudentRoomPlacement::where('room_id', $room->id)
             ->where('is_active', true)
-            ->get();
-
-        // Hapus penempatan santri yang sudah keluar dari kamar ini (tidak dipilih)
-        $existingPlacements->filter(function ($placement) use ($selectedStudentIds) {
-            return !in_array($placement->student_id, $selectedStudentIds);
-        })->each(function ($placement) use ($request) {
-            record_audit(
-                'delete_placement',
-                "Menghapus penempatan Santri {$placement->student->name} dari Kamar {$placement->room->room_number}. Start: {$placement->start_date}",
-                auth()->id(),
-                auth()->user()->name ?? 'Guest',
-                $request->ip(),
-                $request->userAgent()
-            );
-            $placement->delete();
-        });
+            ->whereNotIn('student_id', $selectedStudentIds)
+            ->each(function ($placement) use ($request) {
+                record_audit(
+                    'delete_placement',
+                    "Menghapus penempatan Santri {$placement->student->name} dari Kamar {$placement->room->room_number}. Start: {$placement->start_date}",
+                    auth()->id(),
+                    auth()->user()->name ?? 'Guest',
+                    $request->ip(),
+                    $request->userAgent()
+                );
+                $placement->delete();
+            });
 
         foreach ($selectedStudentIds as $studentId) {
             $student = Student::find($studentId);
@@ -248,25 +244,22 @@ public function assignStudents(Request $request, Room $room)
                 throw new \Exception("Santri {$student->name} memiliki jenis kelamin tidak sesuai dengan kamar.");
             }
 
-            // Cek apakah santri memiliki penempatan aktif di kamar lain
-            $existing = StudentRoomPlacement::where('student_id', $studentId)
+            // 🔥 Hapus semua penempatan aktif santri untuk mencegah duplikasi
+            StudentRoomPlacement::where('student_id', $studentId)
                 ->where('is_active', true)
-                ->where('room_id', '<>', $room->id)
-                ->first();
+                ->each(function ($oldPlacement) use ($request) {
+                    record_audit(
+                        'delete_placement',
+                        "Menghapus penempatan aktif milik Santri {$oldPlacement->student->name} dari Kamar {$oldPlacement->room->room_number}. Start: {$oldPlacement->start_date}",
+                        auth()->id(),
+                        auth()->user()->name ?? 'Guest',
+                        $request->ip(),
+                        $request->userAgent()
+                    );
+                    $oldPlacement->delete();
+                });
 
-            if ($existing) {
-                // Lewati santri ini, karena sudah menghuni kamar lain
-                continue;
-            }
-
-            // Cek apakah santri sudah menghuni kamar ini
-            $alreadyHere = $existingPlacements->firstWhere('student_id', $studentId);
-            if ($alreadyHere) {
-                // Sudah menghuni kamar ini, tidak perlu tindakan
-                continue;
-            }
-
-            // Buat penempatan baru
+            // ⚡ Buat penempatan baru
             StudentRoomPlacement::create([
                 'student_id' => $studentId,
                 'room_id' => $room->id,
@@ -305,6 +298,7 @@ public function assignStudents(Request $request, Room $room)
         return redirect()->back()->with('error', $e->getMessage());
     }
 }
+
 
 
 public function removeStudent(Room $room, Student $student)

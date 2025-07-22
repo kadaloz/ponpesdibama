@@ -4,9 +4,7 @@
 @section('header_admin', 'Atur Penghuni Kamar')
 
 @php
-$mappedStudents = $availableStudents->filter(function($student) use ($room) {
-    return !$student->currentRoomPlacement || $student->currentRoomPlacement->room_id === $room->id;
-})->map(function($student) use ($currentRoomStudentIds, $room) {
+$mappedStudents = $availableStudents->map(function($student) use ($currentRoomStudentIds, $room) {
     return [
         'id' => $student->id,
         'name' => $student->name,
@@ -15,11 +13,10 @@ $mappedStudents = $availableStudents->filter(function($student) use ($room) {
         'current_room_number' => optional(optional($student->currentRoomPlacement)->room)->room_number,
         'is_checked' => in_array($student->id, $currentRoomStudentIds),
         'is_current_room' => $student->currentRoomPlacement && $student->currentRoomPlacement->room_id === $room->id,
-        'is_other_room' => false, // tidak digunakan karena kita menyaring santri lain
+        'is_other_room' => $student->currentRoomPlacement && $student->currentRoomPlacement->room_id !== $room->id,
     ];
 });
 @endphp
-
 
 @section('admin_content')
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
