@@ -62,6 +62,8 @@ class TeacherController extends Controller
                 'exists:users,id',
                 Rule::unique('teachers', 'user_id'),
             ],
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
+
         ]);
 
         $teacher = Teacher::create($request->all());
@@ -122,9 +124,22 @@ class TeacherController extends Controller
                 'exists:users,id',
                 Rule::unique('teachers', 'user_id')->ignore($teacher->id, 'user_id'),
             ],
+            'photo' => 'nullable|image|mimes:jpg,jpeg,png|max:2048',
         ]);
 
         $teacher->update($request->all());
+
+        // Jika ada foto baru, simpan dan update path-nya
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('teachers_photos', 'public');
+            $teacher->photo_path = $photoPath;
+            $teacher->save();
+        }   
+        // Jika user_id diisi, pastikan pengajar ini terhubung dengan user tersebut
+        if ($request->filled('user_id')) {
+            $teacher->user_id = $request->user_id;
+            $teacher->save();
+        }
         // Catat audit trail untuk pembaruan pengajar
         record_audit(
             'update_teacher',

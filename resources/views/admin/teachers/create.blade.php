@@ -76,6 +76,15 @@
                     </div>
                 </div>
 
+                <div class="mt-4">
+                    <label for="photo" class="block text-sm font-medium text-gray-700">Foto Profil</label>
+                        <input type="file" name="photo" id="photo" accept="image/*"
+                            class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm focus:ring-indigo-500 focus:border-indigo-500">
+                     @error('photo')
+                        <p class="mt-2 text-sm text-red-600">{{ $message }}</p>
+                     @enderror
+                </div>
+
                 <div class="pt-4 border-t border-gray-200">
                     <label for="user_id" class="block text-sm font-medium text-gray-700">Hubungkan Akun Pengguna (Opsional)</label>
                     <p class="text-sm text-gray-600 mb-2">Hanya akun dengan peran 'mudabbir' yang belum digunakan.</p>
