@@ -157,125 +157,102 @@ class StudentPlacementController extends Controller
      * Update the specified placement in storage (for moving or ending a placement).
      * Memperbarui penempatan (misalnya pindah kamar atau mengakhiri penempatan).
      */
-    public function update(Request $request, StudentRoomPlacement $placement)
-    {
-        // Validasi untuk pindah kamar atau mengakhiri penempatan
-        $validatedData = $request->validate([
-            'new_room_id' => ['nullable', 'exists:rooms,id'], // ID kamar baru jika pindah
-            'end_date' => ['nullable', 'date', 'after_or_equal:' . $placement->start_date], // Untuk mengakhiri penempatan
-            'action' => ['required', Rule::in(['move_room', 'end_placement'])], // Aksi yang diinginkan
-        ]);
+public function update(Request $request, StudentRoomPlacement $placement)
+{
+    $validatedData = $request->validate([
+        'new_room_id' => ['nullable', 'exists:rooms,id'],
+        'end_date' => ['nullable', 'date', 'after_or_equal:' . $placement->start_date],
+        'action' => ['required', Rule::in(['move_room', 'end_placement'])],
+    ]);
 
-        DB::beginTransaction();
-        try {
-            $student = $placement->student;
-            $oldRoom = $placement->room;
-            $message = '';
+    DB::beginTransaction();
+    try {
+        $student = $placement->student;
+        $oldRoom = $placement->room;
+        $message = '';
 
-            if ($validatedData['action'] == 'move_room') {
-                if (empty($validatedData['new_room_id'])) {
-                     return redirect()->back()->withInput()->with('error', 'Pilih kamar baru untuk pindah.');
-                }
-                $newRoom = Room::findOrFail($validatedData['new_room_id']);
+        if ($validatedData['action'] == 'move_room') {
+            if (empty($validatedData['new_room_id'])) {
+                return redirect()->back()->withInput()->with('error', 'Pilih kamar baru untuk pindah.');
+            }
 
-                // Validasi jenis kelamin kamar baru
-                if ($student->gender != $newRoom->gender_type) {
-                    return redirect()->back()->withInput()->with('error', 'Jenis kelamin santri tidak sesuai dengan jenis kamar baru.');
-                }
+            $newRoom = Room::findOrFail($validatedData['new_room_id']);
 
-                // Validasi kapasitas kamar baru (hanya jika pindah ke kamar yang berbeda)
-                // Jika kamar baru adalah kamar yang sama, tidak perlu cek kapasitas
-                if ($newRoom->id != $oldRoom->id) {
-                    // Cek kapasitas kamar baru, hitung occupancy *setelah* santri pindah
-                    if ($newRoom->currentOccupancy() >= $newRoom->capacity) {
-                        return redirect()->back()->withInput()->with('error', 'Kamar baru sudah penuh. Pilih kamar lain.');
-                    }
-                }
-                
-                // Akhiri penempatan lama
-                $placement->update([
-                    'end_date' => now()->toDateString(), // Tanggal berakhirnya penempatan lama
+            if ($student->gender != $newRoom->gender_type) {
+                return redirect()->back()->withInput()->with('error', 'Jenis kelamin santri tidak sesuai dengan jenis kamar baru.');
+            }
+
+            if ($newRoom->id != $oldRoom->id && $newRoom->currentOccupancy() >= $newRoom->capacity) {
+                return redirect()->back()->withInput()->with('error', 'Kamar baru sudah penuh. Pilih kamar lain.');
+            }
+
+            // Nonaktifkan semua penempatan aktif milik santri (termasuk yang sedang diubah)
+            StudentRoomPlacement::where('student_id', $student->id)
+                ->where('is_active', true)
+                ->update([
+                    'end_date' => now()->toDateString(),
                     'is_active' => false,
                 ]);
 
-                // Buat penempatan baru
+            // Pastikan tidak membuat duplikat
+            $existingPlacement = StudentRoomPlacement::where('student_id', $student->id)
+                ->where('room_id', $newRoom->id)
+                ->where('is_active', true)
+                ->first();
+
+            if ($existingPlacement) {
+                $existingPlacement->update([
+                    'start_date' => $existingPlacement->start_date ?? now()->toDateString(),
+                ]);
+            } else {
                 StudentRoomPlacement::create([
                     'student_id' => $student->id,
                     'room_id' => $newRoom->id,
-                    'start_date' => now()->toDateString(), // Tanggal mulai penempatan baru
+                    'start_date' => now()->toDateString(),
                     'is_active' => true,
                 ]);
-
-                // Refresh data kamar setelah perubahan penempatan agar currentOccupancy() akurat
-                $oldRoom->refresh(); 
-                $newRoom->refresh(); 
-
-                // Update status kamar lama
-                if ($oldRoom->currentOccupancy() < $oldRoom->capacity) {
-                    $oldRoom->update(['status' => 'available']);
-                }
-
-                // Update status kamar baru
-                if ($newRoom->currentOccupancy() >= $newRoom->capacity) {
-                    $newRoom->update(['status' => 'full']);
-                } else {
-                    $newRoom->update(['status' => 'available']);
-                }
-
-                // Catat Audit Trail
-                record_audit(
-                    'move_placement',
-                    'Memindahkan Santri ' . $student->name . ' dari Kamar ' . $oldRoom->room_number . ' ke Kamar ' . $newRoom->room_number,
-                    auth()->user()->id ?? null,
-                    auth()->user()->name ?? 'Guest',
-                    $request->ip(),
-                    $request->userAgent()
-                );
-                $message = 'Santri berhasil dipindahkan kamar.';
-
-            } elseif ($validatedData['action'] == 'end_placement') {
-                if (empty($validatedData['end_date'])) {
-                     return redirect()->back()->withInput()->with('error', 'Tanggal keluar harus diisi untuk mengakhiri penempatan.');
-                }
-                
-                // Akhiri penempatan saat ini
-                $placement->update([
-                    'end_date' => $validatedData['end_date'],
-                    'is_active' => false,
-                ]);
-
-                // Refresh data kamar setelah perubahan penempatan
-                $oldRoom->refresh();
-
-                // Update status kamar yang ditinggalkan
-                if ($oldRoom->currentOccupancy() < $oldRoom->capacity) {
-                    $oldRoom->update(['status' => 'available']);
-                } else if ($oldRoom->currentOccupancy() === 0 && $oldRoom->status !== 'available') {
-                    // Jika kamar menjadi benar-benar kosong dan statusnya bukan 'available'
-                    $oldRoom->update(['status' => 'available']);
-                }
-
-
-                // Catat Audit Trail
-                record_audit(
-                    'end_placement',
-                    'Mengakhiri penempatan Santri ' . $student->name . ' dari Kamar ' . $oldRoom->room_number . ' pada ' . $validatedData['end_date'],
-                    auth()->user()->id ?? null,
-                    auth()->user()->name ?? 'Guest',
-                    $request->ip(),
-                    $request->userAgent()
-                );
-                $message = 'Penempatan santri berhasil diakhiri.';
             }
 
-            DB::commit();
-            return redirect()->route('admin.placements.index')->with('success', $message);
+            $oldRoom->refresh(); 
+            $newRoom->refresh(); 
 
-        } catch (\Exception $e) {
-            DB::rollBack();
-            return redirect()->back()->withInput()->with('error', 'Gagal memperbarui penempatan: ' . $e->getMessage());
+            $oldRoom->update(['status' => $oldRoom->currentOccupancy() < $oldRoom->capacity ? 'available' : $oldRoom->status]);
+            $newRoom->update(['status' => $newRoom->currentOccupancy() >= $newRoom->capacity ? 'full' : 'available']);
+
+            record_audit('move_placement', "Memindahkan Santri {$student->name} dari Kamar {$oldRoom->room_number} ke Kamar {$newRoom->room_number}", auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
+
+            $message = 'Santri berhasil dipindahkan kamar.';
+
+        } elseif ($validatedData['action'] == 'end_placement') {
+            if (empty($validatedData['end_date'])) {
+                return redirect()->back()->withInput()->with('error', 'Tanggal keluar harus diisi untuk mengakhiri penempatan.');
+            }
+
+            $placement->update([
+                'end_date' => $validatedData['end_date'],
+                'is_active' => false,
+            ]);
+
+            $oldRoom->refresh();
+
+            if ($oldRoom->currentOccupancy() < $oldRoom->capacity || $oldRoom->currentOccupancy() === 0) {
+                $oldRoom->update(['status' => 'available']);
+            }
+
+            record_audit('end_placement', "Mengakhiri penempatan Santri {$student->name} dari Kamar {$oldRoom->room_number} pada {$validatedData['end_date']}", auth()->id(), auth()->user()->name ?? 'Guest', $request->ip(), $request->userAgent());
+
+            $message = 'Penempatan santri berhasil diakhiri.';
         }
+
+        DB::commit();
+        return redirect()->route('admin.placements.index')->with('success', $message);
+
+    } catch (\Exception $e) {
+        DB::rollBack();
+        return redirect()->back()->withInput()->with('error', 'Gagal memperbarui penempatan: ' . $e->getMessage());
     }
+}
+
 
     /**
      * Remove the specified placement from storage.
