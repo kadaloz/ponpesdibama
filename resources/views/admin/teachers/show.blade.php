@@ -91,11 +91,13 @@
             <x-heroicon-o-arrow-left class="w-4 h-4"/>
             Kembali
         </a>
+        @can('edit teachers')
         <a href="{{ route('admin.teachers.edit', $teacher->id) }}"
            class="inline-flex items-center px-5 py-2 rounded-full bg-indigo-600 hover:bg-indigo-700 text-sm font-medium text-white transition">
            <x-heroicon-o-pencil class="w-4 h-4 mr-2" />
             Edit
         </a>
+        @endcan
     </div>
 </div>
 @endsection

@@ -8,7 +8,7 @@
         <div class="p-6 text-gray-900">
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-teal-700">Penempatan Santri Aktif</h3>
-                @can('manage placements')
+                @can('create placements')
                     <a href="{{ route('admin.placements.create') }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition ease-in-out duration-150">
                         <x-heroicon-o-plus class="w-4 h-4 mr-2" /> Tempatkan Santri
                     </a>
@@ -53,10 +53,12 @@
                                     <td class="py-2 px-4 text-sm text-gray-700">{{ $placement->start_date->format('d M Y') }}</td>
                                     <td class="py-2 px-4 text-sm font-medium">
                                         <div class="flex items-center space-x-2">
-                                            @can('manage placements')
+                                            @can('edit placements')
                                                 <a href="{{ route('admin.placements.edit', $placement) }}" class="text-indigo-600 hover:text-indigo-900" title="Pindah/Akhiri Penempatan">
                                                     <x-heroicon-o-arrow-path class="w-5 h-5" />
                                                 </a>
+                                            @endcan
+                                                @can('delete placements')
                                                 <form action="{{ route('admin.placements.remove', $placement) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus penempatan ini? Ini harusnya hanya untuk koreksi data, bukan mengakhiri penempatan.');">
                                                     @csrf
                                                     @method('DELETE')

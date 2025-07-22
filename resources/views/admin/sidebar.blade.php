@@ -6,6 +6,7 @@
 
     <nav class="flex-1 overflow-y-auto custom-scrollbar">
         <ul class="space-y-2">
+
             {{-- Dashboard --}}
             @can('view dashboard')
             <li>
@@ -16,9 +17,11 @@
             @endcan
 
             {{-- Santri & PPDB --}}
+            @canany(['view students', 'view applicants', 'edit ppdb requirements'])
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Santri & PPDB</p>
             </li>
+            @endcanany
 
             @can('view students')
             <li>
@@ -45,10 +48,13 @@
             @endcan
 
             {{-- Asrama & Penempatan --}}
+            @canany(['view placements', 'view rooms'])
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Asrama & Penempatan</p>
             </li>
+            @endcanany
 
+            @canany(['view placements', 'view rooms'])
             <li x-data="{ open: {{ request()->routeIs('admin.rooms.*') || request()->routeIs('admin.placements.*') ? 'true' : 'false' }} }">
                 <button @click="open = !open" class="flex items-center justify-between w-full px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md text-teal-100 focus:outline-none">
                     <span class="flex items-center">
@@ -78,11 +84,14 @@
                     @endcan
                 </ul>
             </li>
+            @endcanany
 
             {{-- Konten & Website --}}
+            @canany(['view news', 'view galleries'])
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Konten & Website</p>
             </li>
+            @endcanany
 
             @can('view news')
             <li>
@@ -101,9 +110,11 @@
             @endcan
 
             {{-- Administrasi & Data Master --}}
+            @canany(['view teachers', 'view programs', 'view halaqohs'])
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Administrasi & Data Master</p>
             </li>
+            @endcanany
 
             @can('view teachers')
             <li>
@@ -130,9 +141,11 @@
             @endcan
 
             {{-- Pengaturan Sistem --}}
+            @canany(['manage users', 'assign roles', 'manage settings', 'view audit logs'])
             <li class="mt-6 pt-4 border-t border-teal-700">
                 <p class="text-xs uppercase text-teal-300 font-semibold mb-2 px-4">Pengaturan Sistem</p>
             </li>
+            @endcanany
 
             @can('manage users')
             <li>
