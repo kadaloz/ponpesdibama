@@ -57,6 +57,13 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                         ✅ Total santri dipilih: <span x-text="selectedCount()"></span> / {{ $room->capacity }}
                     </div>
                 </template>
+                
+                @if(session('error'))
+                    <div class="mb-4 text-red-600 font-semibold text-sm border border-red-300 bg-red-50 rounded px-4 py-3">
+                     ⚠️ {{ session('error') }}
+                    </div>
+                @endif
+
 
                 {{-- Pencarian --}}
                 <div class="mb-4">
