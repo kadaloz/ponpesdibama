@@ -15,46 +15,60 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
-    {
-        $sortBy = $request->query('sort_by', 'created_at');
-        $sortOrder = $request->query('sort_order', 'desc');
-        $perPage = $request->query('per_page', 10);
-        $search = $request->query('search');
-        $genderFilter = $request->query('gender_filter');
+   public function index(Request $request)
+{
+    $sortBy = $request->query('sort_by', 'created_at');
+    $sortOrder = $request->query('sort_order', 'desc');
+    $perPage = $request->query('per_page', 10);
+    $search = $request->query('search');
+    $genderFilter = $request->query('gender_filter');
 
-        $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
-        if (!in_array($sortBy, $validSortColumns)) {
-            $sortBy = 'created_at';
-        }
-        if (!in_array($sortOrder, ['asc', 'desc'])) {
-            $sortOrder = 'desc';
-        }
-
-        $validPerPages = [10, 20, 50];
-        if (!in_array((int)$perPage, $validPerPages)) {
-            $perPage = 10;
-        }
-
-        $query = Student::query();
-
-        if ($search) {
-            $query->where(function($q) use ($search) {
-                $q->where('name', 'like', '%' . $search . '%')
-                  ->orWhere('nis', 'like', '%' . $search . '%')
-                  ->orWhere('address', 'like', '%' . $search . '%')
-                  ->orWhere('parent_name', 'like', '%' . $search . '%');
-            });
-        }
-
-        if ($genderFilter && in_array($genderFilter, ['Laki-laki', 'Perempuan'])) {
-            $query->where('gender', $genderFilter);
-        }
-
-        $allStudents = $query->orderBy($sortBy, $sortOrder)->paginate($perPage);
-
-        return view('admin.students.index', compact('allStudents', 'sortBy', 'sortOrder', 'perPage', 'search', 'genderFilter'));
+    $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
+    if (!in_array($sortBy, $validSortColumns)) {
+        $sortBy = 'created_at';
     }
+    if (!in_array($sortOrder, ['asc', 'desc'])) {
+        $sortOrder = 'desc';
+    }
+
+    $validPerPages = [10, 20, 50];
+    if (!in_array((int)$perPage, $validPerPages)) {
+        $perPage = 10;
+    }
+
+    $query = Student::query();
+
+    // 🔐 Filter jika user adalah mudabbir
+    if (auth()->user()->hasRole('mudabbir')) {
+        $teacher = auth()->user()->teacher;
+
+        if ($teacher) {
+            $query->whereHas('halaqohs', function ($q) use ($teacher) {
+                $q->where('teacher_id', $teacher->id);
+            });
+        } else {
+            $query->whereRaw('0 = 1'); // Tidak tampilkan apapun
+        }
+    }
+
+    if ($search) {
+        $query->where(function($q) use ($search) {
+            $q->where('name', 'like', '%' . $search . '%')
+              ->orWhere('nis', 'like', '%' . $search . '%')
+              ->orWhere('address', 'like', '%' . $search . '%')
+              ->orWhere('parent_name', 'like', '%' . $search . '%');
+        });
+    }
+
+    if ($genderFilter && in_array($genderFilter, ['Laki-laki', 'Perempuan'])) {
+        $query->where('gender', $genderFilter);
+    }
+
+    $allStudents = $query->orderBy($sortBy, $sortOrder)->paginate($perPage);
+
+    return view('admin.students.index', compact('allStudents', 'sortBy', 'sortOrder', 'perPage', 'search', 'genderFilter'));
+}
+
 
     /**
      * Show the form for creating a new resource.
