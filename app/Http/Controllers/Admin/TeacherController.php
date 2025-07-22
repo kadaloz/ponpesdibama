@@ -67,6 +67,12 @@ class TeacherController extends Controller
         ]);
 
         $teacher = Teacher::create($request->all());
+        if ($request->hasFile('photo')) {
+            $photoPath = $request->file('photo')->store('teachers_photos', 'public');
+            $teacher->photo_path = $photoPath;
+            $teacher->save();
+        }
+
         // Catat audit trail untuk pembuatan pengajar
         record_audit(
             'create_teacher',
