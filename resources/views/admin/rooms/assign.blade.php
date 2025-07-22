@@ -4,7 +4,7 @@
 @section('header_admin', 'Atur Penghuni Kamar')
 
 @php
-$mappedStudents = $availableStudents->map(function($student) use ($currentRoomStudentIds, $room) {
+$mappedStudents = $availableStudents->map(function ($student) use ($currentRoomStudentIds, $room) {
     return [
         'id' => $student->id,
         'name' => $student->name,
@@ -21,7 +21,6 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
 @section('admin_content')
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-8 text-gray-900">
-
         <h3 class="text-3xl font-extrabold text-teal-700 mb-8 text-center border-b pb-4">
             Atur Penghuni Kamar: {{ $room->room_number }} (Kapasitas: {{ $room->currentOccupancy() }}/{{ $room->capacity }})
         </h3>
@@ -46,7 +45,8 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
             @method('POST')
 
             <div class="mb-6 p-6 bg-blue-50 rounded-lg border border-blue-200">
-                {{-- Kapasitas --}}
+
+                {{-- Pesan kapasitas --}}
                 <template x-if="selectedCount() > remainingCapacity">
                     <div class="mb-4 text-red-600 font-semibold text-sm">
                         ⚠️ Jumlah yang dipilih melebihi kapasitas maksimal kamar!
@@ -57,13 +57,13 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                         ✅ Total santri dipilih: <span x-text="selectedCount()"></span> / {{ $room->capacity }}
                     </div>
                 </template>
-                
+
+                {{-- Pesan error dari server --}}
                 @if(session('error'))
                     <div class="mb-4 text-red-600 font-semibold text-sm border border-red-300 bg-red-50 rounded px-4 py-3">
-                     ⚠️ {{ session('error') }}
+                        ⚠️ {{ session('error') }}
                     </div>
                 @endif
-
 
                 {{-- Pencarian --}}
                 <div class="mb-4">
@@ -94,19 +94,21 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                                  'border-orange-400': student.is_other_room,
                                  'bg-gray-100': student.is_other_room
                              }">
-<input
-    type="checkbox"
-    name="student_ids[]"
-    :id="`student_${student.id}`"
-    :value="student.id"
-    class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
-    x-model="student.is_checked"
-    :checked="student.is_checked"
-    :disabled="student.is_other_room"
->
+                            <input
+                                type="checkbox"
+                                name="student_ids[]"
+                                :id="`student_${student.id}`"
+                                :value="student.id"
+                                class="form-checkbox h-5 w-5 text-indigo-600 rounded focus:ring-indigo-500"
+                                x-model="student.is_checked"
+                                :checked="student.is_checked"
+                                :disabled="student.is_other_room"
+                            >
                             <label :for="`student_${student.id}`" class="ml-3 text-gray-800 text-base font-medium flex-grow">
                                 <span x-text="student.name"></span>
-                                <span class="text-gray-500 text-sm">(<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)</span>
+                                <span class="text-gray-500 text-sm">
+                                    (<span x-text="student.nis"></span>, <span x-text="student.gender"></span>)
+                                </span>
                                 <template x-if="student.is_other_room">
                                     <br><span class="text-orange-500 text-xs font-semibold">(Kamar lain: <span x-text="student.current_room_number"></span>)</span>
                                 </template>
@@ -123,12 +125,15 @@ $mappedStudents = $availableStudents->map(function($student) use ($currentRoomSt
                 @enderror
             </div>
 
+            {{-- Tombol --}}
             <div class="flex justify-end space-x-4 mt-8 border-t pt-6">
-                <a href="{{ route('admin.rooms.show', $room) }}" class="inline-flex items-center px-6 py-3 bg-gray-200 rounded-full font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 transition shadow-md">
+                <a href="{{ route('admin.rooms.show', $room) }}"
+                   class="inline-flex items-center px-6 py-3 bg-gray-200 rounded-full font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 transition shadow-md">
                     <x-heroicon-o-arrow-left class="w-4 h-4 mr-2 -ml-1" />
                     Batal
                 </a>
-                <button type="submit" class="inline-flex items-center px-6 py-3 bg-indigo-600 rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition shadow-md">
+                <button type="submit"
+                        class="inline-flex items-center px-6 py-3 bg-indigo-600 rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-indigo-700 transition shadow-md">
                     <x-heroicon-o-check class="w-4 h-4 mr-2 -ml-1" />
                     Simpan Penghuni
                 </button>
