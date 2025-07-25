@@ -1,9 +1,12 @@
 import "./bootstrap";
 
 import Alpine from "alpinejs";
+import collapse from "@alpinejs/collapse"; // ✅ Import plugin collapse
 import ppdbForm from "./components/ppdb-form";
 import "./components/wilayah";
 
+// Register Alpine & Plugin
+Alpine.plugin(collapse); // ✅ Aktifkan collapse plugin
 window.Alpine = Alpine;
 window.ppdbForm = ppdbForm;
 
@@ -21,11 +24,12 @@ import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/effect-fade";
 
-// Wilayah
+// Wilayah (sudah di atas tapi tidak masalah redundant)
 import "./components/wilayah";
 
+// DOM Ready
 document.addEventListener("DOMContentLoaded", () => {
-    // Flatpickr
+    // Flatpickr inisialisasi
     flatpickr("#date_of_birth", {
         dateFormat: "Y-m-d",
         altInput: true,
@@ -33,7 +37,7 @@ document.addEventListener("DOMContentLoaded", () => {
         maxDate: "today",
     });
 
-    // Swiper
+    // Swiper Slider Program
     const swiperEl = document.querySelector(".programSwiper");
     if (swiperEl) {
         new Swiper(swiperEl, {
