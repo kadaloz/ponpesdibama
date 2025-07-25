@@ -33,8 +33,9 @@
             <label for="gender" class="block text-sm font-medium text-gray-700">Jenis Kelamin <span class="text-red-500">*</span></label>
             <select name="gender" id="gender" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" required>
                 <option value="">Pilih Jenis Kelamin</option>
-                <option value="Laki-laki" {{ old('gender', $student->gender ?? '') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                <option value="Perempuan" {{ old('gender', $student->gender ?? '') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                <option value="Laki-laki" {{ strtolower(old('gender', $student->gender ?? '')) == 'laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                <option value="Perempuan" {{ strtolower(old('gender', $student->gender ?? '')) == 'perempuan' ? 'selected' : '' }}>Perempuan</option>
+
             </select>
             @error('gender')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
         </div>
