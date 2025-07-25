@@ -36,12 +36,32 @@
 />
 
 {{-- Pekerjaan Orang Tua/Wali --}}
-<x-form.input
+<x-form.select
     id="parent_occupation"
     name="parent_occupation"
     label="Pekerjaan Orang Tua/Wali"
-    placeholder="Contoh: Petani"
-    :value="$applicant->parent_occupation ?? ''"
+    :options="[
+        'Petani' => 'Petani',
+        'Nelayan' => 'Nelayan',
+        'Pedagang' => 'Pedagang',
+        'PNS' => 'PNS',
+        'Guru' => 'Guru',
+        'Dosen' => 'Dosen',
+        'Dokter' => 'Dokter',
+        'Perawat' => 'Perawat',
+        'TNI/POLRI' => 'TNI/POLRI',
+        'Karyawan Swasta' => 'Karyawan Swasta',
+        'Karyawan BUMN' => 'Karyawan BUMN',
+        'Wiraswasta' => 'Wiraswasta',
+        'Sopir' => 'Sopir',
+        'Buruh' => 'Buruh',
+        'Ibu Rumah Tangga' => 'Ibu Rumah Tangga',
+        'Tidak Bekerja' => 'Tidak Bekerja',
+        'Sudah Meninggal' => 'Sudah Meninggal'
+    ]"
+    :selected="$applicant->parent_occupation ?? ''"
+    placeholder="Pilih pekerjaan orang tua/wali"
+    required
 />
 
 {{-- Alamat Lengkap --}}

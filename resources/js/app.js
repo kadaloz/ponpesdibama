@@ -34,7 +34,8 @@ document.addEventListener("DOMContentLoaded", () => {
         dateFormat: "Y-m-d",
         altInput: true,
         altFormat: "d F Y",
-        maxDate: "today",
+        maxDate: new Date(new Date().setFullYear(new Date().getFullYear() - 7)),
+        locale: Indonesian,
     });
 
     // Swiper Slider Program

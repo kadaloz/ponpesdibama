@@ -17,7 +17,7 @@
         id="gender"
         name="gender"
         label="Jenis Kelamin"
-        :options="['Laki-laki' => 'Laki-laki', 'Perempuan' => 'Perempuan']"
+        :options="['Laki-laki' => 'laki-laki', 'Perempuan' => 'perempuan']"
         :selected="$applicant->gender ?? ''"
         placeholder="Pilih Jenis Kelamin"
         required
@@ -32,15 +32,17 @@
         :value="$applicant->place_of_birth ?? ''"
     />
 
-    {{-- Tanggal Lahir --}}
-    <x-form.input
-        id="date_of_birth"
-        name="date_of_birth"
-        label="Tanggal Lahir"
-        placeholder="Pilih tanggal lahir"
-        :value="$applicant->date_of_birth ?? ''"
-        class="flatpickr"
-    />
+{{-- Tanggal Lahir --}}
+<x-form.input
+    id="date_of_birth"
+    name="date_of_birth"
+    label="Tanggal Lahir"
+    placeholder="Pilih tanggal lahir"
+    :value="$applicant->date_of_birth ?? ''"
+    class="flatpickr"
+    data-max-date="{{ now()->subYears(7)->format('Y-m-d') }}"
+    required
+/>
 
     {{-- NISN --}}
     <x-form.input
@@ -51,14 +53,24 @@
         :value="$applicant->nisn ?? ''"
     />
 
-    {{-- Pendidikan Terakhir --}}
-    <x-form.input
+{{-- Pendidikan Terakhir --}}
+    <x-form.select
         id="last_education"
         name="last_education"
         label="Pendidikan Terakhir"
-        placeholder="Contoh: SD/MI/SMP"
-        :value="$applicant->last_education ?? ''"
-    />
+        :options="[
+            'SD/MI' => 'SD/MI',
+            'SMP/MTS' => 'SMP/MTS',
+            'SMA/MAN' => 'SMA/MAN',
+            'Diploma' => 'Diploma',
+            'Sarjana' => 'Sarjana',
+            'Master' => 'Master',
+            'Tidak Sekolah' => 'Tidak Sekolah'
+      ]"
+        :selected="$applicant->last_education ?? ''"
+        placeholder="Pilih Pendidikan terakhir"
+        required
+/>
 
     {{-- Asal Sekolah --}}
     <x-form.input
