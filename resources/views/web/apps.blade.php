@@ -193,8 +193,7 @@
     @stack('scripts')
 
     {{-- Floating WhatsApp Button --}}
-    {{-- Floating WhatsApp Button --}}
-<div id="whatsapp-floating" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-green-500 text-white px-4 py-2 rounded-full shadow-lg transition-opacity duration-500 opacity-0 pointer-events-none">
+<div id="whatsapp-floating" class="fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-green-500 text-white px-5 py-3 rounded-full shadow-lg opacity-0 translate-y-5 transition-all duration-700 ease-out pointer-events-none">
     <a href="https://wa.me/6281916577540?text=Assalamu'alaikum%20saya%20ingin%20bertanya%20tentang%20PPDB%20PonpesDIBAMA"
        target="_blank" rel="noopener noreferrer" title="Hubungi Admin WhatsApp"
        class="flex items-center gap-2 hover:text-white">
@@ -202,17 +201,19 @@
             <path d="M16 .5C7.438.5.5 7.438.5 16c0 2.798.73 5.434 2.074 7.735L.5 31.5l7.916-2.057A15.412 15.412 0 0016 31.5c8.562 0 15.5-6.938 15.5-15.5S24.562.5 16 .5z"/>
             <path d="M23.292 19.69l-2.583-.734a1.074 1.074 0 00-1.034.279l-.845.865a11.072 11.072 0 01-5.154-5.155l.865-.845c.286-.286.385-.703.28-1.034l-.735-2.584a1.074 1.074 0 00-1.005-.748l-2.72.575a1.074 1.074 0 00-.796.796c-.223.98-.34 2.005-.34 3.064 0 5.662 4.61 10.272 10.272 10.272 1.059 0 2.085-.117 3.064-.34a1.074 1.074 0 00.796-.796l.575-2.72a1.074 1.074 0 00-.748-1.006z"/>
         </svg>
-        <span class="text-sm font-medium">Tanya via WhatsApp</span>
+        <span class="text-sm font-semibold tracking-wide">Tanya via WhatsApp</span>
     </a>
-    <button onclick="closeWhatsappFloating()" class="text-white hover:text-gray-200 focus:outline-none ml-2">
-        &times;
+    <button onclick="closeWhatsappFloating()" class="ml-2 text-white hover:text-gray-200 font-bold text-xl leading-none focus:outline-none">
+        ×
     </button>
 </div>
+
+
 <script>
     function showWhatsappFloating() {
         const el = document.getElementById("whatsapp-floating");
         if (el) {
-            el.classList.remove("opacity-0", "pointer-events-none");
+            el.classList.remove("opacity-0", "translate-y-5", "pointer-events-none");
             el.classList.add("opacity-100");
         }
     }
@@ -220,12 +221,12 @@
     function closeWhatsappFloating() {
         const el = document.getElementById("whatsapp-floating");
         if (el) {
-            el.classList.add("opacity-0", "pointer-events-none");
+            el.classList.add("opacity-0", "translate-y-5", "pointer-events-none");
         }
     }
 
     window.addEventListener("DOMContentLoaded", () => {
-        setTimeout(showWhatsappFloating, 5000); // ⏱ Muncul setelah 5 detik
+        setTimeout(showWhatsappFloating, 5000); // ⏳ Muncul setelah 5 detik
     });
 </script>
 
