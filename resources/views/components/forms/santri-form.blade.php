@@ -1,6 +1,6 @@
 {{-- resources/views/components/forms/santri-form.blade.php --}}
 
-@props(['student' => null, 'halaqohPeriods' => []])
+@props(['student' => null, 'halaqohPeriods' => [], 'programs' => []])
 
 <div class="space-y-6">
     {{-- Bagian Informasi Utama Santri --}}

@@ -40,7 +40,8 @@
                     @method('PUT')
 
                     {{-- Memanggil komponen form --}}
-                    <x-forms.santri-form :student="$student" :halaqohPeriods="$halaqohPeriods" />
+                    <x-forms.santri-form :student="$student" :halaqohPeriods="$halaqohPeriods" :programs="$programs" />
+
 
                     <div class="mt-8 flex justify-end space-x-4 border-t pt-6 border-gray-200">
                         <a href="{{ route('admin.students.index') }}"
