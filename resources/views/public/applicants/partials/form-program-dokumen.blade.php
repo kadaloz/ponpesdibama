@@ -7,13 +7,10 @@
 <div>
     <label for="chosen_program" class="block text-sm font-medium text-gray-700">Pilih Program Diminati</label>
     <select name="chosen_program" id="chosen_program" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-        <option value="">Pilih Program</option>
-       @foreach ($programs as $program)
-        <option value="{{ $program->id }}" {{ old('chosen_program', $applicant->chosen_program ?? '') == $program->id ? 'selected' : '' }}>
+        <option value="{{ $program->id }}" {{ (string) old('chosen_program', $applicant->chosen_program ?? '') === (string) $program->id ? 'selected' : '' }}>
         {{ $program->name }}
         </option>
        @endforeach
-
     </select>
     @error('chosen_program')<p class="text-red-500 text-xs mt-1">{{ $message }}</p>@enderror
 </div>
