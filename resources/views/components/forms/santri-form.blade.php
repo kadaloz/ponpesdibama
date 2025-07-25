@@ -244,7 +244,7 @@
     <option value="">Pilih Program</option>
     @foreach ($programs as $program)
         <option value="{{ $program->id }}" {{ old('category', $student->category ?? '') == $program->id ? 'selected' : '' }}>
-            {{ $program->name }}
+            {{ $student->program?->name }}
         </option>
     @endforeach
 </select>
