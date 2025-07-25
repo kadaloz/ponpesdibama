@@ -6,7 +6,8 @@
     <select name="chosen_program" id="chosen_program" class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
         <option value="">Pilih Program</option>
         @foreach ($programs as $program)
-            <option value="{{ $program->name }}" {{ old('chosen_program', $applicant->chosen_program) == $program->name ? 'selected' : '' }}>
+            <option value="{{ $program->id }}"
+                {{ old('chosen_program', $applicant->chosen_program ?? '') == $program->id ? 'selected' : '' }}>
                 {{ $program->name }}
             </option>
         @endforeach
