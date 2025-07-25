@@ -4,6 +4,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const kecamatanSelect = document.getElementById("district");
     const kelurahanSelect = document.getElementById("village");
 
+    const loadingProvince = document.getElementById("loading-province");
+    const loadingCity = document.getElementById("loading-city");
+    const loadingDistrict = document.getElementById("loading-district");
+    const loadingVillage = document.getElementById("loading-village");
+
     if (
         !provinsiSelect ||
         !kabupatenSelect ||
@@ -18,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const selectedKel = kelurahanSelect.dataset.selected || "";
 
     // Fetch provinsi
+    loadingProvince?.classList.remove("hidden");
     fetch("/api/provinces")
         .then((res) => res.json())
         .then((provinces) => {
@@ -26,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     new Option(prov, prov, false, prov === selectedProv)
                 );
             });
+            loadingProvince?.classList.add("hidden");
 
-            // Jika ada selectedProv, preload kota
             if (selectedProv) {
                 updateCities(
                     selectedProv,
@@ -37,7 +43,10 @@ document.addEventListener("DOMContentLoaded", () => {
                 );
             }
         })
-        .catch(() => alert("❌ Gagal memuat data provinsi."));
+        .catch(() => {
+            alert("❌ Gagal memuat data provinsi.");
+            loadingProvince?.classList.add("hidden");
+        });
 
     provinsiSelect.addEventListener("change", () => {
         updateCities(provinsiSelect.value);
@@ -66,6 +75,8 @@ document.addEventListener("DOMContentLoaded", () => {
     ) {
         kabupatenSelect.innerHTML =
             '<option value="">Pilih Kabupaten/Kota</option>';
+        loadingCity?.classList.remove("hidden");
+
         fetch(`/api/cities?province=${encodeURIComponent(provinsi)}`)
             .then((res) => res.json())
             .then((cities) => {
@@ -74,6 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         new Option(kab, kab, false, kab === selectedCity)
                     );
                 });
+                loadingCity?.classList.add("hidden");
 
                 if (selectedCity) {
                     updateDistricts(
@@ -84,7 +96,10 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
                 }
             })
-            .catch(() => alert("❌ Gagal memuat data kota/kabupaten."));
+            .catch(() => {
+                alert("❌ Gagal memuat data kota/kabupaten.");
+                loadingCity?.classList.add("hidden");
+            });
     }
 
     function updateDistricts(
@@ -94,6 +109,8 @@ document.addEventListener("DOMContentLoaded", () => {
         selectedVillage = ""
     ) {
         kecamatanSelect.innerHTML = '<option value="">Pilih Kecamatan</option>';
+        loadingDistrict?.classList.remove("hidden");
+
         fetch(
             `/api/districts?province=${encodeURIComponent(
                 provinsi
@@ -106,6 +123,7 @@ document.addEventListener("DOMContentLoaded", () => {
                         new Option(kec, kec, false, kec === selectedDistrict)
                     );
                 });
+                loadingDistrict?.classList.add("hidden");
 
                 if (selectedDistrict) {
                     updateVillages(
@@ -116,11 +134,16 @@ document.addEventListener("DOMContentLoaded", () => {
                     );
                 }
             })
-            .catch(() => alert("❌ Gagal memuat data kecamatan."));
+            .catch(() => {
+                alert("❌ Gagal memuat data kecamatan.");
+                loadingDistrict?.classList.add("hidden");
+            });
     }
 
     function updateVillages(provinsi, kota, kecamatan, selectedVillage = "") {
         kelurahanSelect.innerHTML = '<option value="">Pilih Kelurahan</option>';
+        loadingVillage?.classList.remove("hidden");
+
         fetch(
             `/api/villages?province=${encodeURIComponent(
                 provinsi
@@ -135,7 +158,11 @@ document.addEventListener("DOMContentLoaded", () => {
                         new Option(kel, kel, false, kel === selectedVillage)
                     );
                 });
+                loadingVillage?.classList.add("hidden");
             })
-            .catch(() => alert("❌ Gagal memuat data kelurahan."));
+            .catch(() => {
+                alert("❌ Gagal memuat data kelurahan.");
+                loadingVillage?.classList.add("hidden");
+            });
     }
 });
