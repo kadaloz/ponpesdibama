@@ -182,7 +182,8 @@ class StudentController extends Controller
     {
         $halaqohPeriods = ['Sore', 'Malam'];
         $programs = Program::where('is_active', true)->get();
-        return view('admin.students.edit', compact('student', 'halaqohPeriods', 'programs'));
+        $selectedCategory = $student->category;
+        return view('admin.students.edit', compact('student', 'halaqohPeriods', 'programs', 'selectedCategory'));
     }
 
     /**
