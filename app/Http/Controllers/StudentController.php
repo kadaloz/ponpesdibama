@@ -75,9 +75,9 @@ class StudentController extends Controller
      */
     public function create()
     {
+        $programs = Program::where('is_active', true)->get();
         $halaqohPeriods = ['Sore', 'Malam'];
-
-        return view('admin.students.create', compact('halaqohPeriods'));
+        return view('admin.students.create', compact('halaqohPeriods', 'programs'));
     }
 
     /**
@@ -180,7 +180,8 @@ class StudentController extends Controller
     public function edit(Student $student)
     {
         $halaqohPeriods = ['Sore', 'Malam'];
-        return view('admin.students.edit', compact('student', 'halaqohPeriods'));
+        $programs = Program::where('is_active', true)->get();
+        return view('admin.students.edit', compact('student', 'halaqohPeriods', 'programs'));
     }
 
     /**

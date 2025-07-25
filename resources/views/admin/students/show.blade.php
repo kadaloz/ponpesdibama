@@ -41,7 +41,7 @@
                         </div>
                         <div>
                             <p class="font-medium">Kategori:</p>
-                            <p class="block">{{ $student->category ?? '-' }}</p>
+                           <p class="block">{{ $student->program->name ?? '-' }}</p>
                         </div>
                         <div>
                             <p class="font-medium">Tipe Santri:</p>

@@ -253,6 +253,8 @@ class ApplicantController extends Controller
                     'address' => $applicant->address,
                     'city' => $applicant->city,
                     'province' => $applicant->province,
+                    'district' => $applicant->district,
+                    'village' => $applicant->village,
                     'parent_name' => $applicant->parent_name,
                     'parent_phone' => $applicant->parent_phone,
                     'parent_email' => $applicant->parent_email,

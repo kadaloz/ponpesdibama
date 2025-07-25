@@ -49,6 +49,15 @@ class Student extends Model
     {
         return $this->belongsTo(Applicant::class);
     }
+    /**
+     * Relasi ke Program (program yang diikuti santri).
+     * Pastikan relasi ini sesuai dengan struktur database Anda.
+     */
+    public function categoryProgram()
+    {
+        return $this->belongsTo(Program::class, 'category');
+    }
+
 
     /**
      * Relasi Many-to-Many ke Halaqoh (santri tergabung di satu atau lebih halaqoh).
@@ -158,4 +167,5 @@ class Student extends Model
 
         return $prefix . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
     }
+
 }
