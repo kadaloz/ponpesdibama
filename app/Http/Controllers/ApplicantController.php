@@ -61,7 +61,14 @@ class ApplicantController extends Controller
             'city' => 'required|string',
             'district' => 'required|string',
             'village' => 'required|string',
-            'chosen_program' => 'nullable|string|max:255',
+            'ppdb_type' => 'required|in:Asrama,Pulang-Pergi',
+            'halaqoh_period' => 'required_if:ppdb_type,Pulang-Pergi|in:Sore,Malam',
+            'chosen_program' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::exists('programs', 'id')->where('is_active', true)
+                                ],
             'ppdb_type' => [
                 'required',
                 'string',
@@ -189,7 +196,14 @@ class ApplicantController extends Controller
             'address' => 'required|string',
             'city' => 'nullable|string|max:255',
             'province' => 'nullable|string|max:255',
-            'chosen_program' => 'nullable|string|max:255',
+            'ppdb_type' => 'required|in:Asrama,Pulang-Pergi',
+            'halaqoh_period' => 'required_if:ppdb_type,Pulang-Pergi|in:Sore,Malam',
+            'chosen_program' => [
+                'required',
+                'integer',
+                'min:1',
+                Rule::exists('programs', 'id')->where('is_active', true)
+                                ],
             'ppdb_type' => 'required|string|in:Asrama,Pulang-Pergi',
             'halaqoh_period' => 'nullable|string|in:Sore,Malam',
             'status' => 'required|string|in:pending,submitted,under_review,verified,accepted,rejected,re-registered',
