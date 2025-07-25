@@ -237,15 +237,14 @@
         </div>
 <div class="mt-4">
     <label for="category" class="block text-sm font-medium text-gray-700">Kategori Santri</label>
-    <select name="category" id="category">
-    <option value="">Pilih Program</option>
-    @foreach ($programs as $program)
-        <option value="{{ $program->id }}"
-            {{ old('category', $student->category) == $program->id ? 'selected' : '' }}>
-            {{ $program->name }}
-        </option>
-    @endforeach
-</select>
+    <select name="category" id="category" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+        <option value="">Pilih Kategori</option>
+        @foreach ($programs as $program)
+            <option value="{{ $program->id }}" {{ (string) old('category', $student->category) === (string) $program->id ? 'selected' : '' }}>
+                {{ $program->name }}
+            </option>
+        @endforeach
+    </select>
     @error('category')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
