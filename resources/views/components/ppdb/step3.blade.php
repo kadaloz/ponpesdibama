@@ -6,7 +6,7 @@
         <x-form.select
             id="chosen_program"
             name="chosen_program"
-            :options="$programs->pluck('name')->toArray()"
+            :options="$programs->pluck('name', 'id')->toArray()"
             placeholder="Pilih Program"
             required
         />
