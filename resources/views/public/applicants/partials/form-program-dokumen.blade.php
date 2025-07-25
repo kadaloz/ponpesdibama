@@ -1,6 +1,3 @@
-@php
-    $programs = \App\Models\Program::where('is_active', true)->get();
-@endphp
 
 <h3 class="text-xl font-bold text-teal-700 mb-4 border-b pb-2 pt-6">Pilihan Program & Tipe Santri & Unggah Dokumen</h3>
 
