@@ -76,9 +76,10 @@ class StudentController extends Controller
      */
     public function create()
     {
-        $programs = Program::where('is_active', true)->get();
-        $halaqohPeriods = ['Sore', 'Malam'];
-        return view('admin.students.create', compact('halaqohPeriods', 'programs'));
+ $programs = Program::where('is_active', true)->get(); // ⬅️ penting
+    $halaqohPeriods = ['Sore', 'Malam'];
+
+    return view('admin.students.create', compact('programs', 'halaqohPeriods'));
     }
 
     /**
@@ -180,10 +181,13 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-        $halaqohPeriods = ['Sore', 'Malam'];
-        $programs = Program::where('is_active', true)->get();
-        $selectedCategory = $student->category;
-        return view('admin.students.edit', compact('student', 'halaqohPeriods', 'programs', 'selectedCategory'));
+    ß$halaqohPeriods = ['Sore', 'Malam'];
+    $programs = Program::where('is_active', true)->get(); // ⬅️ pastikan ini ada
+    $selectedCategory = $student->category;
+
+    return view('admin.students.edit', compact(
+        'student', 'halaqohPeriods', 'programs', 'selectedCategory'
+    ));
     }
 
     /**
