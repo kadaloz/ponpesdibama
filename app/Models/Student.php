@@ -53,7 +53,7 @@ class Student extends Model
      * Relasi ke Program (program yang diikuti santri).
      * Pastikan relasi ini sesuai dengan struktur database Anda.
      */
-    public function categoryProgram()
+    public function programs()
     {
         return $this->belongsTo(Program::class);
     }
