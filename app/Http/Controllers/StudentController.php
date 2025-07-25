@@ -181,7 +181,7 @@ class StudentController extends Controller
      */
     public function edit(Student $student)
     {
-    ß$halaqohPeriods = ['Sore', 'Malam'];
+    $halaqohPeriods = ['Sore', 'Malam'];
     $programs = Program::where('is_active', true)->get(); // ⬅️ pastikan ini ada
     $selectedCategory = $student->category;
 
