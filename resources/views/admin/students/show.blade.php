@@ -86,7 +86,7 @@
                         Data Pribadi Santri
                     </h4>
                     <div class="grid grid-cols-1 md:grid-cols-2 gap-y-3 gap-x-8 text-gray-700 text-base">
-                        <div><span class="font-medium">Jenis Kelamin:</span> {{ $student->gender ?? '-' }}</div>
+                        <div><span class="font-medium">Jenis Kelamin:</span> {{ $student->gender ? ucwords(strtolower($student->gender)) : '-' }}</div>
                         <div><span class="font-medium">Tempat, Tanggal Lahir:</span> {{ $student->place_of_birth ?? '-' }}, {{ $student->date_of_birth ? \Carbon\Carbon::parse($student->date_of_birth)->format('d F Y') : '-' }}</div>
                         <div><span class="font-medium">NISN:</span> {{ $student->nisn ?? '-' }}</div>
                         <div><span class="font-medium">Pendidikan Terakhir:</span> {{ $student->last_education ?? '-' }}</div>

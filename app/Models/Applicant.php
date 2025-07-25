@@ -95,4 +95,10 @@ class Applicant extends Model
     {
         return $this->hasOne(Student::class);
     }
+    // Relasi One-to-Many ke Program (program yang dipilih pendaftar)
+    public function program()
+    {
+        return $this->belongsTo(Program::class, 'chosen_program');
+    }
+    
 }

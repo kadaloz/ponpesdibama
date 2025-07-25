@@ -77,7 +77,8 @@
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4">{{ $student->nis ?? '-' }}</td>
                             <td class="px-6 py-4">{{ $student->name }}</td>
-                            <td class="px-6 py-4">{{ $student->gender ?? '-' }}</td>
+                            <td class="px-6 py-4">{{ $student->gender ? ucwords(strtolower($student->gender)) : '-' }}</td>
+
                             <td class="px-6 py-4">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
                                     $student->status == 'aktif' ? 'bg-green-100 text-green-800' :
