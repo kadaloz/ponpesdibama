@@ -240,16 +240,15 @@
 @endphp
        <div class="mt-4">
     <label for="category" class="block text-sm font-medium text-gray-700">Pilih Program <span class="text-red-500">*</span></label>
-    <select name="category" id="category"
-        class="mt-1 block w-full px-4 py-2 border rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 @error('category') border-red-500 @enderror">
-        <option value="">-- Pilih Program --</option>
-        @foreach ($programs as $program)
-            <option value="{{ $program->id }}"
-                {{ old('category', $selectedCategory?? '') == $program->id ? 'selected' : '' }}>
-                {{ $program->name }}
-            </option>
-        @endforeach
-    </select>
+<select name="category" id="category">
+    <option value="">Pilih Program</option>
+    @foreach ($programs as $program)
+        <option value="{{ $program->id }}" {{ old('category', $student->category ?? '') == $program->id ? 'selected' : '' }}>
+            {{ $program->name }}
+        </option>
+    @endforeach
+</select>
+
     @error('category')
         <p class="text-sm text-red-600 mt-1">{{ $message }}</p>
     @enderror
