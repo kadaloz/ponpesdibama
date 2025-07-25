@@ -55,7 +55,7 @@ class Student extends Model
      */
     public function categoryProgram()
     {
-        return $this->belongsTo(Program::class, 'category');
+        return $this->belongsTo(Program::class);
     }
 
 
