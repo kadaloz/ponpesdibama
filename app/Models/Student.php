@@ -54,10 +54,11 @@ class Student extends Model
      * Pastikan relasi ini sesuai dengan struktur database Anda.
      */
 // Dalam model Student.php
-    public function program()
-    {
-        return $this->belongsTo(Program::class, 'category'); // 'category' adalah foreign key di tabel students
-    }
+public function program()
+{
+    return $this->belongsTo(Program::class, 'category'); // karena category menyimpan program_id
+}
+
 
 
 
