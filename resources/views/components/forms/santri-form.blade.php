@@ -235,27 +235,18 @@
                 <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
             @enderror
         </div>
-@php
-    $selectedCategory = old('category', $student->category ?? '');
-@endphp
-
-<div class="mt-4">
-    <label for="category" class="block text-sm font-medium text-gray-700">Kategori Santri</label>
-    <select name="category" id="category"
-        class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
-        <option value="">Pilih Program</option>
-        @foreach ($programs as $program)
-            <option value="{{ $program->id }}" {{ $selectedCategory == $program->id ? 'selected' : '' }}>
-                {{ $program->name }}
-            </option>
-        @endforeach
-    </select>
-
-    </select>
-    @error('category')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-</div>
+        <div class="mt-4">
+            <label for="category" class="block text-sm font-medium text-gray-700">Kategori Santri</label>
+            <select name="category" id="category" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+                <option value="">Pilih Kategori</option>
+                <option value="Tahfidz" {{ old('category', $student->category ?? '') == 'Tahfidz' ? 'selected' : '' }}>Tahfidz</option>
+                <option value="Kitab Kuning" {{ old('category', $student->category ?? '') == 'Kitab Kuning' ? 'selected' : '' }}>Kitab Kuning</option>
+                <option value="Umum" {{ old('category', $student->category ?? '') == 'Umum' ? 'selected' : '' }}>Umum</option>
+            </select>
+            @error('category')
+                <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+            @enderror
+        </div>
         <div class="mt-4">
             <label class="block text-sm font-medium text-gray-700 mb-2">Tipe Santri</label>
             <div class="mt-2 flex flex-col sm:flex-row space-y-2 sm:space-y-0 sm:space-x-4">
