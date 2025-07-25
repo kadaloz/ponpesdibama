@@ -9,6 +9,7 @@ use Maatwebsite\Excel\Facades\Excel; // Import Facade Excel
 use App\Exports\StudentsExport; // Import Kelas Export
 use App\Imports\StudentsImport; // Import Kelas Import
 use Illuminate\Support\Facades\Storage; // Import Storage facade
+use App\Models\Program; // Import Model Program
 
 class StudentController extends Controller
 {
