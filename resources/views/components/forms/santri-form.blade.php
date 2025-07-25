@@ -245,7 +245,7 @@
     class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
     <option value="">Pilih Program</option>
     @foreach ($programs as $program)
-        <option value="{{ $program->id }}" {{ old('category', $selectedCategory ?? '') == $program->id ? 'selected' : '' }}>
+        <option value="{{ $program->id }}" {{ $selectedCategory == $program->id ? 'selected' : '' }}>
             {{ $program->name }}
         </option>
     @endforeach
