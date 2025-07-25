@@ -7,6 +7,7 @@
 <div>
     <label for="chosen_program" class="block text-sm font-medium text-gray-700">Pilih Program Diminati</label>
     <select name="chosen_program" id="chosen_program" class="mt-1 block w-full px-4 py-2 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500">
+        @foreach ($programs as $program)
         <option value="{{ $program->id }}" {{ (string) old('chosen_program', $applicant->chosen_program ?? '') === (string) $program->id ? 'selected' : '' }}>
         {{ $program->name }}
         </option>
