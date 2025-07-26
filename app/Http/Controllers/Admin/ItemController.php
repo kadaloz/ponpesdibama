@@ -23,14 +23,30 @@ class ItemController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
-    {
-        $rooms = Room::orderBy('room_number')->get(); // Get all rooms for the dropdown
-        $students = Student::orderBy('name')->get(); // Get all students for assigned_to_student dropdown
-        $selectedRoomId = $request->query('room_id'); // Get room_id from query parameter if passed from Room show page
+public function create(Request $request)
+{
+    $rooms = Room::orderBy('room_number')->get();
 
-        return view('admin.items.create', compact('rooms', 'students', 'selectedRoomId'));
+    $selectedRoomId = $request->query('room_id');
+    $room = Room::find($selectedRoomId);
+
+    // Default: jika tidak ada room dipilih, jangan tampilkan santri dulu
+    $students = collect();
+
+    if ($room) {
+        $students = Student::where('type', 'asrama')
+            ->where('gender', strtolower($room->gender_type)) // Sesuai jenis kelamin kamar
+            ->whereHas('currentRoomPlacement', function ($query) use ($room) {
+                $query->whereNull('end_date')
+                      ->where('room_id', $room->id); // Hanya santri yg sedang menempati kamar ini
+            })
+            ->orderBy('name')
+            ->get();
     }
+
+    return view('admin.items.create', compact('rooms', 'students', 'selectedRoomId'));
+}
+
 
     /**
      * Store a newly created resource in storage.
@@ -71,12 +87,27 @@ class ItemController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Item $item)
-    {
-        $rooms = Room::orderBy('room_number')->get();
-        $students = Student::orderBy('name')->get(); // Get all students for dropdown
-        return view('admin.items.edit', compact('item', 'rooms', 'students'));
+public function edit(Item $item)
+{
+    $rooms = Room::orderBy('room_number')->get();
+
+    $room = $item->room; // Ambil kamar yang terhubung dengan item
+    $students = collect(); // Default kosong kalau belum bisa tentukan kamar
+
+    if ($room) {
+        $students = Student::where('type', 'asrama')
+            ->where('gender', strtolower($room->gender_type)) // Filter gender
+            ->whereHas('currentRoomPlacement', function ($query) use ($room) {
+                $query->whereNull('end_date')
+                      ->where('room_id', $room->id); // Santri yang aktif di kamar ini
+            })
+            ->orderBy('name')
+            ->get();
     }
+
+    return view('admin.items.edit', compact('item', 'rooms', 'students'));
+}
+
 
     /**
      * Update the specified resource in storage.
