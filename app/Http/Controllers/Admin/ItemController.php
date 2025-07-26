@@ -29,17 +29,14 @@ public function create(Request $request)
     $selectedRoomId = $request->query('room_id');
     $room = Room::find($selectedRoomId);
 
-    $students = collect(); // Default kosong dulu
+    $students = collect();
 
     if ($room) {
         $students = Student::where('type', 'asrama')
             ->where('gender', strtolower($room->gender_type))
             ->whereHas('currentRoomPlacement', function ($query) use ($room) {
                 $query->whereNull('end_date')
-                      ->where('room_id', $room->id); // Aktif di kamar ini
-            })
-            ->whereHas('currentRoomPlacement.room', function ($query) use ($room) {
-                $query->where('location', $room->location); // Lokasi sesuai kamar
+                      ->where('room_id', $room->id); // Sudah menempati kamar aktif ini
             })
             ->orderBy('name')
             ->get();
@@ -47,7 +44,6 @@ public function create(Request $request)
 
     return view('admin.items.create', compact('rooms', 'students', 'selectedRoomId'));
 }
-
 
 
     /**
@@ -92,8 +88,7 @@ public function create(Request $request)
 public function edit(Item $item)
 {
     $rooms = Room::orderBy('room_number')->get();
-
-    $room = $item->room; // Kamar dari item
+    $room = $item->room;
     $students = collect();
 
     if ($room) {
@@ -101,10 +96,7 @@ public function edit(Item $item)
             ->where('gender', strtolower($room->gender_type))
             ->whereHas('currentRoomPlacement', function ($query) use ($room) {
                 $query->whereNull('end_date')
-                      ->where('room_id', $room->id);
-            })
-            ->whereHas('currentRoomPlacement.room', function ($query) use ($room) {
-                $query->where('location', $room->location); // Filter lokasi kamar
+                      ->where('room_id', $room->id); // Hanya santri aktif di kamar ini
             })
             ->orderBy('name')
             ->get();
@@ -112,7 +104,6 @@ public function edit(Item $item)
 
     return view('admin.items.edit', compact('item', 'rooms', 'students'));
 }
-
 
 
     /**
