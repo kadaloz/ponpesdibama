@@ -74,12 +74,12 @@ class StudentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Student $student)
     {
     $programs = Program::where('is_active', true)->get(); // ⬅️ penting
     $halaqohPeriods = ['Sore', 'Malam'];
 
-    return view('admin.students.create', compact('student','programs', 'halaqohPeriods'));
+    return view('admin.students.create', compact('student', 'programs', 'halaqohPeriods'));
     }
 
     /**
