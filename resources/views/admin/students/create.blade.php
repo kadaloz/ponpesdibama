@@ -39,7 +39,7 @@
                     @csrf
 
                     {{-- Memanggil komponen form --}}
-                    <x-forms.santri-form :halaqohPeriods="$halaqohPeriods" :programs="$programs"/> {{-- $student tidak perlu dilewatkan karena ini create --}}
+                    <x-forms.santri-form :student="$student" :halaqohPeriods="$halaqohPeriods" :programs="$programs"/> {{-- $student tidak perlu dilewatkan karena ini create --}}
 
                     <div class="mt-8 flex justify-end space-x-4 border-t pt-6 border-gray-200">
                         <a href="{{ route('admin.students.index') }}"
