@@ -79,7 +79,7 @@ class StudentController extends Controller
     $programs = Program::where('is_active', true)->get(); // ⬅️ penting
     $halaqohPeriods = ['Sore', 'Malam'];
 
-    return view('admin.students.create', compact('programs', 'halaqohPeriods'));
+    return view('admin.students.create', compact('student','programs', 'halaqohPeriods'));
     }
 
     /**
