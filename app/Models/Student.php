@@ -61,7 +61,6 @@ public function program()
 
 
 
-
     /**
      * Relasi Many-to-Many ke Halaqoh (santri tergabung di satu atau lebih halaqoh).
      */
