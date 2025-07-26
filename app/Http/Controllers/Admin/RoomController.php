@@ -154,14 +154,21 @@ public function __construct()
 public function assignForm(Room $room)
 {
     $roomGender = strtolower($room->gender_type); // 'laki-laki' atau 'perempuan'
-
     $currentRoomStudentIds = $room->currentStudents->pluck('id')->toArray();
 
     $availableStudents = Student::with(['currentRoomPlacement.room'])
-        ->where('type', 'asrama') // Hanya santri asrama
-        ->where('gender', $roomGender) // Sesuai jenis kelamin kamar
-        ->whereDoesntHave('currentRoomPlacement', function ($query) {
-            $query->whereNull('end_date'); // Belum punya penempatan aktif
+        ->where('type', 'asrama') // ✅ Hanya santri asrama
+        ->where('gender', $roomGender) // ✅ Harus sesuai jenis kelamin kamar
+        ->where(function ($query) use ($room) {
+            $query->whereDoesntHave('currentRoomPlacement', function ($q) {
+                $q->whereNull('end_date'); // Belum punya penempatan aktif
+            });
+
+            $query->orWhereHas('currentRoomPlacement', function ($q) use ($room) {
+                $q->where('room_id', $room->id)
+                  ->whereNull('end_date'); // Aktif di kamar ini
+            });
+
         })
         ->orderBy('name')
         ->get();
@@ -172,7 +179,6 @@ public function assignForm(Room $room)
         'currentRoomStudentIds' => $currentRoomStudentIds,
     ]);
 }
-
 
     /**
      * Handle the logic for assigning students to a room.
