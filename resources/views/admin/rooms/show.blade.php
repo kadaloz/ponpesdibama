@@ -84,53 +84,76 @@
             </div>
 
 
-            {{-- Bagian untuk menampilkan inventaris di kamar ini --}}
-            <div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
-                <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
-                    <x-heroicon-o-archive-box class="h-6 w-6 text-gray-600 mr-2" /> Inventaris Kamar ({{ $room->items->count() }})
-                </h4>
-                @if ($room->items->isNotEmpty())
-                    <div class="overflow-x-auto">
-                        <table class="min-w-full divide-y divide-gray-200">
-                            <thead class="bg-gray-100">
-                                <tr>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
-                                    <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Seri</th>
-                                </tr>
-                            </thead>
-                            <tbody class="bg-white divide-y divide-gray-200">
-                                @foreach ($room->items as $item)
-                                    <tr>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->name }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->condition }}</td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm">
-                                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
-                                                ['Tersedia' => 'bg-green-100 text-green-800', 'Dipinjam' => 'bg-yellow-100 text-yellow-800', 'Rusak' => 'bg-red-100 text-red-800', 'Hilang' => 'bg-gray-100 text-gray-800'][$item->status] ?? 'bg-blue-100 text-blue-800'
-                                            }}">
-                                                {{ $item->status }}
-                                            </span>
-                                        </td>
-                                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->serial_number ?? '-' }}</td>
-                                    </tr>
-                                @endforeach
-                            </tbody>
-                        </table>
-                    </div>
-                @else
-                    <p class="text-gray-600 italic">Tidak ada inventaris yang tercatat di kamar ini.</p>
-                @endif
-                @can('assign items to room')
-                <div class="mt-4 text-right">
-                    {{-- Tombol untuk menambah inventaris baru ke kamar ini (tetap teal) --}}
-                    <a href="{{ route('admin.items.create', ['room_id' => $room->id]) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
-                        <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
-                        Tambah Inventaris Baru
-                    </a>
-                </div>
-                @endcan
-            </div>
+{{-- Bagian untuk menampilkan inventaris di kamar ini --}}
+<div class="mt-8 p-6 bg-gray-50 rounded-xl shadow-sm border border-gray-200">
+    <h4 class="font-semibold text-xl text-gray-800 mb-4 border-b pb-2 flex items-center">
+        <x-heroicon-o-archive-box class="h-6 w-6 text-gray-600 mr-2" /> Inventaris Kamar ({{ $room->items->count() }})
+    </h4>
+    @if ($room->items->isNotEmpty())
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-100">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nama Barang</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Kondisi</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Nomor Seri</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Aksi</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    @foreach ($room->items as $item)
+                        <tr>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">{{ $item->name }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->condition }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm">
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
+                                    ['Tersedia' => 'bg-green-100 text-green-800', 'Dipinjam' => 'bg-yellow-100 text-yellow-800', 'Rusak' => 'bg-red-100 text-red-800', 'Hilang' => 'bg-gray-100 text-gray-800'][$item->status] ?? 'bg-blue-100 text-blue-800'
+                                }}">
+                                    {{ $item->status }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">{{ $item->serial_number ?? '-' }}</td>
+                            <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-700">
+                                <div class="flex space-x-2">
+                                    @can('view items')
+                                    <a href="{{ route('admin.items.show', $item) }}" class="text-indigo-600 hover:text-indigo-800 font-semibold text-xs flex items-center">
+                                        <x-heroicon-o-eye class="w-4 h-4 mr-1" />
+                                        Detail
+                                    </a>
+                                    @endcan
+
+                                    @can('delete items')
+                                    <form action="{{ route('admin.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?')" class="inline">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="text-red-600 hover:text-red-800 font-semibold text-xs flex items-center">
+                                            <x-heroicon-o-trash class="w-4 h-4 mr-1" />
+                                            Hapus
+                                        </button>
+                                    </form>
+                                    @endcan
+                                </div>
+                            </td>
+                        </tr>
+                    @endforeach
+                </tbody>
+            </table>
+        </div>
+    @else
+        <p class="text-gray-600 italic">Tidak ada inventaris yang tercatat di kamar ini.</p>
+    @endif
+
+    @can('assign items to room')
+    <div class="mt-4 text-right">
+        <a href="{{ route('admin.items.create', ['room_id' => $room->id]) }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+            <x-heroicon-o-plus class="w-4 h-4 mr-2 -ml-1" />
+            Tambah Inventaris Baru
+        </a>
+    </div>
+    @endcan
+</div>
+
 
 
             <div class="mt-10 text-center border-t pt-6 flex justify-end space-x-4">
