@@ -151,54 +151,38 @@ public function __construct()
     /**
      * Show the form for assigning students to a room.
      */
-    public function assignForm(Room $room)
-    {
-        // Dapatkan jenis kelamin yang diizinkan untuk kamar ini
-        $roomGender = $room->gender_type; // Misal: 'laki-laki' atau 'perempuan'
+public function assignForm(Room $room)
+{
+    $roomGender = strtolower($room->gender_type); // 'laki-laki' atau 'perempuan'
+    $currentRoomStudentIds = $room->currentStudents->pluck('id')->toArray();
 
-        // Muat santri yang saat ini menghuni kamar ini (untuk inisialisasi checkbox)
-        $currentRoomStudentIds = $room->currentStudents->pluck('id')->toArray();
+    $availableStudents = Student::with(['currentRoomPlacement.room'])
+        ->where('type', 'asrama') // ✅ Hanya santri asrama
+        ->where('gender', $roomGender) // ✅ Harus sesuai jenis kelamin kamar
+        ->where(function ($query) use ($room) {
+            $query->whereDoesntHave('currentRoomPlacement', function ($q) {
+                $q->whereNull('end_date'); // Belum punya penempatan aktif
+            });
 
-        // Query untuk santri yang tersedia untuk kamar ini:
-        // 1. Santri yang belum memiliki penempatan kamar aktif (is_active = true, end_date = null)
-        // 2. Santri yang saat ini aktif di kamar ini (agar checkbox-nya tetap dicentang)
-        // 3. Santri yang saat ini aktif di kamar lain (untuk dinonaktifkan di UI, agar bisa dipindahkan)
-        // 4. Filter berdasarkan jenis kelamin kamar
-        $availableStudents = Student::with(['currentRoomPlacement.room'])
-            ->where(function ($query) use ($room, $roomGender) {
-                // Santri yang belum punya penempatan aktif
-                $query->whereDoesntHave('currentRoomPlacement', function ($q) {
-                    $q->whereNull('end_date'); // Hanya yang aktif
-                });
+            $query->orWhereHas('currentRoomPlacement', function ($q) use ($room) {
+                $q->where('room_id', $room->id)
+                  ->whereNull('end_date'); // Aktif di kamar ini
+            });
 
-                // Santri yang aktif di kamar ini
-                $query->orWhereHas('currentRoomPlacement', function ($q) use ($room) {
-                    $q->where('room_id', $room->id)
-                      ->whereNull('end_date'); // Pastikan hanya yang aktif di kamar ini
-                });
+            $query->orWhereHas('currentRoomPlacement', function ($q) use ($room) {
+                $q->where('room_id', '!=', $room->id)
+                  ->whereNull('end_date'); // Aktif di kamar lain
+            });
+        })
+        ->orderBy('name')
+        ->get();
 
-                // Santri yang aktif di kamar lain (agar bisa ditampilkan tapi didisable)
-                $query->orWhereHas('currentRoomPlacement', function ($q) use ($room) {
-                    $q->where('room_id', '!=', $room->id)
-                      ->whereNull('end_date'); // Pastikan hanya yang aktif di kamar lain
-                });
-            })
-            // Filter berdasarkan jenis kelamin kamar (jika kamar bukan "campur")
-            ->when($roomGender, function ($query) use ($roomGender) {
-                // Sesuaikan 'gender' dengan nama kolom di tabel 'students'
-                // dan nilai 'Laki-laki'/'Perempuan' dengan data di DB Anda.
-                if ($roomGender === 'laki-laki') {
-                    $query->where('gender', 'laki-laki'); // Atau 'Laki-laki'
-                } elseif ($roomGender === 'perempuan') {
-                    $query->where('gender', 'perempuan'); // Atau 'Perempuan'
-                }
-                // Jika ada 'Campur', tidak perlu filter jenis kelamin
-            })
-            ->orderBy('name')
-            ->get();
-
-        return view('admin.rooms.assign', compact('room', 'availableStudents', 'currentRoomStudentIds'));
-    }
+    return view('admin.rooms.assign', [
+        'room' => $room,
+        'availableStudents' => $availableStudents,
+        'currentRoomStudentIds' => $currentRoomStudentIds,
+    ]);
+}
 
     /**
      * Handle the logic for assigning students to a room.
