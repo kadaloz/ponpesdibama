@@ -26,19 +26,20 @@ class ItemController extends Controller
 public function create(Request $request)
 {
     $rooms = Room::orderBy('room_number')->get();
-
     $selectedRoomId = $request->query('room_id');
     $room = Room::find($selectedRoomId);
 
-    // Default: jika tidak ada room dipilih, jangan tampilkan santri dulu
-    $students = collect();
+    $students = collect(); // Default kosong dulu
 
     if ($room) {
         $students = Student::where('type', 'asrama')
-            ->where('gender', strtolower($room->gender_type)) // Sesuai jenis kelamin kamar
+            ->where('gender', strtolower($room->gender_type))
             ->whereHas('currentRoomPlacement', function ($query) use ($room) {
                 $query->whereNull('end_date')
-                      ->where('room_id', $room->id); // Hanya santri yg sedang menempati kamar ini
+                      ->where('room_id', $room->id); // Aktif di kamar ini
+            })
+            ->whereHas('currentRoomPlacement.room', function ($query) use ($room) {
+                $query->where('location', $room->location); // Lokasi sesuai kamar
             })
             ->orderBy('name')
             ->get();
@@ -46,6 +47,7 @@ public function create(Request $request)
 
     return view('admin.items.create', compact('rooms', 'students', 'selectedRoomId'));
 }
+
 
 
     /**
@@ -91,15 +93,18 @@ public function edit(Item $item)
 {
     $rooms = Room::orderBy('room_number')->get();
 
-    $room = $item->room; // Ambil kamar yang terhubung dengan item
-    $students = collect(); // Default kosong kalau belum bisa tentukan kamar
+    $room = $item->room; // Kamar dari item
+    $students = collect();
 
     if ($room) {
         $students = Student::where('type', 'asrama')
-            ->where('gender', strtolower($room->gender_type)) // Filter gender
+            ->where('gender', strtolower($room->gender_type))
             ->whereHas('currentRoomPlacement', function ($query) use ($room) {
                 $query->whereNull('end_date')
-                      ->where('room_id', $room->id); // Santri yang aktif di kamar ini
+                      ->where('room_id', $room->id);
+            })
+            ->whereHas('currentRoomPlacement.room', function ($query) use ($room) {
+                $query->where('location', $room->location); // Filter lokasi kamar
             })
             ->orderBy('name')
             ->get();
@@ -107,6 +112,7 @@ public function edit(Item $item)
 
     return view('admin.items.edit', compact('item', 'rooms', 'students'));
 }
+
 
 
     /**
