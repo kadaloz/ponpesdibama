@@ -316,6 +316,10 @@ Route::get('/api/available-students', function (Request $request) {
     ->middleware('permission:assign students to room');
 
     Route::resource('items', ItemController::class);
+    Route::get('items/{item}/edit', [ItemController::class, 'edit'])->name('items.edit')->middleware('permission:edit items');
+    Route::put('items/{item}', [ItemController::class, 'update'])->name('items.update')->middleware('permission:edit items');
+    Route::delete('items/{item}', [ItemController::class, 'destroy'])->name('items.destroy')->middleware('permission:delete items');
+    Route::get('items/{item}/show', [ItemController::class, 'show'])->name('items.show')->middleware('permission:view items');
     // Rute untuk Penempatan Santri
     Route::get('/placements', [StudentPlacementController::class, 'index'])->name('placements.index') ->middleware('permission:view placements');
     Route::get('/placements/create', [StudentPlacementController::class, 'create'])->name('placements.create')  ->middleware('permission:create placements');
