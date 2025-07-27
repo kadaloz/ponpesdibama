@@ -25,6 +25,12 @@ class ApplicantController extends Controller
     {
         $query = Applicant::query();
 
+        // Dapatkan daftar tahun unik dari created_at
+        $availableYears = Applicant::select(DB::raw('YEAR(created_at) as year'))
+                                ->distinct()
+                                ->orderBy('year', 'desc') // Urutkan dari tahun terbaru
+                                ->pluck('year')
+                                ->toArray();
         // 1. Apply Search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -69,7 +75,7 @@ class ApplicantController extends Controller
         // Paginate the results, memastikan filter terbawa
         $allApplicants = $query->paginate(10); // Sesuaikan angka 10 dengan jumlah item per halaman yang Anda inginkan
 
-        return view('admin.applicants.index', compact('allApplicants'));
+        return view('admin.applicants.index', compact('allApplicants', 'availableYears'));
 
     }
 

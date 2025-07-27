@@ -30,20 +30,15 @@
                         <input type="text" name="search" id="search" placeholder="Cari..." value="{{ request('search') }}"
                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
                     </div>
-                    <div>
-                        <label for="created_year" class="block text-sm font-medium text-gray-700 mb-1">Filter Tahun Pendaftaran:</label>
-                        <select name="created_year" id="created_year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
-                            <option value="">Semua Tahun</option>
-                            {{-- Generate years dynamically, e.g., from a reasonable start year to current year + 1 --}}
-                            @php
-                                $startYear = 2020; // Adjust this to your earliest possible registration year
-                                $currentYear = date('Y');
-                                for ($year = $startYear; $year <= $currentYear + 1; $year++) {
-                                    echo "<option value='{$year}' " . (request('created_year') == $year ? 'selected' : '') . ">{$year}</option>";
-                                }
-                            @endphp
-                        </select>
-                    </div>
+<div>
+    <label for="created_year" class="block text-sm font-medium text-gray-700 mb-1">Filter Tahun Pendaftaran:</label>
+    <select name="created_year" id="created_year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+        <option value="">Semua Tahun</option>
+        @foreach ($availableYears as $year)
+            <option value="{{ $year }}" {{ request('created_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+        @endforeach
+    </select>
+</div>
                     <div>
                         <label for="ppdb_type" class="block text-sm font-medium text-gray-700 mb-1">Filter Tipe PPDB:</label>
                         <select name="ppdb_type" id="ppdb_type" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
