@@ -122,7 +122,12 @@
                                         Detail
                                     </a>
                                     @endcan
-
+                                    @can('edit items')
+                                    <a href="{{ route('admin.items.edit', $item) }}" class="text-teal-600 hover:text-teal-800 font-semibold text-xs flex items-center">
+                                        <x-heroicon-o-pencil-square class="w-4 h-4 mr-1" />
+                                        Edit
+                                    </a>
+                                    @endcan
                                     @can('delete items')
                                     <form action="{{ route('admin.items.destroy', $item) }}" method="POST" onsubmit="return confirm('Yakin ingin menghapus barang ini?')" class="inline">
                                         @csrf
