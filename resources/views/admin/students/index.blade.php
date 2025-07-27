@@ -41,7 +41,7 @@
         <div class="p-6 border border-gray-200 rounded-lg shadow-sm mb-6 bg-gray-50">
             <h4 class="text-xl font-semibold text-gray-800 mb-4">Filter Data Santri</h4>
             <form method="GET" action="{{ route('admin.students.index') }}">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-end">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-start"> {{-- Mengubah items-end menjadi items-start --}}
                     {{-- Filter Pencarian --}}
                     <div>
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat</label>
@@ -87,7 +87,7 @@
                     </div>
 
                     {{-- Tombol Filter dan Reset --}}
-                    <div class="col-span-full flex gap-2 mt-4"> {{-- Menggunakan col-span-full untuk menempati seluruh lebar grid --}}
+                    <div class="col-span-full flex gap-2 mt-4">
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
                             <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
                         </button>
@@ -119,7 +119,7 @@
             <table class="min-w-full divide-y divide-gray-200 text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-6 py-3 text-left font-medium text-gray-700">No.</th> {{-- Kolom Nomor --}}
+                        <th class="px-6 py-3 text-left font-medium text-gray-700">No.</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">NIS</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">Nama</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">Jenis Kelamin</th>
@@ -130,7 +130,7 @@
                 <tbody class="bg-white divide-y divide-gray-200">
                     @forelse ($allStudents as $index => $student)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">{{ $allStudents->firstItem() + $index }}</td> {{-- Menampilkan Nomor Urut --}}
+                            <td class="px-6 py-4">{{ $allStudents->firstItem() + $index }}</td>
                             <td class="px-6 py-4">{{ $student->nis ?? '-' }}</td>
                             <td class="px-6 py-4">{{ $student->name }}</td>
                             <td class="px-6 py-4">{{ $student->gender ? ucwords(strtolower($student->gender)) : '-' }}</td>
@@ -163,7 +163,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-12"> {{-- Menyesuaikan colspan menjadi 6 --}}
+                            <td colspan="6" class="text-center py-12">
                                 <div class="flex flex-col items-center">
                                     <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c.456 0 .907.05 1.342.144a3.375 3.375 0 11-5.23 2.902 3.376 3.376 0 013.888-3.046zM12 12c1.657 0 3-1.343 3-3S13.657 6 12 6s-3 1.343-3 3 1.343 3 3 3z"/>
