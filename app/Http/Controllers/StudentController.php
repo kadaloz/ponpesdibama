@@ -25,6 +25,7 @@ public function index(Request $request)
     $genderFilter = $request->query('gender_filter');
     $status = $request->query('status');
     $type = $request->query('type');
+    $period = $request->query('period'); // Tambah period
 
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
@@ -76,6 +77,11 @@ public function index(Request $request)
     // 📘 Filter Type
     if ($type && in_array($type, ['Asrama', 'Pulang-Pergi'])) {
         $query->where('type', $type);
+
+        // Tambahkan filter period jika type Pulang-Pergi
+        if ($type === 'Pulang-Pergi' && $period && in_array($period, ['Sore', 'Malam'])) {
+            $query->where('halaqoh_period', $period);
+        }
     }
 
     // 🔃 Sorting & Pagination
@@ -85,7 +91,7 @@ public function index(Request $request)
 
     return view('admin.students.index', compact(
         'allStudents', 'sortBy', 'sortOrder', 'perPage',
-        'search', 'genderFilter', 'status', 'type'
+        'search', 'genderFilter', 'status', 'type', 'period'
     ));
 }
 
@@ -342,7 +348,7 @@ public function destroy(Student $student)
     /**
      * Export students data to Excel.
      */
-    public function export(Request $request)
+public function export(Request $request)
 {
     $query = Student::query();
 
@@ -363,13 +369,21 @@ public function destroy(Student $student)
         $query->where('gender', $request->gender_filter);
     }
 
-    if ($request->filled('program_id')) {
-        $query->where('program_id', $request->program_id);
+    if ($request->filled('type')) {
+        $query->where('type', $request->type);
+
+        // Jika Pulang-Pergi, cek filter period
+        if ($request->type === 'Pulang-Pergi' && $request->filled('period')) {
+            $query->where('period', $request->period);
+        }
     }
 
     $students = $query->orderBy('name')->get();
 
-    return Excel::download(new StudentsExport($students), 'Data-Santri.xlsx');
+    // Format tanggal Indonesia: 2024-06-11 14:30:00 => 11-06-2024_14-30-00
+    $filename = 'Data-Santri-DIBAMA-' . now()->format('d-m-Y_H-i-s') . '.xlsx';
+
+    return Excel::download(new StudentsExport($students), $filename);
 }
     /**
      * Import students data from Excel.

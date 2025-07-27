@@ -7,6 +7,7 @@
 @php
     use App\Models\Program;
     $programOptions = \App\Models\Program::orderBy('name')->get();
+    $periodOptions = ['2023/2024', '2024/2025', '2025/2026']; // Bisa disesuaikan dari DB jika perlu
 @endphp
 
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
@@ -41,17 +42,26 @@
                 </div>
                 <div>
                     <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Kategori Santri</label>
-                    <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                    <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm" onchange="document.getElementById('period-group').classList.toggle('hidden', this.value !== 'Pulang-Pergi')">
                         <option value="">Semua</option>
                         <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
                         <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
+                    </select>
+                </div>
+                <div id="period-group" class="{{ request('type') !== 'Pulang-Pergi' ? 'hidden' : '' }}">
+                    <label for="period" class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
+                    <select name="period" id="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        @foreach ($periodOptions as $period)
+                            <option value="{{ $period }}" {{ request('period') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                        @endforeach
                     </select>
                 </div>
                 <div class="flex gap-2 md:col-span-5">
                     <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
                         <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
                     </button>
-                    @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type']))
+                    @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
                         <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">Reset</a>
                     @endif
                     <a href="{{ route('admin.students.export', request()->query()) }}" class="ml-auto inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
@@ -60,6 +70,18 @@
                 </div>
             </div>
         </form>
+
+        {{-- Notifikasi --}}
+        @if (session('success'))
+            <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ session('success') }}</span>
+            </div>
+        @endif
+        @if (session('error'))
+            <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-4" role="alert">
+                <span class="block sm:inline">{{ session('error') }}</span>
+            </div>
+        @endif
 
         {{-- Tabel --}}
         <div class="overflow-x-auto bg-white rounded-lg shadow-xl border border-gray-200">
