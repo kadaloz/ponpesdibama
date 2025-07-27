@@ -23,7 +23,24 @@ class ApplicantController extends Controller
      */
     public function index()
     {
-        $allApplicants = Applicant::latest()->paginate(20);
+        $query = Applicant::query();
+
+        // Apply PPDB Type filter
+        if ($request->filled('ppdb_type')) {
+            $query->where('ppdb_type', $request->input('ppdb_type'));
+        }
+
+        // Apply Status filter
+        if ($request->filled('status')) {
+            $query->where('status', $request->input('status'));
+        }
+
+        // Order by latest created applicants (optional, but good practice)
+        $query->latest();
+
+        // Paginate the results
+        $allApplicants = $query->paginate(10); // Adjust 10 to your desired items per page
+
         return view('admin.applicants.index', compact('allApplicants'));
     }
 

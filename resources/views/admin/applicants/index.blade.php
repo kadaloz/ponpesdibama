@@ -28,6 +28,56 @@
                 </div>
             @endif
 
+            <div class="bg-white p-4 rounded-lg shadow-md mb-6 border border-gray-200">
+                <form action="{{ route('admin.applicants.index') }}" method="GET" class="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
+                    <div>
+                        <label for="ppdb_type" class="block text-sm font-medium text-gray-700 mb-1">Filter Tipe PPDB:</label>
+                        <select name="ppdb_type" id="ppdb_type" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                            <option value="">Semua Tipe</option>
+                            <option value="Asrama" {{ request('ppdb_type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
+                            <option value="Pulang-Pergi" {{ request('ppdb_type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
+                        </select>
+                    </div>
+                    <div>
+                        <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Filter Status:</label>
+                        <select name="status" id="status" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                            <option value="">Semua Status</option>
+                            <option value="pending" {{ request('status') == 'pending' ? 'selected' : '' }}>Pending</option>
+                            <option value="submitted" {{ request('status') == 'submitted' ? 'selected' : '' }}>Submitted</option>
+                            <option value="verified" {{ request('status') == 'verified' ? 'selected' : '' }}>Verified</option>
+                            <option value="accepted" {{ request('status') == 'accepted' ? 'selected' : '' }}>Accepted</option>
+                            <option value="re-registered" {{ request('status') == 're-registered' ? 'selected' : '' }}>Re-registered</option>
+                            <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
+                        </select>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+                            <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01.293.707V19a1 1 0 01-1 1H4a1 1 0 01-1-1v-6.586a1 1 0 01.293-.707L3 4z"></path></svg>
+                            Filter
+                        </button>
+                        @if (request('ppdb_type') || request('status'))
+                            <a href="{{ route('admin.applicants.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
+                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
+                                Bersihkan Filter
+                            </a>
+                        @endif
+                    </div>
+                </form>
+
+                @if (request('ppdb_type') || request('status'))
+                    <div class="mt-4 text-sm text-gray-600">
+                        <p>Filter Aktif:
+                            @if (request('ppdb_type'))
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Tipe PPDB: {{ ucfirst(str_replace('-', ' ', request('ppdb_type'))) }}</span>
+                            @endif
+                            @if (request('status'))
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full">Status: {{ ucfirst(str_replace('-', ' ', request('status'))) }}</span>
+                            @endif
+                        </p>
+                    </div>
+                @endif
+            </div>
+
             @if ($allApplicants->isEmpty())
                 <p class="text-gray-600 text-center py-8 bg-gray-50 rounded-lg border border-gray-200">Belum ada data pendaftar.</p>
             @else
@@ -35,6 +85,7 @@
                     <table class="min-w-full divide-y divide-gray-200">
                         <thead class="bg-gray-50">
                             <tr>
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">No.</th> {{-- Added No. column --}}
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">No. Pendaftaran</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">PPDB Tipe</th>
@@ -45,23 +96,23 @@
                         <tbody class="bg-white divide-y divide-gray-200">
                             @foreach ($allApplicants as $applicant)
                                 <tr class="even:bg-gray-50 hover:bg-gray-100 transition-colors duration-150">
+                                    <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ $loop->iteration + ($allApplicants->currentPage() - 1) * $allApplicants->perPage() }}</td> {{-- Sequential numbering --}}
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ $applicant->registration_number }}</td>
                                     <td class="py-4 px-6 text-sm text-gray-900">{{ $applicant->full_name }}</td>
                                     <td class="py-4 px-6 text-sm">
-    @php
-        $ppdbType = $applicant->ppdb_type;
-        $typeClass = match ($ppdbType) {
-            'Asrama' => 'bg-teal-100 text-teal-800',
-            'Pulang-Pergi' => 'bg-orange-100 text-orange-800',
-            default => 'bg-gray-100 text-gray-700'
-        };
-    @endphp
+                                        @php
+                                            $ppdbType = $applicant->ppdb_type;
+                                            $typeClass = match ($ppdbType) {
+                                                'Asrama' => 'bg-teal-100 text-teal-800',
+                                                'Pulang-Pergi' => 'bg-orange-100 text-orange-800',
+                                                default => 'bg-gray-100 text-gray-700'
+                                            };
+                                        @endphp
 
-    <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $typeClass }}">
-        {{ $ppdbType ? ucfirst(str_replace('-', ' ', $ppdbType)) : 'Tidak Ada' }}
-    </span>
-</td>
-
+                                        <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $typeClass }}">
+                                            {{ $ppdbType ? ucfirst(str_replace('-', ' ', $ppdbType)) : 'Tidak Ada' }}
+                                        </span>
+                                    </td>
                                     <td class="py-4 px-6 text-sm">
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
                                             $applicant->status == 'pending' ? 'bg-yellow-100 text-yellow-800' :
