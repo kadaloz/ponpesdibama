@@ -10,7 +10,7 @@
                 <h3 class="text-2xl font-bold text-teal-700">Penempatan Santri Aktif</h3>
                 @can('create placements')
                     <button type="button" class="inline-flex items-center px-4 py-2 bg-teal-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest opacity-50 cursor-not-allowed" disabled>
-                        <x-heroicon-o-plus class="w-4 h-4 mr-2" /> Tempatkan Santri
+                        <x-heroicon-o-lock-closed class="w-4 h-4 mr-2" /> Tempatkan Santri
                     </button>
                 @endcan
             </div>
