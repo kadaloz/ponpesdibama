@@ -14,23 +14,19 @@
     <div class="p-8 text-gray-900">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <h3 class="text-3xl font-extrabold text-teal-700 mb-4 md:mb-0">Daftar Santri</h3>
+            {{-- Tombol Import & Export di kanan atas, sejajar dengan judul --}}
+            <div class="flex gap-2">
+                <a href="{{ route('admin.students.import') }}"
+                   class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:bg-yellow-600 transition">
+                    <x-heroicon-o-arrow-up-tray class="w-5 h-5 mr-2" /> Import
+                </a>
+
+                <a href="{{ route('admin.students.export', request()->query()) }}"
+                   class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
+                    <x-heroicon-o-arrow-down-tray class="w-5 h-5 mr-2" /> Export
+                </a>
+            </div>
         </div>
-
-        {{-- Tombol Import & Export di kanan atas --}}
-<div class="flex justify-end mb-4">
-    <div class="flex gap-2">
-        <a href="{{ route('admin.students.import') }}"
-           class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:bg-yellow-600 transition">
-            <x-heroicon-o-arrow-up-tray class="w-5 h-5 mr-2" /> Import
-        </a>
-
-        <a href="{{ route('admin.students.export', request()->query()) }}"
-           class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
-            <x-heroicon-o-arrow-down-tray class="w-5 h-5 mr-2" /> Export
-        </a>
-    </div>
-</div>
-
 
         {{-- Form Filter dan Tombol --}}
         <form method="GET" action="{{ route('admin.students.index') }}" class="mb-6">
@@ -74,19 +70,17 @@
                     </select>
                 </div>
 
-                {{-- Tombol --}}
-                <div class="flex justify-between flex-wrap gap-1 md:col-span-5 mt-4">
-                    <div class="flex gap-2">
-                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
-                            <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
-                        </button>
+                {{-- Tombol Filter dan Reset --}}
+                <div class="flex gap-2 md:col-span-5 mt-4">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
+                        <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
+                    </button>
 
-                        @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
-                            <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">
-                                <x-heroicon-o-x-mark class="w-5 h-5 mr-2" /> Reset
-                            </a>
-                        @endif
-                    </div>
+                    @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
+                        <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                            <x-heroicon-o-x-mark class="w-5 h-5 mr-2" /> Reset
+                        </a>
+                    @endif
                 </div>
             </div>
         </form>
