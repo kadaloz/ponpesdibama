@@ -76,7 +76,8 @@ class ApplicantController extends Controller
         // Paginate the results, memastikan filter terbawa
         $allApplicants = $query->paginate(10); // Sesuaikan angka 10 dengan jumlah item per halaman yang Anda inginkan
 
-        return view('admin.applicants.index', compact('allApplicants', 'availableYears'));
+        return view('admin.applicants.index', compact('allApplicants', 'availableYears')
+            + $request->only(['search', 'created_year', 'ppdb_type', 'halaqoh_period', 'status']));
 
     }
 
