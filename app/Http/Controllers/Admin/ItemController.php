@@ -129,6 +129,15 @@ public function edit(Item $item)
             return redirect()->route('admin.rooms.show', $request->room_id)->with('success', 'Barang inventaris berhasil diperbarui di kamar!');
         }
 
+         record_audit(
+            'update',
+            'Item',
+            $item->id,
+            $item->name,
+            auth()->user()->id,
+            'Barang inventaris diperbarui: ' . $item->name
+        );
+
         return redirect()->route('admin.items.index')->with('success', 'Barang inventaris berhasil diperbarui!');
     }
 
@@ -138,6 +147,21 @@ public function edit(Item $item)
     public function destroy(Item $item)
     {
         $item->delete();
+        // Record the deletion in the audit log
+        record_audit(
+            'delete',
+            'Item',
+            $item->id,
+            $item->name,
+            auth()->user()->id,
+            'Barang inventaris dihapus: ' . $item->name
+        );
+        // Redirect back to the room's show page if the item was deleted from there,
+        // otherwise, redirect to the items index
+        if (request()->has('room_id') && request()->room_id) {
+            return redirect()->route('admin.rooms.show', request()->room_id)->with('success', 'Barang inventaris berhasil dihapus dari kamar!');
+        } 
+  
         return redirect()->route('admin.items.index')->with('success', 'Barang inventaris berhasil dihapus!');
     }
 }
