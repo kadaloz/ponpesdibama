@@ -24,7 +24,7 @@ public function index(Request $request)
     $search = $request->query('search');
     $genderFilter = $request->query('gender_filter');
     $status = $request->query('status');
-    $programId = $request->query('program_id');
+    $type = $request->query('type');
 
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
@@ -73,9 +73,9 @@ public function index(Request $request)
         $query->where('status', $status);
     }
 
-    // 📘 Filter program_id
-    if ($programId && is_numeric($programId)) {
-        $query->where('program_id', $programId);
+    // 📘 Filter Type
+    if ($type && in_array($type, ['Asrama', 'Pulang-Pergi'])) {
+        $query->where('type', $type);
     }
 
     // 🔃 Sorting & Pagination
@@ -85,7 +85,7 @@ public function index(Request $request)
 
     return view('admin.students.index', compact(
         'allStudents', 'sortBy', 'sortOrder', 'perPage',
-        'search', 'genderFilter', 'status', 'programId'
+        'search', 'genderFilter', 'status', 'type'
     ));
 }
 
