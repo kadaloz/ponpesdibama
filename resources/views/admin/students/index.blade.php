@@ -43,10 +43,8 @@
                     <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Kategori Santri</label>
                     <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">Semua</option>
-                        @foreach ($programOptions as $program)
-                            <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
-                            <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
-                        @endforeach
+                        <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
+                        <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
                     </select>
                 </div>
                 <div class="flex gap-2 md:col-span-5">
