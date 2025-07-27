@@ -25,7 +25,7 @@ public function index(Request $request)
     $genderFilter = $request->query('gender_filter');
     $status = $request->query('status');
     $type = $request->query('type');
-    $period = $request->query('period'); // Tambah period
+    $halaqoh_period = $request->query('halaqoh_period'); // Tambah period
 
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
@@ -79,8 +79,8 @@ public function index(Request $request)
         $query->where('type', $type);
 
         // Tambahkan filter period jika type Pulang-Pergi
-        if ($type === 'Pulang-Pergi' && $period && in_array($period, ['Sore', 'Malam'])) {
-            $query->where('halaqoh_period', $period);
+        if ($type === 'Pulang-Pergi' && $halaqoh_period && in_array($halaqoh_period, ['Sore', 'Malam'])) {
+            $query->where('halaqoh_period', $halaqoh_period);
         }
     }
 
@@ -91,7 +91,7 @@ public function index(Request $request)
 
     return view('admin.students.index', compact(
         'allStudents', 'sortBy', 'sortOrder', 'perPage',
-        'search', 'genderFilter', 'status', 'type', 'period'
+        'search', 'genderFilter', 'status', 'type', 'halaqoh_period'
     ));
 }
 
@@ -374,7 +374,7 @@ public function export(Request $request)
 
         // Jika Pulang-Pergi, cek filter period
         if ($request->type === 'Pulang-Pergi' && $request->filled('period')) {
-            $query->where('period', $request->period);
+            $query->where('halaqoh_period', $request->halaqoh_period);
         }
     }
 
