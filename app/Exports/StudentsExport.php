@@ -2,27 +2,33 @@
 
 namespace App\Exports;
 
-use App\Models\Student;
+use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Concerns\WithHeadings;
 use Maatwebsite\Excel\Concerns\WithMapping;
 
 class StudentsExport implements FromCollection, WithHeadings, WithMapping
 {
+    protected $students;
+
     /**
-     * Ambil semua data siswa.
-     *
-     * @return \Illuminate\Support\Collection
+     * Terima koleksi santri dari controller.
      */
-    public function collection()
+    public function __construct(Collection $students)
     {
-        return Student::all();
+        $this->students = $students;
     }
 
     /**
-     * Header kolom untuk file Excel.
-     *
-     * @return array
+     * Kembalikan data untuk diekspor.
+     */
+    public function collection(): Collection
+    {
+        return $this->students;
+    }
+
+    /**
+     * Header kolom.
      */
     public function headings(): array
     {
@@ -33,24 +39,21 @@ class StudentsExport implements FromCollection, WithHeadings, WithMapping
             'Jenis Kelamin',
             'Tempat Lahir',
             'Tanggal Lahir',
-            'Alamat',
-            'Nama Orang Tua',
-            'No. HP Orang Tua',
+            'Alamat Lengkap',
+            'Nama Orang Tua/Wali',
+            'No. HP Orang Tua/Wali',
             'Tahun Masuk',
             'Status',
             'Kategori',
             'Tipe',
-            'Created At',
-            'Updated At',
-            'Applicant ID',
+            'Tanggal Dibuat',
+            'Tanggal Diperbarui',
+            'ID Pendaftar',
         ];
     }
 
     /**
-     * Mapping data siswa ke format Excel.
-     *
-     * @param mixed $student
-     * @return array
+     * Mapping data santri ke format Excel.
      */
     public function map($student): array
     {
@@ -60,16 +63,16 @@ class StudentsExport implements FromCollection, WithHeadings, WithMapping
             $student->name,
             $student->gender,
             $student->place_of_birth,
-            $student->date_of_birth ? $student->date_of_birth->format('Y-m-d') : null,
+            optional($student->date_of_birth)->locale('id')->translatedFormat('d F Y'),
             $student->address,
             $student->parent_name,
             $student->parent_phone,
             $student->admission_year,
-            $student->status,
+            ucfirst($student->status),
             $student->category,
             $student->type,
-            $student->created_at,
-            $student->updated_at,
+            optional($student->created_at)->format('d-m-Y H:i:s'),
+            optional($student->updated_at)->format('d-m-Y H:i:s'),
             $student->applicant_id,
         ];
     }
