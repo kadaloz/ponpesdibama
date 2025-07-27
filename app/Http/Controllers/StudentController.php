@@ -373,7 +373,7 @@ public function export(Request $request)
         $query->where('type', $request->type);
 
         // Jika Pulang-Pergi, cek filter period
-        if ($request->type === 'Pulang-Pergi' && $request->filled('period')) {
+        if ($request->type === 'Pulang-Pergi' && $request->filled('halaqoh_period')) {
             $query->where('halaqoh_period', $request->halaqoh_period);
         }
     }

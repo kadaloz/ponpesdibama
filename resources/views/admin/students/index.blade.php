@@ -33,7 +33,7 @@
             <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
                 {{-- Filter Pencarian --}}
                 <div class="md:col-span-1"> {{-- Mengubah menjadi col-span-1 agar sejajar --}}
-                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat / Ortu</label>
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat / </label>
                     <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
                 </div>
                 {{-- Filter Status --}}
