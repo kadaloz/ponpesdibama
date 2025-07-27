@@ -35,9 +35,9 @@ class ApplicantController extends Controller
         }
 
         // 2. Apply Entry Year filter
-        // Pastikan kolom 'entry_year' ada di tabel 'applicants' Anda
-        if ($request->filled('entry_year')) {
-            $query->where('entry_year', $request->input('entry_year'));
+        // Pastikan kolom 'created_at' ada di tabel 'applicants' Anda
+        if ($request->filled('created_year')) {
+            $query->where('created_at', $request->input('created_year'));
         }
 
         // 3. Apply PPDB Type filter

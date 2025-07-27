@@ -10,11 +10,6 @@
         <div class="p-6 text-gray-900">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <h3 class="text-2xl md:text-3xl font-bold text-teal-700 mb-4 md:mb-0">Daftar Calon Santri</h3>
-                {{-- Tombol Tambah Pendaftar (opsional, karena biasanya dari form publik) --}}
-                {{-- <a href="{{ route('admin.applicants.create') }}" class="inline-flex items-center px-5 py-2.5 bg-teal-600 border border-transparent rounded-full font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-lg transform hover:scale-105">
-                    <svg class="w-4 h-4 mr-2 -ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path></svg>
-                    Tambah Pendaftar
-                </a> --}}
             </div>
 
             @if (session('success'))
@@ -36,14 +31,15 @@
                                class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
                     </div>
                     <div>
-                        <label for="entry_year" class="block text-sm font-medium text-gray-700 mb-1">Filter Tahun Masuk:</label>
-                        <select name="entry_year" id="entry_year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                        <label for="created_year" class="block text-sm font-medium text-gray-700 mb-1">Filter Tahun Pendaftaran:</label>
+                        <select name="created_year" id="created_year" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
                             <option value="">Semua Tahun</option>
-                            {{-- Generate years dynamically, e.g., from 2020 to current year + 2 --}}
+                            {{-- Generate years dynamically, e.g., from a reasonable start year to current year + 1 --}}
                             @php
+                                $startYear = 2020; // Adjust this to your earliest possible registration year
                                 $currentYear = date('Y');
-                                for ($year = 2020; $year <= $currentYear + 2; $year++) {
-                                    echo "<option value='{$year}' " . (request('entry_year') == $year ? 'selected' : '') . ">{$year}</option>";
+                                for ($year = $startYear; $year <= $currentYear + 1; $year++) {
+                                    echo "<option value='{$year}' " . (request('created_year') == $year ? 'selected' : '') . ">{$year}</option>";
                                 }
                             @endphp
                         </select>
@@ -77,12 +73,12 @@
                             <option value="rejected" {{ request('status') == 'rejected' ? 'selected' : '' }}>Rejected</option>
                         </select>
                     </div>
-                    <div class="flex space-x-2 col-span-full md:col-span-1 md:col-start-auto"> {{-- Adjusted for responsive layout --}}
+                    <div class="flex space-x-2 col-span-full md:col-span-1 md:col-start-auto">
                         <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:bg-teal-700 active:bg-teal-800 focus:outline-none focus:ring-2 focus:ring-teal-400 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01.293.707V19a1 1 0 01-1 1H4a1 1 0 01-1-1v-6.586a1 1 0 01.293-.707L3 4z"></path></svg>
                             Filter
                         </button>
-                        @if (request('ppdb_type') || request('status') || request('halaqoh_period') || request('entry_year') || request('search'))
+                        @if (request('ppdb_type') || request('status') || request('halaqoh_period') || request('created_year') || request('search'))
                             <a href="{{ route('admin.applicants.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                 Bersihkan Filter
@@ -91,14 +87,14 @@
                     </div>
                 </form>
 
-                @if (request('ppdb_type') || request('status') || request('halaqoh_period') || request('entry_year') || request('search'))
+                @if (request('ppdb_type') || request('status') || request('halaqoh_period') || request('created_year') || request('search'))
                     <div class="mt-4 text-sm text-gray-600">
                         <p>Filter Aktif:
                             @if (request('search'))
                                 <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Pencarian: "{{ request('search') }}"</span>
                             @endif
-                            @if (request('entry_year'))
-                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Tahun Masuk: {{ request('entry_year') }}</span>
+                            @if (request('created_year'))
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Tahun Pendaftaran: {{ request('created_year') }}</span>
                             @endif
                             @if (request('ppdb_type'))
                                 <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Tipe PPDB: {{ ucfirst(str_replace('-', ' ', request('ppdb_type'))) }}</span>
@@ -124,7 +120,7 @@
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">No.</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">No. Pendaftaran</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Nama Lengkap</th>
-                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Tahun Masuk</th> {{-- Added Year column --}}
+                                <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Tahun Daftar</th> {{-- Changed from Tahun Masuk --}}
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">PPDB Tipe</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Halaqoh Periode</th>
                                 <th class="py-3 px-6 text-left text-xs font-medium text-gray-600 uppercase tracking-wider">Status</th>
@@ -137,7 +133,7 @@
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ $loop->iteration + ($allApplicants->currentPage() - 1) * $allApplicants->perPage() }}</td>
                                     <td class="py-4 px-6 text-sm font-medium text-gray-900">{{ $applicant->registration_number }}</td>
                                     <td class="py-4 px-6 text-sm text-gray-900">{{ $applicant->full_name }}</td>
-                                    <td class="py-4 px-6 text-sm text-gray-900">{{ $applicant->entry_year ?? 'N/A' }}</td> {{-- Display entry_year --}}
+                                    <td class="py-4 px-6 text-sm text-gray-900">{{ $applicant->created_at->year ?? 'N/A' }}</td> {{-- Display year from created_at --}}
                                     <td class="py-4 px-6 text-sm">
                                         @php
                                             $ppdbType = $applicant->ppdb_type;
@@ -154,15 +150,15 @@
                                     </td>
                                     <td class="py-4 px-6 text-sm">
                                         @php
-                                            $halaqohPeriode = $applicant->halaqoh_period;
-                                            $halaqohClass = match ($halaqohPeriode) {
+                                            $halaqohPeriod = $applicant->halaqoh_period; // Corrected to halaqoh_period
+                                            $halaqohClass = match ($halaqohPeriod) {
                                                 'Sore' => 'bg-purple-100 text-purple-800',
                                                 'Malam' => 'bg-indigo-100 text-indigo-800',
                                                 default => 'bg-gray-100 text-gray-700'
                                             };
                                         @endphp
                                         <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{ $halaqohClass }}">
-                                            {{ $halaqohPeriode ? ucfirst(str_replace('-', ' ', $halaqohPeriode)) : 'N/A' }}
+                                            {{ $halaqohPeriod ? ucfirst(str_replace('-', ' ', $halaqohPeriod)) : 'N/A' }}
                                         </span>
                                     </td>
                                     <td class="py-4 px-6 text-sm">
@@ -209,24 +205,24 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ppdbTypeSelect = document.getElementById('ppdb_type');
-            const halaqohPeriodeFilter = document.getElementById('halaqoh_period_filter');
-            const halaqohPeriodeSelect = document.getElementById('halaqoh_period'); // Get the halaqoh_period select
+            const halaqohPeriodFilter = document.getElementById('halaqoh_period_filter'); // Corrected ID
+            const halaqohPeriodSelect = document.getElementById('halaqoh_period'); // Corrected ID
 
-            function toggleHalaqohPeriodeFilter() {
+            function toggleHalaqohPeriodFilter() { // Corrected function name
                 if (ppdbTypeSelect.value === 'Pulang-Pergi') {
-                    halaqohPeriodeFilter.classList.remove('hidden');
+                    halaqohPeriodFilter.classList.remove('hidden');
                 } else {
-                    halaqohPeriodeFilter.classList.add('hidden');
+                    halaqohPeriodFilter.classList.add('hidden');
                     // Clear the halaqoh_period selection when it's hidden
-                    halaqohPeriodeSelect.value = '';
+                    halaqohPeriodSelect.value = '';
                 }
             }
 
             // Initial call to set the correct state on page load
-            toggleHalaqohPeriodeFilter();
+            toggleHalaqohPeriodFilter();
 
             // Add event listener for changes in ppdb_type select
-            ppdbTypeSelect.addEventListener('change', toggleHalaqohPeriodeFilter);
+            ppdbTypeSelect.addEventListener('change', toggleHalaqohPeriodFilter);
         });
     </script>
 @endsection
