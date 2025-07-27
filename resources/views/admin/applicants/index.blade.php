@@ -39,12 +39,12 @@
                         </select>
                     </div>
 
-                    <div id="halaqoh_periode_filter" class="{{ request('ppdb_type') == 'Pulang-Pergi' ? '' : 'hidden' }}">
-                        <label for="halaqoh_periode" class="block text-sm font-medium text-gray-700 mb-1">Filter Periode Halaqoh:</label>
-                        <select name="halaqoh_periode" id="halaqoh_periode" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
+                    <div id="halaqoh_period_filter" class="{{ request('ppdb_type') == 'Pulang-Pergi' ? '' : 'hidden' }}">
+                        <label for="halaqoh_period" class="block text-sm font-medium text-gray-700 mb-1">Filter Periode Halaqoh:</label>
+                        <select name="halaqoh_period" id="halaqoh_period" class="block w-full rounded-md border-gray-300 shadow-sm focus:border-teal-500 focus:ring-teal-500 sm:text-sm p-2">
                             <option value="">Semua Periode</option>
-                            <option value="Sore" {{ request('halaqoh_periode') == 'Sore' ? 'selected' : '' }}>Sore</option>
-                            <option value="Malam" {{ request('halaqoh_periode') == 'Malam' ? 'selected' : '' }}>Malam</option>
+                            <option value="Sore" {{ request('halaqoh_period') == 'Sore' ? 'selected' : '' }}>Sore</option>
+                            <option value="Malam" {{ request('halaqoh_period') == 'Malam' ? 'selected' : '' }}>Malam</option>
                         </select>
                     </div>
 
@@ -65,7 +65,7 @@
                             <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 4a1 1 0 011-1h16a1 1 0 011 1v2.586a1 1 0 01.293.707V19a1 1 0 01-1 1H4a1 1 0 01-1-1v-6.586a1 1 0 01.293-.707L3 4z"></path></svg>
                             Filter
                         </button>
-                        @if (request('ppdb_type') || request('status') || request('halaqoh_periode'))
+                        @if (request('ppdb_type') || request('status') || request('halaqoh_period'))
                             <a href="{{ route('admin.applicants.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-200 border border-transparent rounded-md font-semibold text-xs text-gray-700 uppercase tracking-widest hover:bg-gray-300 focus:bg-gray-300 active:bg-gray-400 focus:outline-none focus:ring-2 focus:ring-gray-300 focus:ring-offset-2 transition ease-in-out duration-150 shadow-md">
                                 <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                                 Bersihkan Filter
@@ -74,14 +74,14 @@
                     </div>
                 </form>
 
-                @if (request('ppdb_type') || request('status') || request('halaqoh_periode'))
+                @if (request('ppdb_type') || request('status') || request('halaqoh_period'))
                     <div class="mt-4 text-sm text-gray-600">
                         <p>Filter Aktif:
                             @if (request('ppdb_type'))
                                 <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Tipe PPDB: {{ ucfirst(str_replace('-', ' ', request('ppdb_type'))) }}</span>
                             @endif
-                            @if (request('halaqoh_periode'))
-                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Periode Halaqoh: {{ ucfirst(str_replace('-', ' ', request('halaqoh_periode'))) }}</span>
+                            @if (request('halaqoh_period'))
+                                <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full mr-2">Periode Halaqoh: {{ ucfirst(str_replace('-', ' ', request('halaqoh_period'))) }}</span>
                             @endif
                             @if (request('status'))
                                 <span class="px-2 py-1 bg-blue-100 text-blue-800 rounded-full">Status: {{ ucfirst(str_replace('-', ' ', request('status'))) }}</span>
@@ -129,7 +129,7 @@
                                     </td>
                                     <td class="py-4 px-6 text-sm">
                                         @php
-                                            $halaqohPeriode = $applicant->halaqoh_periode; // Assuming you have this field in your Applicant model
+                                            $halaqohPeriode = $applicant->halaqoh_period; // Assuming you have this field in your Applicant model
                                             $halaqohClass = match ($halaqohPeriode) {
                                                 'Sore' => 'bg-purple-100 text-purple-800',
                                                 'Malam' => 'bg-indigo-100 text-indigo-800',
@@ -185,15 +185,15 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ppdbTypeSelect = document.getElementById('ppdb_type');
-            const halaqohPeriodeFilter = document.getElementById('halaqoh_periode_filter');
+            const halaqohPeriodeFilter = document.getElementById('halaqoh_period_filter');
 
             function toggleHalaqohPeriodeFilter() {
                 if (ppdbTypeSelect.value === 'Pulang-Pergi') {
                     halaqohPeriodeFilter.classList.remove('hidden');
                 } else {
                     halaqohPeriodeFilter.classList.add('hidden');
-                    // Optionally clear the halaqoh_periode selection when it's hidden
-                    document.getElementById('halaqoh_periode').value = '';
+                    // Optionally clear the halaqoh_period selection when it's hidden
+                    document.getElementById('halaqoh_period').value = '';
                 }
             }
 
