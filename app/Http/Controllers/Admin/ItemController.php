@@ -77,7 +77,7 @@ public function create(Request $request)
      */
     public function show(Item $item)
     {
-        // Example: load item with its room and assigned student for display
+        // Eager load the room and assigned student for better performance
         $item->load(['room', 'assignedToStudent']);
         return view('admin.items.show', compact('item'));
     }

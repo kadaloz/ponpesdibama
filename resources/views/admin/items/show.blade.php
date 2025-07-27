@@ -38,10 +38,11 @@
         </div>
 
         <div>
-            <p class="font-semibold text-gray-600">Ditugaskan Kepada</p>
-            @if($item->assignedTo)
+            <p class="font-semibold text-gray-600">Ditugaskan kepada Santri</p>
+            @if($item->assignedToStudent)
                 <p class="text-gray-700">
-                    {{ $item->assignedTo->name }} ({{ $item->assignedTo->role ?? 'Santri' }})
+                    {{ $item->assignedToStudent->name }}  
+                    (NIS: {{ $item->assignedToStudent->student_number ?? '-' }})
                 </p>
             @else
                 <p class="text-gray-500 italic">Belum ditugaskan</p>
