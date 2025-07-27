@@ -23,13 +23,17 @@ class ApplicantController extends Controller
      */
     public function index(Request $request)
     {
-        // Query untuk mendapatkan semua pendaftar
-        // dengan filter berdasarkan PPDB Type dan Status jika ada
-        $query = Applicant::query();
+       $query = Applicant::query();
 
         // Apply PPDB Type filter
-        if ($request->filled('ppdb_type')) { 
+        if ($request->filled('ppdb_type')) {
             $query->where('ppdb_type', $request->input('ppdb_type'));
+        }
+
+        // Apply Halaqoh Periode filter (only if ppdb_type is 'Pulang-Pergi')
+        // Penting: Pastikan kolom 'halaqoh_periode' ada di tabel 'applicants' Anda
+        if ($request->input('ppdb_type') === 'Pulang-Pergi' && $request->filled('halaqoh_periode')) {
+            $query->where('halaqoh_periode', $request->input('halaqoh_periode'));
         }
 
         // Apply Status filter
@@ -37,11 +41,11 @@ class ApplicantController extends Controller
             $query->where('status', $request->input('status'));
         }
 
-        // Order by latest created applicants (optional, but good practice)
+        // Order by latest created applicants (opsional)
         $query->latest();
 
         // Paginate the results
-        $allApplicants = $query->paginate(10); // Adjust 10 to your desired items per page
+        $allApplicants = $query->paginate(10); // Sesuaikan angka 10 dengan jumlah item per halaman yang Anda inginkan
 
         return view('admin.applicants.index', compact('allApplicants'));
     }
