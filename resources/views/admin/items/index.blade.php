@@ -56,19 +56,4 @@
         </div>
     </div>
 @endsection
-                </option>
-                @endforeach
-            </select>
-        </div>
-
-        {{-- Submit Button --}}
-        <div class="mb-6">
-            <button type="submit" class="w-full bg-teal-600 text-white font-semibold py-2 rounded-md hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-opacity-50">
-                Simpan Perubahan
-            </button>
-        </div>
-    </form>
-</div>
-    </div>
-</div>
-@endsection         
+        
