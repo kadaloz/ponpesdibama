@@ -123,6 +123,11 @@ public function edit(Item $item)
         ]);
 
         $item->update($validatedData);
+        // Redirect back to the room's show page if the item was edited from there,
+        // otherwise, redirect to the items index
+        if ($request->has('room_id') && $request->room_id) {
+            return redirect()->route('admin.rooms.show', $request->room_id)->with('success', 'Barang inventaris berhasil diperbarui di kamar!');
+        }
 
         return redirect()->route('admin.items.index')->with('success', 'Barang inventaris berhasil diperbarui!');
     }
