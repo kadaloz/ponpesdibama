@@ -21,12 +21,14 @@ class ApplicantController extends Controller
     /**
      * Display a listing of the resource (Admin View).
      */
-    public function index()
+    public function index(Request $request)
     {
+        // Query untuk mendapatkan semua pendaftar
+        // dengan filter berdasarkan PPDB Type dan Status jika ada
         $query = Applicant::query();
 
         // Apply PPDB Type filter
-        if ($request->filled('ppdb_type')) {
+        if ($request->filled('ppdb_type')) { 
             $query->where('ppdb_type', $request->input('ppdb_type'));
         }
 
