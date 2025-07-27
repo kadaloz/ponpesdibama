@@ -7,7 +7,7 @@
 @php
     use App\Models\Program;
     $programOptions = \App\Models\Program::orderBy('name')->get();
-    $periodOptions = ['2023/2024', '2024/2025', '2025/2026']; // Bisa disesuaikan dari DB jika perlu
+    $periodOptions = ['Sore', 'Malam']; // Bisa disesuaikan dari DB jika perlu
 @endphp
 
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
