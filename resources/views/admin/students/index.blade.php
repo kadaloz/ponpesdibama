@@ -14,17 +14,26 @@
     <div class="p-8 text-gray-900">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <h3 class="text-3xl font-extrabold text-teal-700 mb-4 md:mb-0">Daftar Santri</h3>
-            {{-- Tombol Import & Export di kanan atas, sejajar dengan judul --}}
+ {{-- Tombol Import & Export di kanan atas, sejajar dengan judul --}}
             <div class="flex gap-2">
-                <a href="{{ route('admin.students.import') }}"
-                   class="inline-flex items-center px-4 py-2 bg-yellow-500 text-white text-sm font-medium rounded-lg hover:bg-yellow-600 transition">
-                    <x-heroicon-o-arrow-up-tray class="w-5 h-5 mr-2" /> Import
-                </a>
-
+                @can('import students')
+                <form action="{{ route('admin.students.import') }}" method="POST" enctype="multipart/form-data" class="inline-flex items-center space-x-2">
+                    @csrf
+                    <label for="import_file" class="inline-flex items-center px-4 py-2 bg-blue-600 text-white text-sm font-semibold rounded-lg cursor-pointer hover:bg-blue-700 transition shadow-md">
+                        <svg class="w-5 h-5 mr-2 -ml-1" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                            <path stroke-linecap="round" stroke-linejoin="round" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                        </svg>
+                        Import Excel
+                    </label>
+                    <input type="file" name="file" id="import_file" accept=".xlsx,.xls" class="hidden" onchange="if(this.files.length) this.form.submit();">
+                </form>
+                @endcan
+                @can('export students')
                 <a href="{{ route('admin.students.export', request()->query()) }}"
                    class="inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
                     <x-heroicon-o-arrow-down-tray class="w-5 h-5 mr-2" /> Export
                 </a>
+                @endcan
             </div>
         </div>
 
