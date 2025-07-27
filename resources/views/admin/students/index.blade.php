@@ -37,20 +37,20 @@
             </div>
         </div>
 
-        {{-- Form Filter dengan Desain Baru --}}
+        {{-- Form Filter dengan Desain Baru dan Ukuran Lebih Kecil --}}
         <div class="p-6 border border-gray-200 rounded-lg shadow-sm mb-6 bg-gray-50">
             <h4 class="text-xl font-semibold text-gray-800 mb-4">Filter Data Santri</h4>
             <form method="GET" action="{{ route('admin.students.index') }}">
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 items-start"> {{-- Mengubah items-end menjadi items-start --}}
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-2 items-start"> {{-- Mengurangi gap menjadi gap-2 --}}
                     {{-- Filter Pencarian --}}
                     <div>
                         <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat</label>
-                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
                     </div>
                     {{-- Filter Status --}}
                     <div>
                         <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
-                        <select name="status" id="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <select name="status" id="status" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
                             <option value="">Semua</option>
                             <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
                             <option value="non-aktif" {{ request('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
@@ -60,7 +60,7 @@
                     {{-- Filter Jenis Kelamin --}}
                     <div>
                         <label for="gender_filter" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
-                        <select name="gender_filter" id="gender_filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <select name="gender_filter" id="gender_filter" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
                             <option value="">Semua</option>
                             <option value="Laki-laki" {{ request('gender_filter') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
                             <option value="Perempuan" {{ request('gender_filter') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
@@ -69,7 +69,7 @@
                     {{-- Filter Kategori Santri --}}
                     <div>
                         <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Kategori Santri</label>
-                        <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm" onchange="document.getElementById('period-group').classList.toggle('hidden', this.value !== 'Pulang-Pergi')">
+                        <select name="type" id="type" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm" onchange="document.getElementById('period-group').classList.toggle('hidden', this.value !== 'Pulang-Pergi')"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
                             <option value="">Semua</option>
                             <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
                             <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
@@ -78,7 +78,7 @@
                     {{-- Filter Periode (tersembunyi secara default) --}}
                     <div id="period-group" class="{{ request('type') !== 'Pulang-Pergi' ? 'hidden' : '' }}">
                         <label for="period" class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
-                        <select name="period" id="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <select name="period" id="period" class="w-full px-3 py-1.5 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
                             <option value="">Semua</option>
                             @foreach ($periodOptions as $period)
                                 <option value="{{ $period }}" {{ request('period') == $period ? 'selected' : '' }}>{{ $period }}</option>
@@ -88,13 +88,13 @@
 
                     {{-- Tombol Filter dan Reset --}}
                     <div class="col-span-full flex gap-2 mt-4">
-                        <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
-                            <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
+                        <button type="submit" class="inline-flex items-center px-3 py-1.5 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
+                            <x-heroicon-o-magnifying-glass class="w-4 h-4 mr-2" /> Filter {{-- Mengurangi ukuran icon --}}
                         </button>
 
                         @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
-                            <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">
-                                <x-heroicon-o-x-mark class="w-5 h-5 mr-2" /> Reset
+                            <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition"> {{-- Mengurangi padding vertikal menjadi py-1.5 --}}
+                                <x-heroicon-o-x-mark class="w-4 h-4 mr-2" /> Reset {{-- Mengurangi ukuran icon --}}
                             </a>
                         @endif
                     </div>
@@ -139,7 +139,7 @@
                                     $student->status == 'aktif' ? 'bg-green-100 text-green-800' :
                                     ($student->status == 'non-aktif' ? 'bg-yellow-100 text-yellow-800' :
                                     ($student->status == 'lulus' ? 'bg-blue-100 text-blue-800' : 'bg-gray-100 text-gray-800'))
-                                }}">
+                                }}>
                                     {{ ucfirst(str_replace('-', ' ', $student->status)) }}
                                 </span>
                             </td>
@@ -183,4 +183,3 @@
         </div>
     </div>
 </div>
-@endsection
