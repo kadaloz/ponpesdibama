@@ -23,31 +23,54 @@ class ApplicantController extends Controller
      */
     public function index(Request $request)
     {
-       $query = Applicant::query();
+        $query = Applicant::query();
 
-        // Apply PPDB Type filter
+        // 1. Apply Search filter
+        if ($request->filled('search')) {
+            $search = $request->input('search');
+            $query->where(function($q) use ($search) {
+                $q->where('full_name', 'like', '%' . $search . '%')
+                  ->orWhere('registration_number', 'like', '%' . $search . '%');
+            });
+        }
+
+        // 2. Apply Entry Year filter
+        // Pastikan kolom 'entry_year' ada di tabel 'applicants' Anda
+        if ($request->filled('entry_year')) {
+            $query->where('entry_year', $request->input('entry_year'));
+        }
+
+        // 3. Apply PPDB Type filter
         if ($request->filled('ppdb_type')) {
             $query->where('ppdb_type', $request->input('ppdb_type'));
         }
 
-        // Apply Halaqoh Periode filter (only if ppdb_type is 'Pulang-Pergi')
-        // Penting: Pastikan kolom 'halaqoh_period' ada di tabel 'applicants' Anda
+        // 4. Apply Halaqoh Periode filter (only if ppdb_type is 'Pulang-Pergi')
+        // Pastikan kolom 'halaqoh_period' ada di tabel 'applicants' Anda
         if ($request->input('ppdb_type') === 'Pulang-Pergi' && $request->filled('halaqoh_period')) {
             $query->where('halaqoh_period', $request->input('halaqoh_period'));
         }
 
-        // Apply Status filter
+        // 5. Apply Status filter
+        // Perhatikan penyesuaian untuk "Accepted/Re-registered" di Blade
         if ($request->filled('status')) {
-            $query->where('status', $request->input('status'));
+            $status = $request->input('status');
+            if ($status === 'accepted') { // Khusus untuk menangani 'accepted' dan 're-registered'
+                $query->whereIn('status', ['accepted', 're-registered']);
+            } else {
+                $query->where('status', $status);
+            }
         }
 
-        // Order by latest created applicants (opsional)
+
+        // Order by latest created applicants (opsional, tetapi disarankan)
         $query->latest();
 
-        // Paginate the results
+        // Paginate the results, memastikan filter terbawa
         $allApplicants = $query->paginate(10); // Sesuaikan angka 10 dengan jumlah item per halaman yang Anda inginkan
 
         return view('admin.applicants.index', compact('allApplicants'));
+
     }
 
     /**
