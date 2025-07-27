@@ -4,61 +4,63 @@
 @section('header_admin', 'Manajemen Data Santri')
 
 @section('admin_content')
+@php
+    use App\Models\Program;
+    $programOptions = \App\Models\Program::orderBy('name')->get();
+@endphp
+
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
     <div class="p-8 text-gray-900">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <h3 class="text-3xl font-extrabold text-teal-700 mb-4 md:mb-0">Daftar Santri</h3>
-            <div class="flex flex-col sm:flex-row flex-wrap gap-2 sm:gap-4">
-
-                @can('create students')
-                <a href="{{ route('admin.students.create') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-teal-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-400 shadow-md">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4" />
-                    </svg>
-                    Tambah Santri Baru
-                </a>
-                @endcan
-
-                @can('export students')
-                <a href="{{ route('admin.students.export') }}" class="inline-flex items-center justify-center px-5 py-2.5 bg-green-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-green-700 focus:outline-none focus:ring-2 focus:ring-green-400 shadow-md">
-                    <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H5a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
-                    </svg>
-                    Export Excel
-                </a>
-                @endcan
-
-                @can('import students')
-                <form action="{{ route('admin.students.import') }}" method="POST" enctype="multipart/form-data" class="inline-flex items-center">
-                    @csrf
-                    <label for="import_file" class="inline-flex items-center justify-center px-5 py-2.5 bg-blue-600 border border-transparent rounded-lg font-semibold text-sm text-white hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-400 shadow-md cursor-pointer">
-                        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
-                        </svg>
-                        Import Excel
-                    </label>
-                    <input type="file" name="file" id="import_file" class="hidden" onchange="this.form.submit()">
-                </form>
-                @endcan
-
-            </div>
         </div>
 
-        {{-- Flash messages --}}
-        @if (session('success'))
-            <div class="bg-green-100 border border-green-400 text-green-700 px-5 py-3 rounded-lg relative mb-6 shadow-sm" role="alert">
-                <span class="block sm:inline">{{ session('success') }}</span>
+        {{-- Form Filter dan Export --}}
+        <form method="GET" action="{{ route('admin.students.index') }}" class="mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                <div class="md:col-span-2">
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat / Ortu</label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                </div>
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select name="status" id="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="non-aktif" {{ request('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
+                        <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="gender_filter" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+                    <select name="gender_filter" id="gender_filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        <option value="Laki-laki" {{ request('gender_filter') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ request('gender_filter') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
+                <div>
+                    <label for="program_id" class="block text-sm font-medium text-gray-700 mb-1">Kategori Program</label>
+                    <select name="program_id" id="program_id" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        @foreach ($programOptions as $program)
+                            <option value="{{ $program->id }}" {{ request('program_id') == $program->id ? 'selected' : '' }}>{{ $program->name }}</option>
+                        @endforeach
+                    </select>
+                </div>
+                <div class="flex gap-2 md:col-span-5">
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
+                        <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
+                    </button>
+                    @if(request()->anyFilled(['search', 'status', 'gender_filter', 'program_id']))
+                        <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">Reset</a>
+                    @endif
+                    <a href="{{ route('admin.students.export', request()->query()) }}" class="ml-auto inline-flex items-center px-4 py-2 bg-green-600 text-white text-sm font-medium rounded-lg hover:bg-green-700 transition">
+                        <x-heroicon-o-arrow-down-tray class="w-5 h-5 mr-2" /> Export Filtered
+                    </a>
+                </div>
             </div>
-        @endif
-        @if (session('error'))
-            <div class="bg-red-100 border border-red-400 text-red-700 px-5 py-3 rounded-lg relative mb-6 shadow-sm" role="alert">
-                <span class="block sm:inline">{{ session('error') }}</span>
-            </div>
-        @endif
-
-        {{-- Filter --}}
-        {{-- (Tidak perlu permission untuk filter dan view) --}}
-        {{-- ... (kode filter tidak perlu diubah) ... --}}
+        </form>
 
         {{-- Tabel --}}
         <div class="overflow-x-auto bg-white rounded-lg shadow-xl border border-gray-200">
@@ -78,7 +80,6 @@
                             <td class="px-6 py-4">{{ $student->nis ?? '-' }}</td>
                             <td class="px-6 py-4">{{ $student->name }}</td>
                             <td class="px-6 py-4">{{ $student->gender ? ucwords(strtolower($student->gender)) : '-' }}</td>
-
                             <td class="px-6 py-4">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full {{
                                     $student->status == 'aktif' ? 'bg-green-100 text-green-800' :
@@ -90,23 +91,19 @@
                             </td>
                             <td class="px-6 py-4 text-center">
                                 <div class="flex justify-center flex-wrap gap-2">
-
                                     @can('view students')
-                                    <a href="{{ route('admin.students.show', $student) }}" class="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Lihat</a>
+                                        <a href="{{ route('admin.students.show', $student) }}" class="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Lihat</a>
                                     @endcan
-
                                     @can('edit students')
-                                    <a href="{{ route('admin.students.edit', $student) }}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">Edit</a>
+                                        <a href="{{ route('admin.students.edit', $student) }}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">Edit</a>
                                     @endcan
-
                                     @can('delete students')
-                                    <form action="{{ route('admin.students.destroy', $student) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?');">
-                                        @csrf
-                                        @method('DELETE')
-                                        <button type="submit" class="text-sm px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700">Hapus</button>
-                                    </form>
+                                        <form action="{{ route('admin.students.destroy', $student) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?');">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="text-sm px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700">Hapus</button>
+                                        </form>
                                     @endcan
-
                                 </div>
                             </td>
                         </tr>

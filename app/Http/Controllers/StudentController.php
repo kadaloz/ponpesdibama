@@ -16,13 +16,15 @@ class StudentController extends Controller
     /**
      * Display a listing of the resource.
      */
-   public function index(Request $request)
+public function index(Request $request)
 {
     $sortBy = $request->query('sort_by', 'created_at');
     $sortOrder = $request->query('sort_order', 'desc');
     $perPage = $request->query('per_page', 10);
     $search = $request->query('search');
     $genderFilter = $request->query('gender_filter');
+    $status = $request->query('status');
+    $programId = $request->query('program_id');
 
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
@@ -39,10 +41,9 @@ class StudentController extends Controller
 
     $query = Student::query();
 
-    // 🔐 Filter jika user adalah mudabbir
+    // 🔐 Filter berdasarkan peran Mudabbir
     if (auth()->user()->hasRole('mudabbir')) {
         $teacher = auth()->user()->teacher;
-
         if ($teacher) {
             $query->whereHas('halaqohs', function ($q) use ($teacher) {
                 $q->where('teacher_id', $teacher->id);
@@ -52,6 +53,7 @@ class StudentController extends Controller
         }
     }
 
+    // 🔍 Pencarian
     if ($search) {
         $query->where(function($q) use ($search) {
             $q->where('name', 'like', '%' . $search . '%')
@@ -61,14 +63,32 @@ class StudentController extends Controller
         });
     }
 
+    // 👦🏻 Filter gender
     if ($genderFilter && in_array($genderFilter, ['Laki-laki', 'Perempuan'])) {
         $query->where('gender', $genderFilter);
     }
 
-    $allStudents = $query->orderBy($sortBy, $sortOrder)->paginate($perPage);
+    // 🟢 Filter status
+    if ($status && in_array($status, ['aktif', 'non-aktif', 'lulus'])) {
+        $query->where('status', $status);
+    }
 
-    return view('admin.students.index', compact('allStudents', 'sortBy', 'sortOrder', 'perPage', 'search', 'genderFilter'));
+    // 📘 Filter program_id
+    if ($programId && is_numeric($programId)) {
+        $query->where('program_id', $programId);
+    }
+
+    // 🔃 Sorting & Pagination
+    $allStudents = $query->orderBy($sortBy, $sortOrder)
+                         ->paginate($perPage)
+                         ->appends($request->query()); // Keep query params in pagination links
+
+    return view('admin.students.index', compact(
+        'allStudents', 'sortBy', 'sortOrder', 'perPage',
+        'search', 'genderFilter', 'status', 'programId'
+    ));
 }
+
 
 
     /**
@@ -322,11 +342,35 @@ public function destroy(Student $student)
     /**
      * Export students data to Excel.
      */
-    public function export()
-    {
-        return Excel::download(new StudentsExport, 'santri_data_' . date('Ymd_His') . '.xlsx');
+    public function export(Request $request)
+{
+    $query = Student::query();
+
+    if ($request->filled('search')) {
+        $query->where(function ($q) use ($request) {
+            $q->where('name', 'like', '%' . $request->search . '%')
+              ->orWhere('nis', 'like', '%' . $request->search . '%')
+              ->orWhere('address', 'like', '%' . $request->search . '%')
+              ->orWhere('parent_name', 'like', '%' . $request->search . '%');
+        });
     }
 
+    if ($request->filled('status')) {
+        $query->where('status', $request->status);
+    }
+
+    if ($request->filled('gender_filter')) {
+        $query->where('gender', $request->gender_filter);
+    }
+
+    if ($request->filled('program_id')) {
+        $query->where('program_id', $request->program_id);
+    }
+
+    $students = $query->orderBy('name')->get();
+
+    return Excel::download(new StudentsExport($students), 'Data-Santri.xlsx');
+}
     /**
      * Import students data from Excel.
      */
