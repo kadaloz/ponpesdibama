@@ -23,6 +23,7 @@ class StudentsExport implements
     WithEvents
 {
     protected $students;
+    protected $rowNumber = 1; // untuk nomor urut
 
     public function __construct(Collection $students)
     {
@@ -44,7 +45,7 @@ class StudentsExport implements
         return [
             ['Data Santri Pondok Pesantren DIBAMA'],
             [
-                'ID', 'NIS', 'Nama Lengkap', 'Jenis Kelamin', 'Tempat Lahir',
+                'No', 'ID', 'NIS', 'Nama Lengkap', 'Jenis Kelamin', 'Tempat Lahir',
                 'Tanggal Lahir', 'Alamat Lengkap', 'Desa/Kelurahan', 'Kecamatan',
                 'Kabupaten/Kota', 'Provinsi', 'Nama Orang Tua/Wali', 'No. HP Orang Tua/Wali',
                 'Tahun Masuk', 'Status', 'Program', 'Tipe', 'Tanggal Dibuat',
@@ -56,6 +57,7 @@ class StudentsExport implements
     public function map($student): array
     {
         return [
+            $this->rowNumber++, // No urut
             $student->id,
             $student->nis,
             $student->name,
@@ -91,11 +93,11 @@ class StudentsExport implements
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->mergeCells('A1:U1');
+                $event->sheet->mergeCells('A1:V1'); // A1 sampai V1 (22 kolom)
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
 
-                $lastRow = 2 + $this->students->count();
-                $event->sheet->getStyle("A2:U{$lastRow}")->applyFromArray([
+                $lastRow = 2 + $this->students->count(); // header + data
+                $event->sheet->getStyle("A2:V{$lastRow}")->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
