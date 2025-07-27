@@ -37,6 +37,17 @@
             </span>
         </div>
 
+        <div>
+            <p class="font-semibold text-gray-600">Ditugaskan Kepada</p>
+            @if($item->assignedTo)
+                <p class="text-gray-700">
+                    {{ $item->assignedTo->name }} ({{ $item->assignedTo->role ?? 'Santri' }})
+                </p>
+            @else
+                <p class="text-gray-500 italic">Belum ditugaskan</p>
+            @endif
+        </div>
+
         <div class="md:col-span-2">
             <p class="font-semibold text-gray-600">Deskripsi</p>
             <p class="text-gray-700">{{ $item->description ?? '-' }}</p>
