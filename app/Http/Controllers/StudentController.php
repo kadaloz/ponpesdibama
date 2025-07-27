@@ -350,7 +350,9 @@ public function destroy(Student $student)
      */
 public function export(Request $request)
 {
-    $query = Student::query();
+    // Query untuk mendapatkan data santri  
+    $query = Student::query()
+        ->with(['applicant', 'program', 'halaqohs', 'placements']);
 
     if ($request->filled('search')) {
         $query->where(function ($q) use ($request) {
