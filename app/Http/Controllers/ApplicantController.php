@@ -31,9 +31,9 @@ class ApplicantController extends Controller
         }
 
         // Apply Halaqoh Periode filter (only if ppdb_type is 'Pulang-Pergi')
-        // Penting: Pastikan kolom 'halaqoh_periode' ada di tabel 'applicants' Anda
-        if ($request->input('ppdb_type') === 'Pulang-Pergi' && $request->filled('halaqoh_periode')) {
-            $query->where('halaqoh_periode', $request->input('halaqoh_periode'));
+        // Penting: Pastikan kolom 'halaqoh_period' ada di tabel 'applicants' Anda
+        if ($request->input('ppdb_type') === 'Pulang-Pergi' && $request->filled('halaqoh_period')) {
+            $query->where('halaqoh_period', $request->input('halaqoh_period'));
         }
 
         // Apply Status filter
