@@ -42,7 +42,7 @@
             @if($item->assignedToStudent)
                 <p class="text-gray-700">
                     {{ $item->assignedToStudent->name }}  
-                    (NIS: {{ $item->assignedToStudent->student_number ?? '-' }})
+                    (NIS: {{ $item->assignedToStudent->nis ?? '-' }})
                 </p>
             @else
                 <p class="text-gray-500 italic">Belum ditugaskan</p>
