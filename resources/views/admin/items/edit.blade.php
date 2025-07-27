@@ -7,7 +7,8 @@
 <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-lg p-8">
     <h2 class="text-2xl font-bold text-teal-700 mb-6 border-b pb-2">Edit Barang: {{ $item->name }}</h2>
 
-    <form action="{{ route('items.edit', $item) }}" method="POST">
+    <form action="{{ route('admin.items.update', $item) }}" method="POST">
+
         @csrf
         @method('PUT')
 
