@@ -9,9 +9,9 @@
             <div class="flex justify-between items-center mb-6">
                 <h3 class="text-2xl font-bold text-teal-700">Penempatan Santri Aktif</h3>
                 @can('create placements')
-                    <a href="{{ route('admin.placements.create') }}" class="inline-flex items-center px-4 py-2 bg-teal-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-teal-700 focus:outline-none focus:ring-2 focus:ring-teal-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                    <button type="button" class="inline-flex items-center px-4 py-2 bg-teal-400 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest opacity-50 cursor-not-allowed" disabled>
                         <x-heroicon-o-plus class="w-4 h-4 mr-2" /> Tempatkan Santri
-                    </a>
+                    </button>
                 @endcan
             </div>
 
