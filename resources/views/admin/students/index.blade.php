@@ -14,7 +14,7 @@
     <div class="p-8 text-gray-900">
         <div class="flex flex-col md:flex-row justify-between items-center mb-8">
             <h3 class="text-3xl font-extrabold text-teal-700 mb-4 md:mb-0">Daftar Santri</h3>
-            {{-- Tombol Import & Export di kanan atas, sejajar dengan judul --}}
+ {{-- Tombol Import & Export di kanan atas, sejajar dengan judul --}}
             <div class="flex gap-2">
                 @can('import students')
                 <form action="{{ route('admin.students.import') }}" method="POST" enctype="multipart/form-data" class="inline-flex items-center space-x-2">
@@ -37,76 +37,67 @@
             </div>
         </div>
 
-        ---
-
-        {{-- Form Filter dengan Desain yang Lebih Ringkas dan Lebar Terbatas --}}
-        {{-- Menambah kelas max-w-2xl mx-auto untuk membatasi lebar dan memposisikan di tengah --}}
-        <div class="p-5 border border-gray-200 rounded-lg shadow-sm mb-6 bg-gray-50 max-w-2xl mx-auto">
-            <h4 class="text-lg font-semibold text-gray-800 mb-3">Filter Data Santri</h4>
-            <form method="GET" action="{{ route('admin.students.index') }}">
-                {{-- Mengurangi jumlah kolom pada breakpoint besar --}}
-                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-x-3 gap-y-2 items-start">
-                    {{-- Filter Pencarian --}}
-                    <div>
-                        <label for="search" class="block text-xs font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat</label>
-                        <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-                    </div>
-                    {{-- Filter Status --}}
-                    <div>
-                        <label for="status" class="block text-xs font-medium text-gray-700 mb-1">Status</label>
-                        <select name="status" id="status" class="w-full px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-                            <option value="">Semua</option>
-                            <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
-                            <option value="non-aktif" {{ request('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
-                            <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
-                        </select>
-                    </div>
-                    {{-- Filter Jenis Kelamin --}}
-                    <div>
-                        <label for="gender_filter" class="block text-xs font-medium text-gray-700 mb-1">Jenis Kelamin</label>
-                        <select name="gender_filter" id="gender_filter" class="w-full px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-                            <option value="">Semua</option>
-                            <option value="Laki-laki" {{ request('gender_filter') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
-                            <option value="Perempuan" {{ request('gender_filter') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
-                        </select>
-                    </div>
-                    {{-- Filter Kategori Santri --}}
-                    <div>
-                        <label for="type" class="block text-xs font-medium text-gray-700 mb-1">Kategori Santri</label>
-                        <select name="type" id="type" class="w-full px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm" onchange="document.getElementById('period-group').classList.toggle('hidden', this.value !== 'Pulang-Pergi')">
-                            <option value="">Semua</option>
-                            <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
-                            <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
-                        </select>
-                    </div>
-                    {{-- Filter Periode (tersembunyi secara default) --}}
-                    <div id="period-group" class="{{ request('type') !== 'Pulang-Pergi' ? 'hidden' : '' }}">
-                        <label for="period" class="block text-xs font-medium text-gray-700 mb-1">Periode</label>
-                        <select name="period" id="period" class="w-full px-2 py-1 border border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
-                            <option value="">Semua</option>
-                            @foreach ($periodOptions as $period)
-                                <option value="{{ $period }}" {{ request('period') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                            @endforeach
-                        </select>
-                    </div>
-
-                    {{-- Tombol Filter dan Reset --}}
-                    <div class="col-span-full flex gap-2 mt-2">
-                        <button type="submit" class="inline-flex items-center px-3 py-1 bg-teal-600 text-white text-sm font-medium rounded-md hover:bg-teal-700 transition">
-                            <x-heroicon-o-magnifying-glass class="w-4 h-4 mr-2" /> Filter
-                        </button>
-
-                        @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
-                            <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-3 py-1 bg-gray-100 text-sm font-medium text-gray-700 rounded-md hover:bg-gray-200 transition">
-                                <x-heroicon-o-x-mark class="w-4 h-4 mr-2" /> Reset
-                            </a>
-                        @endif
-                    </div>
+        {{-- Form Filter dan Tombol --}}
+        <form method="GET" action="{{ route('admin.students.index') }}" class="mb-6">
+            <div class="grid grid-cols-1 md:grid-cols-5 gap-4 items-end">
+                {{-- Filter Pencarian --}}
+                <div class="md:col-span-1"> {{-- Mengubah menjadi col-span-1 agar sejajar --}}
+                    <label for="search" class="block text-sm font-medium text-gray-700 mb-1">Cari Nama / NIS / Alamat </label>
+                    <input type="text" name="search" id="search" value="{{ request('search') }}" placeholder="Contoh: Ahmad / 1023" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
                 </div>
-            </form>
-        </div>
+                {{-- Filter Status --}}
+                <div>
+                    <label for="status" class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <select name="status" id="status" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        <option value="aktif" {{ request('status') == 'aktif' ? 'selected' : '' }}>Aktif</option>
+                        <option value="non-aktif" {{ request('status') == 'non-aktif' ? 'selected' : '' }}>Non-Aktif</option>
+                        <option value="lulus" {{ request('status') == 'lulus' ? 'selected' : '' }}>Lulus</option>
+                    </select>
+                </div>
+                {{-- Filter Jenis Kelamin --}}
+                <div>
+                    <label for="gender_filter" class="block text-sm font-medium text-gray-700 mb-1">Jenis Kelamin</label>
+                    <select name="gender_filter" id="gender_filter" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        <option value="Laki-laki" {{ request('gender_filter') == 'Laki-laki' ? 'selected' : '' }}>Laki-laki</option>
+                        <option value="Perempuan" {{ request('gender_filter') == 'Perempuan' ? 'selected' : '' }}>Perempuan</option>
+                    </select>
+                </div>
+                {{-- Filter Kategori Santri --}}
+                <div>
+                    <label for="type" class="block text-sm font-medium text-gray-700 mb-1">Kategori Santri</label>
+                    <select name="type" id="type" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm" onchange="document.getElementById('period-group').classList.toggle('hidden', this.value !== 'Pulang-Pergi')">
+                        <option value="">Semua</option>
+                        <option value="Asrama" {{ request('type') == 'Asrama' ? 'selected' : '' }}>Asrama</option>
+                        <option value="Pulang-Pergi" {{ request('type') == 'Pulang-Pergi' ? 'selected' : '' }}>Pulang-Pergi</option>
+                    </select>
+                </div>
+                {{-- Filter Periode (tersembunyi secara default) --}}
+                <div id="period-group" class="{{ request('type') !== 'Pulang-Pergi' ? 'hidden' : '' }}">
+                    <label for="period" class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
+                    <select name="period" id="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                        @foreach ($periodOptions as $period)
+                            <option value="{{ $period }}" {{ request('period') == $period ? 'selected' : '' }}>{{ $period }}</option>
+                        @endforeach
+                    </select>
+                </div>
 
-        ---
+                {{-- Tombol Filter dan Reset --}}
+                <div class="flex gap-2 md:col-span-5 mt-4"> {{-- Tetap pada col-span-5 agar menempati lebar penuh --}}
+                    <button type="submit" class="inline-flex items-center px-4 py-2 bg-teal-600 text-white text-sm font-medium rounded-lg hover:bg-teal-700 transition">
+                        <x-heroicon-o-magnifying-glass class="w-5 h-5 mr-2" /> Filter
+                    </button>
+
+                    @if(request()->anyFilled(['search', 'status', 'gender_filter', 'type', 'period']))
+                        <a href="{{ route('admin.students.index') }}" class="inline-flex items-center px-4 py-2 bg-gray-100 text-sm font-medium text-gray-700 rounded-lg hover:bg-gray-200 transition">
+                            <x-heroicon-o-x-mark class="w-5 h-5 mr-2" /> Reset
+                        </a>
+                    @endif
+                </div>
+            </div>
+        </form>
 
         {{-- Notifikasi --}}
         @if (session('success'))
@@ -125,7 +116,6 @@
             <table class="min-w-full divide-y divide-gray-200 text-sm">
                 <thead class="bg-gray-100">
                     <tr>
-                        <th class="px-6 py-3 text-left font-medium text-gray-700">No.</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">NIS</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">Nama</th>
                         <th class="px-6 py-3 text-left font-medium text-gray-700">Jenis Kelamin</th>
@@ -134,9 +124,8 @@
                     </tr>
                 </thead>
                 <tbody class="bg-white divide-y divide-gray-200">
-                    @forelse ($allStudents as $index => $student)
+                    @forelse ($allStudents as $student)
                         <tr class="hover:bg-gray-50">
-                            <td class="px-6 py-4">{{ $allStudents->firstItem() + $index }}</td>
                             <td class="px-6 py-4">{{ $student->nis ?? '-' }}</td>
                             <td class="px-6 py-4">{{ $student->name }}</td>
                             <td class="px-6 py-4">{{ $student->gender ? ucwords(strtolower($student->gender)) : '-' }}</td>
@@ -169,7 +158,7 @@
                         </tr>
                     @empty
                         <tr>
-                            <td colspan="6" class="text-center py-12">
+                            <td colspan="5" class="text-center py-12">
                                 <div class="flex flex-col items-center">
                                     <svg class="w-16 h-16 text-gray-300 mb-3" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
                                         <path stroke-linecap="round" stroke-linejoin="round" d="M12 11c.456 0 .907.05 1.342.144a3.375 3.375 0 11-5.23 2.902 3.376 3.376 0 013.888-3.046zM12 12c1.657 0 3-1.343 3-3S13.657 6 12 6s-3 1.343-3 3 1.343 3 3 3z"/>
