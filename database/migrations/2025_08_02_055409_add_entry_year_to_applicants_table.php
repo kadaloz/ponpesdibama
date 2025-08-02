@@ -12,7 +12,8 @@ return new class extends Migration
     public function up(): void
     {
         Schema::table('applicants', function (Blueprint $table) {
-            //
+            // Menambahkan kolom entry_year dengan tipe data integer, bisa bernilai null
+            $table->year('entry_year')->nullable()->after('ppdb_type');
         });
     }
 
@@ -22,7 +23,9 @@ return new class extends Migration
     public function down(): void
     {
         Schema::table('applicants', function (Blueprint $table) {
-            //
+            // Menghapus kolom entry_year saat rollback
+            $table->dropColumn('entry_year');
         });
     }
 };
+
