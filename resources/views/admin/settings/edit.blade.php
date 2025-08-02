@@ -69,7 +69,8 @@
                         <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                             @foreach ($settings['pondok_photos'] as $photo)
                                 <div class="relative">
-                                    <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                                    <img src="{{ asset('storage/' . $settings['pondok_photo'])  }}" alt="Foto Pondok"
+                                    
                                         class="rounded-lg w-full h-32 object-cover shadow-md">
                                 </div>
                             @endforeach
