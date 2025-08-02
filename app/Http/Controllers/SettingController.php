@@ -23,7 +23,7 @@ class SettingController extends Controller
             'contact_phone' => '+62 819-1657-7540',
             'contact_email' => 'info@ponpesdibama.com',
             'mission_quote' => '"Membina santri menjadi pribadi yang bertakwa, cerdas, mandiri, dan berakhlakul karimah..."',
-            'pondok_photos' => null, // Menggunakan pondok_photos, bukan pondok_photo
+            'pondok_photos' => null,
             'location_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.2476302278365!2d116.53449527476408!3d-8.572171986971089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dcc491348043eb3%3A0xf9582c5263d3272c!2sPonpes%20DIBAMA!5e0!3m2!1sen!2sau!4v1754122166345!5m2!1sen!2sau',
             'is_ppdb_open' => false,
             'ppdb_asrama_open' => false,
@@ -42,8 +42,10 @@ class SettingController extends Controller
             }
         }
         
-        // Mengubah string JSON kembali menjadi array untuk view
-        $settings['pondok_photos'] = !empty($settings['pondok_photos']) ? json_decode($settings['pondok_photos'], true) : [];
+        // Mengubah string JSON menjadi array yang valid untuk view
+        $pondokPhotosValue = $settings['pondok_photos'] ?? null;
+        $decodedPhotos = !empty($pondokPhotosValue) ? json_decode($pondokPhotosValue, true) : [];
+        $settings['pondok_photos'] = is_array($decodedPhotos) ? $decodedPhotos : [];
 
         return view('admin.settings.edit', compact('settings'));
     }
