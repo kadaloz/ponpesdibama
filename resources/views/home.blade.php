@@ -113,6 +113,7 @@
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
                         @forelse ($pondokPhotos->take(5) as $photo)
+                        {{ dd($photo) }}
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/settings_images/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
