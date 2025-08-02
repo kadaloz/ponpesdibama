@@ -43,25 +43,41 @@
                 @enderror
             </div>
 
-            {{-- Foto Pondok --}}
-            <div>
-                <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maks 5)</label>
-                <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
-                       class="mt-1 block w-full text-sm text-gray-500 file:rounded-md file:border-0 file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-                @error('pondok_photos')
-                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-                @enderror
 
-                @if (!empty($settings['pondok_photos']))
-                    <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
-                        @foreach (json_decode($settings['pondok_photos'], true) as $photo)
-                            <div class="relative">
-                                <img src="{{ asset('storage/' . $photo) }}" class="rounded-md h-32 w-full object-cover shadow">
-                            </div>
-                        @endforeach
+{{-- Foto Pondok --}}
+<div>
+    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
+    <div class="mt-1 flex items-center space-x-2">
+        <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
+               class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+        {{-- Tombol Hapus Semua Foto --}}
+        @if (!empty($settings['pondok_photos']))
+            <button type="submit" name="delete_photos" value="1"
+                    onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
+                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                Hapus Semua
+            </button>
+        @endif
+    </div>
+    @error('pondok_photos')
+        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+    @enderror
+
+    {{-- Pratinjau Foto yang Sudah Ada --}}
+    @if (!empty($settings['pondok_photos']))
+        <div class="mt-4">
+            <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
+            <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                @foreach (json_decode($settings['pondok_photos'], true) as $photo)
+                    <div class="relative">
+                        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                             class="rounded-lg w-full h-32 object-cover shadow-md">
                     </div>
-                @endif
+                @endforeach
             </div>
+        </div>
+    @endif
+</div>
 
             {{-- Kontak --}}
             <h4 class="text-xl font-bold text-gray-800 pt-4 border-t border-gray-200">Informasi Kontak</h4>
