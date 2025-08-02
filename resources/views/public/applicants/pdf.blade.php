@@ -6,7 +6,8 @@
     <style>
         body { font-family: sans-serif; font-size: 14px; }
         .header { text-align: center; margin-bottom: 20px; }
-        .barcode { text-align: center; margin-top: 20px; }
+        /* Mengganti class .barcode menjadi .qrcode */
+        .qrcode { text-align: center; margin-top: 20px; }
         .section { margin-bottom: 15px; }
         .label { font-weight: bold; }
     </style>
@@ -25,9 +26,11 @@
         <p><span class="label">Tipe Santri:</span> {{ $applicant->ppdb_type }}</p>
     </div>
 
-    <div class="barcode">
-        {!! DNS1D::getBarcodeHTML($applicant->registration_number, 'C128', 2, 60) !!}
-        <p>{{ $applicant->registration_number }}</p>
+    <div class="qrcode">
+        <p>QR Code Verifikasi</p>
+        {{-- Barcode DNS1D diganti dengan QR Code --}}
+        {{-- Untuk menghasilkan QR Code di Laravel, Anda bisa menggunakan pustaka seperti "simple-qrcode" --}}
+        {!! QrCode::size(150)->generate($applicant->registration_number) !!}
     </div>
 
     <p style="margin-top: 30px;">Silakan simpan dan cetak bukti ini untuk proses daftar ulang.</p>

@@ -32,8 +32,9 @@
 
             @if ($registrationNumber)
                 <div class="mb-6">
-                    <p class="text-sm text-gray-600 mb-2">Barcode Verifikasi:</p>
-                    <svg id="barcodeSvg" class="mx-auto w-full max-w-[250px] h-auto"></svg>
+                    <p class="text-sm text-gray-600 mb-2">QR Code Verifikasi:</p>
+                    {{-- Element for QR Code --}}
+                    <div id="qrcode" class="mx-auto w-full max-w-[250px] h-auto"></div>
                 </div>
 
                 <div class="flex flex-col items-center gap-4">
@@ -42,7 +43,7 @@
                         Cetak Bukti Pendaftaran (PDF)
                     </a>
                     <p class="text-sm text-gray-600">
-                        File PDF akan berisi data lengkap dan barcode untuk verifikasi.
+                        File PDF akan berisi data lengkap dan QR Code untuk verifikasi.
                     </p>
                 </div>
             @endif
@@ -62,20 +63,19 @@
 </section>
 
 @push('scripts')
-<script src="https://cdn.jsdelivr.net/npm/jsbarcode@3.11.5/dist/JsBarcode.all.min.js"></script>
+{{-- Pustaka JsBarcode diganti dengan QRCodejs --}}
+<script src="https://cdn.jsdelivr.net/npm/qrcodejs@1.0.0/qrcode.min.js"></script>
 <script>
     document.addEventListener('DOMContentLoaded', function() {
         const registrationNumber = "{{ $registrationNumber ?? '' }}";
         if (registrationNumber) {
-            JsBarcode("#barcodeSvg", registrationNumber, {
-                format: "CODE128",
-                displayValue: true,
-                width: 2,
-                height: 100,
-                margin: 10,
-                textMargin: 0,
-                font: "Inter",
-                fontSize: 18,
+            new QRCode(document.getElementById("qrcode"), {
+                text: registrationNumber,
+                width: 250,
+                height: 250,
+                colorDark: "#000000",
+                colorLight: "#ffffff",
+                correctLevel: QRCode.CorrectLevel.H
             });
         }
     });
