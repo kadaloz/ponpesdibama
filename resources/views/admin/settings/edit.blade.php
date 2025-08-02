@@ -45,15 +45,22 @@
 
             {{-- Foto Pondok --}}
             <div>
-                <label for="pondok_photo" class="block text-sm font-medium text-gray-700">Foto Pondok</label>
-                <input type="file" name="pondok_photo" id="pondok_photo" class="mt-1 block w-full text-sm text-gray-500 file:rounded-md file:border-0 file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-                @if ($settings['pondok_photo'])
-                    <p class="mt-2 text-sm text-gray-600">Foto saat ini:</p>
-                    <img src="{{ asset('storage/' . $settings['pondok_photo']) }}" alt="Foto Pondok" class="h-32 w-auto object-cover rounded-md mt-2 shadow-sm">
-                @endif
-                @error('pondok_photo')
+                <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maks 5)</label>
+                <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
+                       class="mt-1 block w-full text-sm text-gray-500 file:rounded-md file:border-0 file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                @error('pondok_photos')
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
+
+                @if (!empty($settings['pondok_photos']))
+                    <div class="mt-4 grid grid-cols-2 md:grid-cols-3 gap-4">
+                        @foreach (json_decode($settings['pondok_photos'], true) as $photo)
+                            <div class="relative">
+                                <img src="{{ asset('storage/' . $photo) }}" class="rounded-md h-32 w-full object-cover shadow">
+                            </div>
+                        @endforeach
+                    </div>
+                @endif
             </div>
 
             {{-- Kontak --}}

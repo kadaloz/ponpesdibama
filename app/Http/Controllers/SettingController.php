@@ -25,12 +25,12 @@ class SettingController extends Controller
             'contact_email' => 'info@ponpesdibama.com',
             'mission_quote' => '"Membina santri menjadi pribadi yang bertakwa, cerdas, mandiri, dan berakhlakul karimah..."',
             'pondok_photo' => null, // Default: tidak ada foto
-            'location_map_url' => null, // Default: tidak ada URL peta
+            'location_map_url' => 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3945.2476302278365!2d116.53449527476408!3d-8.572171986971089!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2dcc491348043eb3%3A0xf9582c5263d3272c!2sPonpes%20DIBAMA!5e0!3m2!1sen!2sau!4v1754122166345!5m2!1sen!2sau', // Default: tidak ada URL peta
             'is_ppdb_open' => false, // Default PPDB tertutup
             'ppdb_asrama_open' => false,  // Default PPDB Asrama tertutup
             'ppdb_pulang_pergi_open' => false,  // Default Pulang Pergi tertutup
             'ppdb_academic_year' => date('Y') . '/' . (date('Y') + 1), // Default tahun ajaran PPDB
-            'cta_enrollment_heading' => 'Siapkan Masa Depan Gemilang Putra/Putri Anda Bersama Yayasan Ponpes DIBAMA!', // NEW: Teks CTA Pendaftaran
+            'cta_enrollment_heading' => 'Siapkan Masa Depan Putra/Putri Anda Bersama Yayasan Ponpes DIBAMA!', // NEW: Teks CTA Pendaftaran
             // Tambahkan kunci pengaturan default lainnya di sini
         ];
 
@@ -63,6 +63,7 @@ class SettingController extends Controller
             'contact_email' => 'required|email|max:255',
             'mission_quote' => 'required|string',
             'pondok_photo' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
+            'pondok_photos.*' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048', // NEW: Validasi untuk beberapa foto pondok
             'location_map_url' => 'nullable|url|max:1000',
             'is_ppdb_open' => 'boolean',
             'ppdb_asrama_open' => 'boolean',
@@ -71,6 +72,22 @@ class SettingController extends Controller
             'cta_enrollment_heading' => 'required|string|max:255', // NEW: Validasi teks CTA
             // Tambahkan validasi untuk kunci pengaturan lainnya
         ]);
+
+        if ($request->hasFile('pondok_photos')) {
+    $paths = [];
+    foreach ($request->file('pondok_photos') as $file) {
+        if ($file->isValid()) {
+            $paths[] = $file->store('settings_images', 'public');
+        }
+    }
+
+    // Simpan sebagai JSON
+    Setting::updateOrCreate(
+        ['key' => 'pondok_photos'],
+        ['value' => json_encode($paths)]
+    );
+}
+
 
         // Loop melalui input yang divalidasi dan simpan ke tabel settings
         foreach ($validatedData as $key => $value) {

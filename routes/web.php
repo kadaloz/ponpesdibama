@@ -60,6 +60,8 @@ Route::get('/', function () {
     $contactPhone = $settings['contact_phone'] ?? '+62 812-3456-7890';
     $contactEmail = $settings['contact_email'] ?? 'info@ponpesdibama.com';
     $pondokPhoto = $settings['pondok_photo'] ?? null;
+    $pondokPhotos = Photo::where('type', 'pondok')->latest()->take(5)->pluck('path');
+
     $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.1234567890123!2d110.1234567890123!3d-7.1234567890123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e12345678901234%3A0x1234567890123456!2sPondok%20Pesantren%20Diniyah%20Baitul%20Makmur%20Aikmel!5e0!3m2!1sen!2sid!4v1612345678901';
     $isPpdbOpen = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
     $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? date('Y') . '/' . (date('Y') + 1);
@@ -68,7 +70,7 @@ Route::get('/', function () {
     $galleries = Gallery::published()->latest()->limit(3)->get(); // NEW: Ambil 3 galeri terbaru yang dipublikasi
 
 
-    return view('home', compact('latestNews', 'aboutUsContent', 'missionQuote', 'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto', 'locationMapUrl', 'programs', 'isPpdbOpen', 'ppdbAcademicYear', 'ctaEnrollmentHeading', 'galleries'));
+    return view('home', compact('latestNews', 'aboutUsContent', 'missionQuote', 'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto','pondokPhotos', 'locationMapUrl', 'programs', 'isPpdbOpen', 'ppdbAcademicYear', 'ctaEnrollmentHeading', 'galleries'));
 });
 
 // Route untuk menampilkan daftar semua berita publik (dengan filter dan pencarian)
