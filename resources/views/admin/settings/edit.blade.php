@@ -42,19 +42,20 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
+@php
+    $rawPhotos = $settings['pondok_photos'] ?? '[]';
+
+    // Pastikan bentuknya array (handle array atau JSON string)
+    $photos = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
+@endphp
+
 {{-- Foto Pondok --}}
 <div>
     <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
+
     <div class="mt-1 flex items-center space-x-2">
         <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
             class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-
-        {{-- Tombol Hapus Semua Foto --}}
-        @php
-            $photos = is_array($settings['pondok_photos'] ?? null)
-                ? $settings['pondok_photos']
-                : json_decode($settings['pondok_photos'] ?? '[]', true);
-        @endphp
 
         @if (!empty($photos))
             <button type="submit" name="delete_photos" value="1"
@@ -64,11 +65,11 @@
             </button>
         @endif
     </div>
+
     @error('pondok_photos')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
 
-    {{-- Pratinjau Foto yang Sudah Ada --}}
     @if (!empty($photos))
         <div class="mt-4">
             <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
