@@ -78,11 +78,14 @@ class SettingController extends Controller
             $oldPhotosPaths = $oldPhotos ? json_decode($oldPhotos->value, true) : [];
 
             // Hapus file lama dari storage
-            foreach ($oldPhotosPaths as $oldPath) {
-                if (Storage::disk('public')->exists($oldPath)) {
-                    Storage::disk('public')->delete($oldPath);
-                }
-            }
+foreach ($oldPhotosPaths as $item) {
+    $path = is_array($item) ? ($item['path'] ?? null) : $item;
+
+    if (is_string($path) && Storage::disk('public')->exists($path)) {
+        Storage::disk('public')->delete($path);
+    }
+}
+
 
             // Unggah foto baru
             foreach ($request->file('pondok_photos') as $file) {
