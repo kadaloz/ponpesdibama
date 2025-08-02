@@ -60,10 +60,10 @@ Route::get('/', function () {
     $contactPhone = $settings['contact_phone'] ?? '+62 812-3456-7890';
     $contactEmail = $settings['contact_email'] ?? 'info@ponpesdibama.com';
     $pondokPhoto = $settings['pondok_photo'] ?? null;
-    $locationMapUrl = $settings['location_map_url'] ?? null;
+    $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.1234567890123!2d110.1234567890123!3d-7.1234567890123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e12345678901234%3A0x1234567890123456!2sPondok%20Pesantren%20Diniyah%20Baitul%20Makmur%20Aikmel!5e0!3m2!1sen!2sid!4v1612345678901';
     $isPpdbOpen = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
     $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? date('Y') . '/' . (date('Y') + 1);
-    $ctaEnrollmentHeading = $settings['cta_enrollment_heading'] ?? 'Siapkan Masa Depan Gemilang Putra/Putri Anda Bersama PonpesDIBAMA!';
+    $ctaEnrollmentHeading = $settings['cta_enrollment_heading'] ?? 'Siapkan Masa Depan Putra/Putri Anda Bersama PonpesDIBAMA!';
     // Ambil beberapa album galeri yang dipublikasi untuk ditampilkan di homepage
     $galleries = Gallery::published()->latest()->limit(3)->get(); // NEW: Ambil 3 galeri terbaru yang dipublikasi
 
