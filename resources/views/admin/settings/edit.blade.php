@@ -81,10 +81,11 @@ try {
             <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 @foreach ($photos as $photo)
                     <div class="relative">
-                        <img src="{{ asset('storage/' . $photo['path']) }}" alt="Foto Pondok">
-
-                             class="rounded-lg w-full h-32 object-cover shadow-md">
-                    </div>
+                        @foreach ($photos as $photo)
+    @if(is_string($photo))
+        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+             class="rounded-lg w-full h-32 object-cover shadow-md">
+            </div>
                 @endforeach
             </div>
         </div>
