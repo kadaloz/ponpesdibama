@@ -168,21 +168,62 @@
                                         </span>
                                     </td>
                                     <td class="px-6 py-4 text-center">
-                                        <div class="flex justify-center flex-wrap gap-2">
-                                            @can('view applicants')
-                                                <a href="{{ route('admin.applicants.show', $applicant) }}" class="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Lihat</a>
-                                            @endcan
-                                            @can('edit applicants')
-                                                <a href="{{ route('admin.applicants.edit', $applicant) }}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">Edit</a>
-                                            @endcan
-                                            @can('delete applicants')
-                                                <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?');">
-                                                    @csrf
-                                                    @method('DELETE')
-                                                    <button type="submit" class="text-sm px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700">Hapus</button>
-                                                </form>
-                                            @endcan
-                                        </div>
+<div class="flex justify-center flex-wrap gap-2 text-sm font-medium">
+    @can('view applicants')
+        <a href="{{ route('admin.applicants.show', $applicant) }}"
+           class="inline-flex items-center px-3 py-1.5 bg-gray-100 text-gray-800 hover:bg-gray-200 border border-gray-300 rounded-lg transition">
+            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15 12H9m12 0a9 9 0 11-18 0 9 9 0 0118 0z"/>
+            </svg>
+            Lihat
+        </a>
+    @endcan
+
+    @can('edit applicants')
+        <a href="{{ route('admin.applicants.edit', $applicant) }}"
+           class="inline-flex items-center px-3 py-1.5 bg-indigo-600 text-white hover:bg-indigo-700 rounded-lg transition">
+            <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" stroke-width="2"
+                 viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M11 5h6m-3 0v14M4 20h16"/>
+            </svg>
+            Edit
+        </a>
+    @endcan
+
+    @can('verify applicants')
+        @if (in_array($applicant->status, ['submitted', 'pending']))
+            <form action="{{ route('admin.applicants.verify', $applicant) }}" method="POST" onsubmit="return confirm('Yakin ingin memverifikasi pendaftar ini?');">
+                @csrf
+                @method('PUT')
+                <button type="submit"
+                        class="inline-flex items-center px-3 py-1.5 bg-emerald-600 text-white hover:bg-emerald-700 rounded-lg transition">
+                    <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" stroke-width="2"
+                         viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7"/>
+                    </svg>
+                    Verifikasi
+                </button>
+            </form>
+        @endif
+    @endcan
+
+    @can('delete applicants')
+        <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus data ini?');">
+            @csrf
+            @method('DELETE')
+            <button type="submit"
+                    class="inline-flex items-center px-3 py-1.5 bg-red-600 text-white hover:bg-red-700 rounded-lg transition">
+                <svg class="w-4 h-4 mr-1.5" fill="none" stroke="currentColor" stroke-width="2"
+                     viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12"/>
+                </svg>
+                Hapus
+            </button>
+        </form>
+    @endcan
+</div>
+
                                     </td>
                                 </tr>
                             @endforeach
