@@ -48,6 +48,7 @@ return new class extends Migration
             $table->text('admin_notes')->nullable(); // Catatan dari admin
 
             $table->timestamps();
+            $table->year('entry_year')->nullable();
         });
     }
 

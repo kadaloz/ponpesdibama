@@ -37,6 +37,7 @@ class Applicant extends Model
         'admin_notes',
         'district',
         'village',
+        'entry_year', // Tahun Masuk (opsional)
 
     ];
 

@@ -22,16 +22,10 @@ class ApplicantController extends Controller
     /**
      * Display a listing of the resource (Admin View).
      */
-    public function index(Request $request)
+ public function index(Request $request)
     {
         $query = Applicant::query();
 
-        // Dapatkan daftar tahun unik dari created_at
-        $availableYears = Applicant::select(DB::raw('YEAR(created_at) as year'))
-                                ->distinct()
-                                ->orderBy('year', 'desc') // Urutkan dari tahun terbaru
-                                ->pluck('year')
-                                ->toArray();
         // 1. Apply Search filter
         if ($request->filled('search')) {
             $search = $request->input('search');
@@ -42,9 +36,8 @@ class ApplicantController extends Controller
         }
 
         // 2. Apply Entry Year filter
-        // Pastikan kolom 'created_at' ada di tabel 'applicants' Anda
-        if ($request->filled('created_year')) {
-            $query->where('created_at', $request->input('created_year'));
+        if ($request->filled('entry_year')) {
+            $query->where('entry_year', $request->input('entry_year'));
         }
 
         // 3. Apply PPDB Type filter
@@ -52,33 +45,35 @@ class ApplicantController extends Controller
             $query->where('ppdb_type', $request->input('ppdb_type'));
         }
 
-        // 4. Apply Halaqoh Periode filter (only if ppdb_type is 'Pulang-Pergi')
-        // Pastikan kolom 'halaqoh_period' ada di tabel 'applicants' Anda
+        // 4. Apply Halaqoh Period filter (only if ppdb_type is 'Pulang-Pergi')
         if ($request->input('ppdb_type') === 'Pulang-Pergi' && $request->filled('halaqoh_period')) {
             $query->where('halaqoh_period', $request->input('halaqoh_period'));
         }
 
         // 5. Apply Status filter
-        // Perhatikan penyesuaian untuk "Accepted/Re-registered" di Blade
         if ($request->filled('status')) {
             $status = $request->input('status');
-            if ($status === 'accepted') { // Khusus untuk menangani 'accepted' dan 're-registered'
+            if ($status === 'accepted') {
                 $query->whereIn('status', ['accepted', 're-registered']);
             } else {
                 $query->where('status', $status);
             }
         }
 
-
-        // Order by latest created applicants (opsional, tetapi disarankan)
+        // Order by latest applicants
         $query->latest();
 
-        // Paginate the results, memastikan filter terbawa
-        $allApplicants = $query->paginate(10); // Sesuaikan angka 10 dengan jumlah item per halaman yang Anda inginkan
+        // Paginate the results
+        $allApplicants = $query->paginate(10);
 
-        return view('admin.applicants.index', compact('allApplicants', 'availableYears')
-            + $request->only(['search', 'created_year', 'ppdb_type', 'halaqoh_period', 'status']));
+        // Ambil daftar tahun yang tersedia dari kolom entry_year.
+        // Cukup ambil satu kali dan kirimkan ke view.
+        $availableYears = Applicant::whereNotNull('entry_year')
+                                ->distinct()
+                                ->orderBy('entry_year', 'desc')
+                                ->pluck('entry_year');
 
+        return view('admin.applicants.index', compact('allApplicants', 'availableYears'));
     }
 
     /**
@@ -191,6 +186,7 @@ class ApplicantController extends Controller
             }
         }
 
+        $data['entry_year'] = date('Y');
         $applicant = Applicant::create($data);
 
         return redirect()->route('ppdb.success', ['reg_num' => $applicant->registration_number])
