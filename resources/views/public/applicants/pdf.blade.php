@@ -30,7 +30,8 @@
         <p>QR Code Verifikasi</p>
         {{-- Barcode DNS1D diganti dengan QR Code --}}
         {{-- Untuk menghasilkan QR Code di Laravel, Anda bisa menggunakan pustaka seperti "simple-qrcode" --}}
-        {!! QrCode::format('png')->size(150)->generate($applicant->registration_number) !!}
+        {{-- Diubah untuk menyematkan gambar PNG yang di-encode Base64 --}}
+        <img src="data:image/png;base64,{{ base64_encode(QrCode::format('png')->size(150)->generate($applicant->registration_number)) }}" alt="QR Code" style="width: 150px; height: 150px;">
     </div>
 
     <p style="margin-top: 30px;">Silakan simpan dan cetak bukti ini untuk proses daftar ulang.</p>
