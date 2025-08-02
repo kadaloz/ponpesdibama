@@ -64,11 +64,10 @@ Route::get('/', function () {
     $contactAddress      = $settings['contact_address'] ?? 'Jl. Contoh Alamat No. 123, Kota Contoh, Provinsi Contoh';
     $contactPhone        = $settings['contact_phone'] ?? '+62 812-3456-7890';
     $contactEmail        = $settings['contact_email'] ?? 'info@ponpesdibama.com';
-    $pondokPhoto         = $settings['pondok_photo'] ?? null;
-
-  
-    // Pastikan bentuknya array (handle array atau JSON string)
-    $photos = collect(json_decode($settings['pondok_photos'] ?? '[]') ?: []);
+    $pondokPhoto         = collect(json_decode($settings['pondok_photos'] ?? '[]') ?: []);
+    $photos              = collect($pondokPhoto)->filter(function ($item) {
+        return is_string($item) && !empty($item);
+    })->values();
 
 
     $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?...';
