@@ -93,6 +93,11 @@
 </nav>
 
 
+<!-- Pastikan $pondokPhotos tidak undefined -->
+@php
+    $pondokPhoto = $pondokPhoto ?? collect();
+@endphp
+
 <!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
     <div class="container mx-auto px-6">
@@ -107,10 +112,9 @@
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
-
                         @forelse ($pondokPhoto->take(5) as $photo)
                             <div class="swiper-slide">
-                                <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
+                                <img src="{{ asset('storage/' . $photo->settings_images) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
                         @empty
                             <div class="swiper-slide">
