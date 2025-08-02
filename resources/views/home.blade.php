@@ -95,7 +95,7 @@
 
 <!-- Pastikan $pondokPhotos tidak undefined -->
 @php
-    $pondokPhoto = $pondokPhoto ?? collect();
+    $pondokPhotos = $pondokPhotos ?? collect();
 @endphp
 
 <!-- About Us Section -->
@@ -112,7 +112,7 @@
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
-                        @forelse ($pondokPhoto->take(5) as $photo)
+                        @forelse ($pondokPhotos as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/' . $photo->settings_images) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
