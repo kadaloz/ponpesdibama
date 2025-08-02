@@ -66,9 +66,10 @@ Route::get('/', function () {
     $contactEmail        = $settings['contact_email'] ?? 'info@ponpesdibama.com';
     $pondokPhoto         = $settings['pondok_photo'] ?? null;
 
-    // Ambil foto pondok dalam format array JSON dari settings
-    $rawPhotos = $settings['pondok_photos'] ?? '[]';
-    $photos = collect(json_decode($rawPhotos));
+  
+    // Pastikan bentuknya array (handle array atau JSON string)
+    $photos = collect(json_decode($settings['pondok_photos'] ?? '[]') ?: []);
+
 
     $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?...';
     $isPpdbOpen     = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
