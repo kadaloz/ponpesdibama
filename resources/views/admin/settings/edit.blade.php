@@ -43,10 +43,15 @@
                 @enderror
             </div>
 @php
-    $rawPhotos = $settings['pondok_photos'] ?? '[]';
+$rawPhotos = $settings['pondok_photos'] ?? '[]';
 
-    // Pastikan bentuknya array (handle array atau JSON string)
-    $photos = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
+try {
+    $decoded = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
+    $photos = is_array($decoded) ? $decoded : [];
+} catch (\Throwable $e) {
+    $photos = [];
+}
+
 @endphp
 
 {{-- Foto Pondok --}}
