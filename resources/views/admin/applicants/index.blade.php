@@ -178,38 +178,37 @@
                                                 </button>
                                             </div>
 
-                                            <div x-show="open" x-transition:enter="transition ease-out duration-100" x-transition:enter-start="transform opacity-0 scale-95" x-transition:enter-end="transform opacity-100 scale-100" x-transition:leave="transition ease-in duration-75" x-transition:leave-start="transform opacity-100 scale-100" x-transition:leave-end="transform opacity-0 scale-95" class="origin-top-right absolute right-0 mt-2 w-56 rounded-md shadow-lg bg-white ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="options-menu">
-                                                <div class="py-1" role="none">
-                                                    @can('view applicants')
-                                                        <a href="{{ route('admin.applicants.show', $applicant) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                            <div class="flex items-center">
-                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"></path><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.478 0-8.268-2.943-9.542-7z"></path></svg>
-                                                                Lihat
-                                                            </div>
-                                                        </a>
-                                                    @endcan
-                                                    @can('edit applicants')
-                                                        <a href="{{ route('admin.applicants.edit', $applicant) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100 hover:text-gray-900" role="menuitem">
-                                                            <div class="flex items-center">
-                                                                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15.232 5.232l3.536 3.536m-2.036-5.036a2.5 2.5 0 113.536 3.536L6.5 21.036H3v-3.572L16.732 3.732z"></path></svg>
-                                                                Edit
-                                                            </div>
-                                                        </a>
-                                                    @endcan
-                                                    @can('delete applicants')
-                                                        <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus pendaftar ini? Aksi ini tidak dapat dibatalkan.');" role="none">
-                                                            @csrf
-                                                            @method('DELETE')
-                                                            <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-red-600 hover:bg-red-100 hover:text-red-900" role="menuitem">
-                                                                <div class="flex items-center">
-                                                                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10H4a1 1 0 01-1-1V5a1 1 0 011-1h16a1 1 0 011 1v1a1 1 0 01-1 1z"></path></svg>
-                                                                    Hapus
-                                                                </div>
-                                                            </button>
-                                                        </form>
-                                                    @endcan
-                                                </div>
-                                            </div>
+<div x-show="open" class="origin-top-right absolute right-0 mt-2 w-52 rounded-lg shadow-lg bg-white ring-1 ring-black ring-opacity-5 z-50" x-transition>
+    <div class="py-2 text-sm text-gray-700">
+        @can('view applicants')
+            <a href="{{ route('admin.applicants.show', $applicant) }}"
+               class="flex items-center px-4 py-2 hover:bg-gray-100 gap-2">
+                <x-icon-eye class="w-4 h-4 text-gray-500" />
+                Lihat
+            </a>
+        @endcan
+        @can('edit applicants')
+            <a href="{{ route('admin.applicants.edit', $applicant) }}"
+               class="flex items-center px-4 py-2 hover:bg-gray-100 gap-2">
+                <x-icon-pencil class="w-4 h-4 text-gray-500" />
+                Edit
+            </a>
+        @endcan
+        @can('delete applicants')
+            <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST"
+                  onsubmit="return confirm('Apakah Anda yakin ingin menghapus pendaftar ini?');">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                        class="flex items-center w-full px-4 py-2 text-red-600 hover:bg-red-100 gap-2">
+                    <x-icon-trash class="w-4 h-4" />
+                    Hapus
+                </button>
+            </form>
+        @endcan
+    </div>
+</div>
+
                                         </div>
                                     </td>
                                 </tr>
