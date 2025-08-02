@@ -88,15 +88,7 @@ try {
     @endif
 @endforeach
 
-                        <button type="button" class="absolute top-2 right-2 bg-red-500 text-white rounded-full w-6 h-6 flex items-center justify-center hover:bg-red-600 focus:outline-none"
-                                onclick="event.preventDefault(); document.getElementById('delete-photo-{{ $loop->index }}').submit();">
-                            <span class="text-xs">&times;</span>
-                        </button>
-                        <form id="delete-photo-{{ $loop->index }}" action="{{ route('admin.settings.deletePhoto', $photo) }}" method="POST" class="hidden">
-                            @csrf
-                            @method('DELETE')
-                        </form>
-                        
+
                     </div>
                 @endforeach
             </div>
