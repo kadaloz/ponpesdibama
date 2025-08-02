@@ -112,6 +112,7 @@
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
+                          {{ dd($pondokPhotos) }}
                         @forelse ($pondokPhotos->take(5) as $photo)
                         {{ dd($photo) }}
                             <div class="swiper-slide">
