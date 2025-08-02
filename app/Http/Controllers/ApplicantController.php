@@ -12,9 +12,9 @@ use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Http;
 use App\Mail\ApplicantStatusChangedNotification;
-use Illuminate\Validation\Rule; // Import Rule
-use App\Enums\HalaqohPeriod; // Import HalaqohPeriod enum
-use App\Enums\PpdbType; // Import PPDBType enum
+use Illuminate\Validation\Rule;
+use App\Enums\HalaqohPeriod;
+use App\Enums\PpdbType;
 use Illuminate\Support\Facades\DB;
 
 class ApplicantController extends Controller
@@ -296,11 +296,11 @@ class ApplicantController extends Controller
                 Student::create([
                     'applicant_id' => $applicant->id,
                     'nis' => Student::generateUniqueNis(
-                        $applicant->ppdb_type ?? 'TPQ',     // gunakan ppdb_type sebagai type
-                        $applicant->gender ?? 'L',         // gender dari form
-                        $applicant->admission_year ?? date('Y')  // pastikan tahun masuk ada
+                        $applicant->ppdb_type ?? 'TPQ',
+                        $applicant->gender ?? 'L',
+                        // FIX: Menggunakan entry_year sebagai tahun masuk
+                        $applicant->entry_year ?? date('Y')
                     ),
-
                     'name' => $applicant->full_name,
                     'gender' => $applicant->gender,
                     'date_of_birth' => $applicant->date_of_birth,
@@ -317,11 +317,12 @@ class ApplicantController extends Controller
                     'parent_phone' => $applicant->parent_phone,
                     'parent_email' => $applicant->parent_email,
                     'parent_occupation' => $applicant->parent_occupation,
-                    'admission_year' => $applicant->admission_year ?? date('Y'),
+                    // FIX: Menggunakan entry_year sebagai admission_year
+                    'admission_year' => $applicant->entry_year ?? date('Y'),
                     'status' => 'aktif',
                     'category' => $applicant->chosen_program,
                     'type' => $applicant->ppdb_type,
-                    'halaqoh_period' => $applicant->halaqoh_period, // NEW: Transfer halaqoh_period
+                    'halaqoh_period' => $applicant->halaqoh_period,
                     'photo_path' => $applicant->document_photo_path,
                     'document_akta_path' => $applicant->document_akta_path,
                     'document_kk_path' => $applicant->document_kk_path,
