@@ -43,7 +43,55 @@ use Carbon\Carbon;
 |
 */
 
+Route::get('/', function () {
+    // Ambil berita terbaru yang sudah dipublikasikan
+    $latestNews = News::whereNotNull('published_at')
+                      ->orderByDesc('published_at')
+                      ->limit(2)
+                      ->get();
 
+    // Ambil program yang aktif
+    $programs = Program::where('is_active', true)
+                       ->limit(3)
+                       ->get();
+
+    // Ambil semua setting sebagai array key => value
+    $settings = Setting::all()->pluck('value', 'key')->toArray();
+
+    // Ambil konten statis dari setting
+    $aboutUsContent      = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel didirikan dengan visi...';
+    $missionQuote        = $settings['mission_quote'] ?? '"Membina santri menjadi pribadi yang bertakwa, cerdas, mandiri, dan berakhlakul karimah..."';
+    $contactAddress      = $settings['contact_address'] ?? 'Jl. Contoh Alamat No. 123, Kota Contoh, Provinsi Contoh';
+    $contactPhone        = $settings['contact_phone'] ?? '+62 812-3456-7890';
+    $contactEmail        = $settings['contact_email'] ?? 'info@ponpesdibama.com';
+    $pondokPhoto         = collect(json_decode($settings['pondok_photos'] ?? '[]') ?: []);
+
+
+    $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?...';
+    $isPpdbOpen     = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? date('Y') . '/' . (date('Y') + 1);
+    $ctaEnrollmentHeading = $settings['cta_enrollment_heading'] ?? 'Siapkan Masa Depan Putra/Putri Anda Bersama PonpesDIBAMA!';
+
+    // Galeri publik yang terbaru
+    $galleries = Gallery::published()->latest()->limit(3)->get();
+
+    // Kirim ke view
+    return view('home', compact(
+        'latestNews',
+        'programs',
+        'aboutUsContent',
+        'missionQuote',
+        'contactAddress',
+        'contactPhone',
+        'contactEmail',
+        'pondokPhoto',
+        'locationMapUrl',
+        'isPpdbOpen',
+        'ppdbAcademicYear',
+        'ctaEnrollmentHeading',
+        'galleries'
+    ));
+})->name('home');
 
 // Route untuk menampilkan daftar semua berita publik (dengan filter dan pencarian)
 Route::get('/berita', [NewsController::class, 'indexPublic'])->name('news.index_public');
