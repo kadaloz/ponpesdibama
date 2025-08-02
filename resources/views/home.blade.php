@@ -93,11 +93,6 @@
 </nav>
 
 
-<!-- Pastikan $pondokPhotos tidak undefined -->
-@php
-    $pondokPhotos = $pondokPhotos ?? collect();
-@endphp
-
 <!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
     <div class="container mx-auto px-6">
