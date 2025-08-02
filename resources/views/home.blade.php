@@ -103,16 +103,23 @@
 
         <!-- Content Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-            <!-- Image -->
-            <div class="relative group overflow-hidden rounded-2xl shadow-2xl border-8 border-teal-200 transform transition duration-300 hover:scale-105">
-                @if ($pondokPhoto)
-                    <img src="{{ asset('storage/' . $pondokPhoto) }}" alt="Foto Pondok Dibama"
-                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                @else
-                    <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama"
-                         alt="Gambar Pondok Dibama"
-                         class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
-                @endif
+            <!-- Swiper Image Carousel -->
+            <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
+                <div class="swiper mySwiper rounded-xl overflow-hidden">
+                    <div class="swiper-wrapper">
+                        @forelse ($pondokPhotos->take(5) as $photo)
+                            <div class="swiper-slide">
+                                <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
+                            </div>
+                        @empty
+                            <div class="swiper-slide">
+                                <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
+                            </div>
+                        @endforelse
+                    </div>
+                    <!-- Pagination Dots -->
+                    <div class="swiper-pagination mt-4"></div>
+                </div>
             </div>
 
             <!-- Text Content -->
@@ -121,12 +128,10 @@
                     {!! $aboutUsContent !!}
                 </div>
 
-                <!-- Highlighted Quote -->
                 <blockquote class="pl-5 border-l-4 border-teal-600 italic text-teal-800 font-semibold mb-8">
                     {{ $missionQuote }}
                 </blockquote>
 
-                <!-- Call to Action -->
                 <a href="#kontak"
                    class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-teal-600 text-white font-semibold text-base shadow-lg hover:bg-teal-700 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                     <span>Bergabung Bersama Kami</span>
@@ -140,7 +145,6 @@
         </div>
     </div>
 </section>
-
 
 <!-- Key Features/Why Choose Us Section -->
 <section class="py-20 md:py-32 bg-teal-50 rounded-3xl shadow-xl mx-4 md:mx-auto max-w-7xl my-16 animate-fade-in-up">
