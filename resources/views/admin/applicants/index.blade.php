@@ -167,25 +167,23 @@
                                             {{ ucfirst(str_replace('-', ' ', $applicant->status)) }}
                                         </span>
                                     </td>
-
-                            <td class="px-6 py-4 text-center">
-                                <div class="flex justify-center flex-wrap gap-2">
-                                    @can('view applicants')
-                                        <a href="{{ route('admin.applicants.show', $applicant) }}" class="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Lihat</a>
-                                    @endcan
-                                    @can('edit applicants')
-                                        <a href="{{ route('admin.applicants.edit', $applicant) }}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">Edit</a>
-                                    @endcan
-                                    @can('delete applicants')
-                                        <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?');">
-                                            @csrf
-                                            @method('DELETE')
-                                            <button type="submit" class="text-sm px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700">Hapus</button>
-                                        </form>
-                                    @endcan
-                                </div>
-                            </td>
-
+                                    <td class="px-6 py-4 text-center">
+                                        <div class="flex justify-center flex-wrap gap-2">
+                                            @can('view applicants')
+                                                <a href="{{ route('admin.applicants.show', $applicant) }}" class="text-sm px-3 py-1 bg-gray-200 text-gray-800 rounded-full hover:bg-gray-300">Lihat</a>
+                                            @endcan
+                                            @can('edit applicants')
+                                                <a href="{{ route('admin.applicants.edit', $applicant) }}" class="text-sm px-3 py-1 bg-indigo-600 text-white rounded-full hover:bg-indigo-700">Edit</a>
+                                            @endcan
+                                            @can('delete applicants')
+                                                <form action="{{ route('admin.applicants.destroy', $applicant) }}" method="POST" onsubmit="return confirm('Apakah Anda yakin ingin menghapus?');">
+                                                    @csrf
+                                                    @method('DELETE')
+                                                    <button type="submit" class="text-sm px-3 py-1 bg-red-600 text-white rounded-full hover:bg-red-700">Hapus</button>
+                                                </form>
+                                            @endcan
+                                        </div>
+                                    </td>
                                 </tr>
                             @endforeach
                         </tbody>
@@ -201,23 +199,19 @@
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const ppdbTypeSelect = document.getElementById('ppdb_type');
-            const halaqohPeriodFilter = document.getElementById('halaqoh_period_filter'); // Corrected ID
-            const halaqohPeriodSelect = document.getElementById('halaqoh_period'); // Corrected ID
+            const halaqohPeriodFilter = document.getElementById('halaqoh_period_filter');
+            const halaqohPeriodSelect = document.getElementById('halaqoh_period');
 
-            function toggleHalaqohPeriodFilter() { // Corrected function name
+            function toggleHalaqohPeriodFilter() {
                 if (ppdbTypeSelect.value === 'Pulang-Pergi') {
                     halaqohPeriodFilter.classList.remove('hidden');
                 } else {
                     halaqohPeriodFilter.classList.add('hidden');
-                    // Clear the halaqoh_period selection when it's hidden
                     halaqohPeriodSelect.value = '';
                 }
             }
 
-            // Initial call to set the correct state on page load
             toggleHalaqohPeriodFilter();
-
-            // Add event listener for changes in ppdb_type select
             ppdbTypeSelect.addEventListener('change', toggleHalaqohPeriodFilter);
         });
     </script>
