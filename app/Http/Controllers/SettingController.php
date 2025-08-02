@@ -16,7 +16,7 @@ class SettingController extends Controller
     public function edit()
     {
         $settings = Setting::all()->pluck('value', 'key')->toArray();
-        
+
         $defaultSettings = [
             'about_us_content' => 'Yayasan Pondok Pesantren Diniyah Baitul Makmur Aikmel didirikan dengan visi...',
             'contact_address' => 'Jl. Pendidikan No. 79, Aikmel Timur, Kecamatan Aikmel, Kabupaten Lombok Timur, Nusa Tenggara Barat, Indonesia',
@@ -67,19 +67,19 @@ class SettingController extends Controller
             'ppdb_pulang_pergi_open' => 'boolean',
             'ppdb_academic_year' => 'nullable|string|max:20',
             'cta_enrollment_heading' => 'required|string|max:255',
-            // Tambahkan validasi untuk kunci pengaturan lainnya
         ]);
 
         // Tangani unggah foto secara terpisah
         if ($request->hasFile('pondok_photos')) {
             $paths = [];
-            // Ambil path foto lama untuk dihapus
             $oldPhotos = Setting::where('key', 'pondok_photos')->first();
             $oldPhotosPaths = $oldPhotos ? json_decode($oldPhotos->value, true) : [];
 
             // Hapus file lama dari storage
             foreach ($oldPhotosPaths as $oldPath) {
-                Storage::disk('public')->delete($oldPath);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
             }
 
             // Unggah foto baru
@@ -101,7 +101,9 @@ class SettingController extends Controller
 
             // Hapus file dari storage
             foreach ($oldPhotosPaths as $oldPath) {
-                Storage::disk('public')->delete($oldPath);
+                if (Storage::disk('public')->exists($oldPath)) {
+                    Storage::disk('public')->delete($oldPath);
+                }
             }
             
             // Hapus entri di database
@@ -111,9 +113,9 @@ class SettingController extends Controller
         }
         
         // Loop melalui input yang divalidasi dan simpan ke tabel settings
-        // Kita tidak bisa menggunakan loop untuk pondok_photos karena nilainya array
+        // Kita tidak bisa menggunakan loop untuk pondok_photos karena nilainya array,
+        // sehingga harus dilewati dari perulangan ini.
         foreach ($validatedData as $key => $value) {
-            // Lewati pondok_photos karena sudah ditangani di atas
             if ($key === 'pondok_photos' || $key === 'pondok_photo') {
                 continue;
             }
@@ -130,7 +132,6 @@ class SettingController extends Controller
         }
         
         // Catat audit trail untuk pembaruan pengaturan
-        // (Pastikan fungsi record_audit() Anda sudah ada atau hapus baris ini)
         if (function_exists('record_audit')) {
             record_audit(
                 'update_settings',
