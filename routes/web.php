@@ -72,8 +72,13 @@ Route::get('/', function () {
 
  
 
-    return view('home', compact('latestNews', 'aboutUsContent', 'missionQuote', 'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto', 'pondokPhotos', 'locationMapUrl', 'programs', 'isPpdbOpen', 'ppdbAcademicYear', 'ctaEnrollmentHeading', 'galleries'));
-});
+return view('home', compact(
+        'latestNews', 'programs', 'aboutUsContent', 'missionQuote',
+        'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto',
+        'pondokPhotos', 'locationMapUrl', 'isPpdbOpen', 'ppdbAcademicYear',
+        'ctaEnrollmentHeading', 'galleries'
+    ));
+})->name('home');
 
 // Route untuk menampilkan daftar semua berita publik (dengan filter dan pencarian)
 Route::get('/berita', [NewsController::class, 'indexPublic'])->name('news.index_public');
