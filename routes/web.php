@@ -68,7 +68,7 @@ Route::get('/', function () {
 
     // Ambil foto pondok dalam format array JSON dari settings
     $rawPhotos = $settings['pondok_photos'] ?? '[]';
-    $pondokPhotos = collect(json_decode($rawPhotos));
+    $Photos = collect(json_decode($rawPhotos));
 
     $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?...';
     $isPpdbOpen     = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
@@ -88,7 +88,7 @@ Route::get('/', function () {
         'contactPhone',
         'contactEmail',
         'pondokPhoto',
-        'pondokPhotos',
+        'Photos',
         'locationMapUrl',
         'isPpdbOpen',
         'ppdbAcademicYear',
