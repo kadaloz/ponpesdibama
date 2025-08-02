@@ -188,12 +188,18 @@
             <div class="pt-4 border-t border-gray-200">
                 <label for="ppdb_academic_year" class="block text-xl font-bold text-gray-800 mb-2">Tahun Ajaran PSB</label>
                 <input type="text" name="ppdb_academic_year" id="ppdb_academic_year" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" value="{{ old('ppdb_academic_year', $settings['ppdb_academic_year'] ?? '') }}">
+                @error('ppdb_academic_year')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- CTA --}}
             <div class="pt-4 border-t border-gray-200">
                 <label for="cta_enrollment_heading" class="block text-xl font-bold text-gray-800 mb-2">Teks Heading Pendaftaran Utama</label>
                 <input type="text" name="cta_enrollment_heading" id="cta_enrollment_heading" class="mt-1 block w-full px-4 py-3 border border-gray-300 rounded-md focus:ring-teal-500 focus:border-teal-500" value="{{ old('cta_enrollment_heading', $settings['cta_enrollment_heading'] ?? '') }}">
+                @error('cta_enrollment_heading')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
             </div>
 
             {{-- Submit --}}
