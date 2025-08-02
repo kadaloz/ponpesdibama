@@ -43,40 +43,57 @@ use Carbon\Carbon;
 |
 */
 
-// Rute untuk Halaman Utama Pondok Dibama (Publik)
 Route::get('/', function () {
+    // Ambil berita terbaru yang sudah dipublikasikan
     $latestNews = News::whereNotNull('published_at')
-                        ->orderByDesc('published_at')
-                        ->limit(2)
-                        ->get();
+                      ->orderByDesc('published_at')
+                      ->limit(2)
+                      ->get();
 
-    $programs = Program::where('is_active', true)->limit(3)->get();
+    // Ambil program yang aktif
+    $programs = Program::where('is_active', true)
+                       ->limit(3)
+                       ->get();
 
+    // Ambil semua setting sebagai array key => value
     $settings = Setting::all()->pluck('value', 'key')->toArray();
 
-    $aboutUsContent = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel didirikan dengan visi...';
-    $missionQuote = $settings['mission_quote'] ?? '"Membina santri menjadi pribadi yang bertakwa, cerdas, mandiri, dan berakhlakul karimah..."';
-    $contactAddress = $settings['contact_address'] ?? 'Jl. Contoh Alamat No. 123, Kota Contoh, Provinsi Contoh';
-    $contactPhone = $settings['contact_phone'] ?? '+62 812-3456-7890';
-    $contactEmail = $settings['contact_email'] ?? 'info@ponpesdibama.com';
-    $pondokPhoto = $settings['pondok_photo'] ?? null;
-    $rawPhotos = $settings['pondok_photos'] ?? '[]';
-        $pondokPhotos = collect(json_decode($rawPhotos));
+    // Ambil konten statis dari setting
+    $aboutUsContent      = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel didirikan dengan visi...';
+    $missionQuote        = $settings['mission_quote'] ?? '"Membina santri menjadi pribadi yang bertakwa, cerdas, mandiri, dan berakhlakul karimah..."';
+    $contactAddress      = $settings['contact_address'] ?? 'Jl. Contoh Alamat No. 123, Kota Contoh, Provinsi Contoh';
+    $contactPhone        = $settings['contact_phone'] ?? '+62 812-3456-7890';
+    $contactEmail        = $settings['contact_email'] ?? 'info@ponpesdibama.com';
+    $pondokPhoto         = $settings['pondok_photo'] ?? null;
 
-    $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3153.1234567890123!2d110.1234567890123!3d-7.1234567890123456!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x2e12345678901234%3A0x1234567890123456!2sPondok%20Pesantren%20Diniyah%20Baitul%20Makmur%20Aikmel!5e0!3m2!1sen!2sid!4v1612345678901';
-    $isPpdbOpen = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
+    // Ambil foto pondok dalam format array JSON dari settings
+    $rawPhotos = $settings['pondok_photos'] ?? '[]';
+    $pondokPhotos = collect(json_decode($rawPhotos));
+
+    $locationMapUrl = $settings['location_map_url'] ?? 'https://www.google.com/maps/embed?...';
+    $isPpdbOpen     = filter_var($settings['is_ppdb_open'] ?? false, FILTER_VALIDATE_BOOLEAN);
     $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? date('Y') . '/' . (date('Y') + 1);
     $ctaEnrollmentHeading = $settings['cta_enrollment_heading'] ?? 'Siapkan Masa Depan Putra/Putri Anda Bersama PonpesDIBAMA!';
-    // Ambil beberapa album galeri yang dipublikasi untuk ditampilkan di homepage
-    $galleries = Gallery::published()->latest()->limit(3)->get(); // NEW: Ambil 3 galeri terbaru yang dipublikasi
 
- 
+    // Galeri publik yang terbaru
+    $galleries = Gallery::published()->latest()->limit(3)->get();
 
-return view('home', compact(
-        'latestNews', 'programs', 'aboutUsContent', 'missionQuote',
-        'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto',
-        'pondokPhotos', 'locationMapUrl', 'isPpdbOpen', 'ppdbAcademicYear',
-        'ctaEnrollmentHeading', 'galleries'
+    // Kirim ke view
+    return view('home', compact(
+        'latestNews',
+        'programs',
+        'aboutUsContent',
+        'missionQuote',
+        'contactAddress',
+        'contactPhone',
+        'contactEmail',
+        'pondokPhoto',
+        'pondokPhotos',
+        'locationMapUrl',
+        'isPpdbOpen',
+        'ppdbAcademicYear',
+        'ctaEnrollmentHeading',
+        'galleries'
     ));
 })->name('home');
 
