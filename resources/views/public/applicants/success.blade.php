@@ -6,7 +6,7 @@
 @section('meta_image', asset('storage/images/logo/pondok.png'))
 
 @section('main_content')
-<section class="py-24 md:py-40 bg-gradient-to-r from-teal-600 to-green-600 text-white flex items-center justify-center min-h-[80vh] rounded-b-lg shadow-xl">
+<section class="py-24 md:py-40 bg-teal-600 text-white flex items-center justify-center min-h-[80vh] rounded-b-lg shadow-xl">
     <div class="container mx-auto text-center px-4">
         <h2 class="text-4xl md:text-5xl font-extrabold leading-tight mb-4 drop-shadow-md">
             Pendaftaran Berhasil Dikirim!
