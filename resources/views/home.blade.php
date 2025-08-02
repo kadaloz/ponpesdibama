@@ -109,7 +109,7 @@
                     <div class="swiper-wrapper">
                         @php dd(get_defined_vars()); @endphp
 
-                        @forelse ($photos->take(5) as $photo)
+                        @forelse ($pondokPhoto->take(5) as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
