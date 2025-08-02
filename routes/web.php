@@ -69,6 +69,7 @@ Route::get('/', function () {
     // Ambil beberapa album galeri yang dipublikasi untuk ditampilkan di homepage
     $galleries = Gallery::published()->latest()->limit(3)->get(); // NEW: Ambil 3 galeri terbaru yang dipublikasi
 
+    dd($pondokPhotos);
 
     return view('home', compact('latestNews', 'aboutUsContent', 'missionQuote', 'contactAddress', 'contactPhone', 'contactEmail', 'pondokPhoto','pondokPhotos', 'locationMapUrl', 'programs', 'isPpdbOpen', 'ppdbAcademicYear', 'ctaEnrollmentHeading', 'galleries'));
 });
