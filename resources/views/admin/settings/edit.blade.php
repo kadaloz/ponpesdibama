@@ -84,28 +84,30 @@ try {
                     </button>
                 </form>
             </div>
-            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                @foreach ($photos as $photo)
-                    @if(is_string($photo))
-                        <div class="relative group">
-                            <img
-                                src="{{ asset('storage/' . $photo) }}"
-                                alt="Foto Pondok"
-                                class="rounded-lg w-full h-32 object-cover shadow-md cursor-pointer transition-transform duration-200 group-hover:scale-105"
-                                onclick="openImageModal('{{ asset('storage/' . $photo) }}')"
-                            >
-                            <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 rounded-lg">
-                                <button
-                                    type="button"
+            <div class="flex justify-center">
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                    @foreach ($photos as $photo)
+                        @if(is_string($photo))
+                            <div class="relative group">
+                                <img
+                                    src="{{ asset('storage/' . $photo) }}"
+                                    alt="Foto Pondok"
+                                    class="rounded-lg w-full h-32 object-cover shadow-md cursor-pointer transition-transform duration-200 group-hover:scale-105"
                                     onclick="openImageModal('{{ asset('storage/' . $photo) }}')"
-                                    class="text-white bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 text-xs"
                                 >
-                                    Lihat Gambar
-                                </button>
+                                <div class="absolute inset-0 flex items-center justify-center opacity-0 group-hover:opacity-100 transition duration-200 rounded-lg">
+                                    <button
+                                        type="button"
+                                        onclick="openImageModal('{{ asset('storage/' . $photo) }}')"
+                                        class="text-white bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 text-xs"
+                                    >
+                                        Lihat Gambar
+                                    </button>
+                                </div>
                             </div>
-                        </div>
-                    @endif
-                @endforeach
+                        @endif
+                    @endforeach
+                </div>
             </div>
         </div>
         {{-- Modal for image preview --}}
