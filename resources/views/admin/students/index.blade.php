@@ -82,23 +82,23 @@
                 </div>
                 {{-- Filter Periode (tersembunyi secara default) --}}
                 <div id="period-group" class="{{ request('type') !== 'Pulang-Pergi' ? 'hidden' : '' }}">
-                    <label for="period" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">Periode</label>
-                    <select name="halaqoh_period" id="halaqoh_period">
-                         <option value="">Semua</option>
-                         @foreach ($halaqohPeriods ?? [] as $period)
+                    <label for="halaqoh_period" class="block text-sm font-medium text-gray-700 mb-1">Periode</label>
+                    <select name="halaqoh_period" id="halaqoh_period" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
+                        <option value="">Semua</option>
+                            @foreach ($halaqohPeriods ?? [] as $period)
                         <option value="{{ $period }}" {{ request('halaqoh_period') == $period ? 'selected' : '' }}>{{ $period }}</option>
-                        @endforeach
+                            @endforeach
                     </select>
                 </div>
                 
                 {{-- Filter Tahun Masuk --}}
                 <div>
-                    <label for="admission_year" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">Tahun Masuk</label>
-                    <select name="admission_year" id="admission_year">
+                    <label for="admission_year" class="block text-sm font-medium text-gray-700 mb-1">Tahun Masuk</label>
+                    <select name="admission_year" id="admission_year" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">Semua</option>
-                        @foreach ($admissionYears ?? [] as $year)
-                        <option value="{{ $year }}" {{ request('admission_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
-                        @endforeach
+                            @foreach ($admissionYears ?? [] as $year)
+                         <option value="{{ $year }}" {{ request('admission_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
+                            @endforeach
                     </select>
                 </div>
 
