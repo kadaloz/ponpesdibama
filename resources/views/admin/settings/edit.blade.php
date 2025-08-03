@@ -121,25 +121,6 @@ try {
                 <img id="modalImage" src="" alt="Preview" class="mx-auto w-auto max-h-[80vh] object-contain rounded-lg">
             </div>
         </div>
-        <script>
-            function openImageModal(src) {
-                document.getElementById('modalImage').src = src;
-                document.getElementById('imageModal').classList.remove('hidden');
-                document.body.classList.add('overflow-hidden');
-            }
-            function closeImageModal() {
-                document.getElementById('imageModal').classList.add('hidden');
-                document.getElementById('modalImage').src = '';
-                document.body.classList.remove('overflow-hidden');
-            }
-            // Optional: close modal on ESC or click outside
-            document.addEventListener('keydown', function(e) {
-                if (e.key === 'Escape') closeImageModal();
-            });
-            document.getElementById('imageModal').addEventListener('click', function(e) {
-                if (e.target === this) closeImageModal();
-            });
-        </script>
     @endif
 </div>
 
@@ -288,5 +269,24 @@ try {
                 console.error(error);
             });
     </script>
+            <script>
+            function openImageModal(src) {
+                document.getElementById('modalImage').src = src;
+                document.getElementById('imageModal').classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            function closeImageModal() {
+                document.getElementById('imageModal').classList.add('hidden');
+                document.getElementById('modalImage').src = '';
+                document.body.classList.remove('overflow-hidden');
+            }
+            // Optional: close modal on ESC or click outside
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeImageModal();
+            });
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this) closeImageModal();
+            });
+        </script>
 @endpush
 @endsection
