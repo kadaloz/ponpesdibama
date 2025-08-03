@@ -1,4 +1,4 @@
-<section>
+<section x-data="profilePhotoCropper()" x-init="init()">
     <header>
         <h2 class="text-lg font-medium text-gray-900">
             {{ __('Profile Information') }}
@@ -19,28 +19,14 @@
         </div>
     @endif
 
-    <form method="post" action="{{ route('admin.profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data" x-data="{ 
-        open: false, 
-        imageUrl: '', 
-        cropper: null,
-        resetCropper() {
-            this.open = false;
-            this.imageUrl = '';
-            if (this.cropper) {
-                this.cropper.destroy();
-                this.cropper = null;
-            }
-            document.getElementById('photo').value = '';
-        }
-    }">
+    <form method="POST" action="{{ route('admin.profile.update') }}" enctype="multipart/form-data" class="mt-6 space-y-6">
         @csrf
         @method('patch')
 
-        {{-- Profile Photo Section --}}
+        {{-- Foto Profil --}}
         <div>
             <x-input-label for="photo" :value="__('Profile Photo')" />
             <div class="mt-2 flex items-center gap-4">
-                {{-- OLD FOTO --}}
                 <div class="flex-shrink-0">
                     @if ($user->photo_path)
                         <img src="{{ asset('storage/' . $user->photo_path) }}" alt="Profile Photo" class="h-20 w-20 rounded-full object-cover">
@@ -58,31 +44,16 @@
                         file:bg-violet-50 file:text-violet-700
                         hover:file:bg-violet-100"
                         accept="image/*"
-                        x-on:change="
-                            const file = $event.target.files[0];
-                            if (file) {
-                                imageUrl = URL.createObjectURL(file);
-                                open = true;
-                                $nextTick(() => {
-                                    cropper = new Cropper($refs.image, {
-                                        aspectRatio: 1,
-                                        viewMode: 1,
-                                        autoCropArea: 0.8,
-                                        movable: false,
-                                        zoomable: false,
-                                    });
-                                });
-                            }
-                        ">
+                        @change="handleFileChange($event)">
                     <x-input-error class="mt-2" :messages="$errors->get('photo_path')" />
                 </div>
-                {{-- Tombol Hapus Foto --}}
+
                 @if ($user->photo_path)
                     <form action="{{ route('admin.profile.deletePhoto') }}" method="POST" class="inline-block">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" onclick="return confirm('Apakah Anda yakin ingin menghapus foto profil?')"
-                                class="inline-flex items-center px-4 py-2 bg-red-600 border border-transparent rounded-md font-semibold text-xs text-white uppercase tracking-widest hover:bg-red-500 active:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500 focus:ring-offset-2 transition ease-in-out duration-150">
+                        <button type="submit" onclick="return confirm('Hapus foto profil?')"
+                                class="px-4 py-2 bg-red-600 text-white text-xs font-semibold rounded-md hover:bg-red-700 focus:ring">
                             Hapus Foto
                         </button>
                     </form>
@@ -90,27 +61,47 @@
             </div>
         </div>
 
-        {{-- Nama, Email, dll. --}}
+        {{-- Nama --}}
         <div>
             <x-input-label for="name" :value="__('Name')" />
-            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full" :value="old('name', $user->name)" required autofocus autocomplete="name" />
+            <x-text-input id="name" name="name" type="text" class="mt-1 block w-full"
+                          :value="old('name', $user->name)" required autofocus />
             <x-input-error class="mt-2" :messages="$errors->get('name')" />
         </div>
+
+        {{-- Email --}}
         <div>
             <x-input-label for="email" :value="__('Email')" />
-            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full" :value="old('email', $user->email)" required autocomplete="username" />
+            <x-text-input id="email" name="email" type="email" class="mt-1 block w-full"
+                          :value="old('email', $user->email)" required />
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
-            @if ($user instanceof \Illuminate\Contracts\Auth\MustVerifyEmail && ! $user->hasVerifiedEmail())
-                <div>...</div>
-            @endif
         </div>
+
+        {{-- Hidden untuk base64 --}}
+        <input type="hidden" name="cropped_photo_data" id="cropped_photo_data">
 
         <div class="flex items-center gap-4">
             <x-primary-button>{{ __('Save') }}</x-primary-button>
         </div>
-
-        {{-- Hidden input untuk menyimpan hasil crop --}}
-        <input type="hidden" id="cropped_photo_data" name="cropped_photo_data">
     </form>
-</section>
 
+    {{-- Modal Crop --}}
+    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" x-show="open" x-cloak>
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
+            <h3 class="text-lg font-bold mb-4">Crop Foto</h3>
+            <div class="max-h-96 overflow-hidden">
+                <img x-ref="image" :src="imageUrl" alt="Preview" class="block max-w-full h-auto rounded">
+            </div>
+            <div class="mt-4 flex justify-end gap-2">
+                <button type="button" @click="resetCropper()"
+                        class="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded">
+                    Batal
+                </button>
+                <button type="button" @click="applyCrop()"
+                        class="px-4 py-2 text-sm text-white bg-violet-600 hover:bg-violet-700 rounded">
+                    Crop & Simpan
+                </button>
+            </div>
+        </div>
+    </div>
+</section>
