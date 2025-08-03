@@ -8,7 +8,7 @@
     use App\Models\Program;
     $programOptions = \App\Models\Program::orderBy('name')->get();
     $periodOptions = ['Sore', 'Malam'];
-    $admissionYears = \App\Models\Student::selectRaw('YEAR(admission_date) as year')
+    $admissionYears = \App\Models\Student::selectRaw('YEAR(admission_year) as year')
         ->distinct()
         ->orderBy('year', 'desc')
         ->pluck('year');
