@@ -46,9 +46,9 @@
         @enderror
     </div>
 
-    <div class="flex items-center justify-end mt-4">
+    <div class="flex items-center justify-center mt-4">
         <button type="submit"
-                class="w-full inline-flex items-center justify-center px-6 py-3 border border-transparent rounded-full font-semibold text-white uppercase tracking-widest transition ease-in-out duration-150 shadow-lg"
+                class="inline-flex items-center justify-center px-6 py-2 border border-transparent rounded-lg font-semibold text-white uppercase tracking-widest transition ease-in-out duration-150 shadow-lg"
                 x-bind:class="{ 'bg-teal-600 cursor-not-allowed pointer-events-none': loading, 'bg-teal-700 hover:bg-teal-800 focus:bg-teal-800 active:bg-teal-900 transform hover:scale-105': !loading }"
                 :disabled="loading">
             <span x-show="!loading">Kirim Tautan Atur Ulang Password</span>
