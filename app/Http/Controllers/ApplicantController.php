@@ -395,4 +395,33 @@ class ApplicantController extends Controller
         $registrationNumber = $request->query('reg_num');
         return view('public.applicants.success', compact('registrationNumber'));
     }
+
+    /**
+     * Display the public registration status page.
+     */
+    public function statusPage(Request $request): \Illuminate\View\View
+    {
+        $registrationNumber = $request->query('reg_num');
+
+        if (!$registrationNumber) {
+            abort(400, 'Nomor registrasi tidak disediakan.');
+        }
+
+        $applicant = Applicant::where('registration_number', $registrationNumber)->first();
+
+        if (!$applicant) {
+            return response()->view('public.applicant_not_found', [], 404);
+        }
+
+        return view('public.applicants.status', compact('applicant'));
+    }
+    /**
+     * Display the public registration terms and conditions.
+     */
+    public function termsAndConditions(): \Illuminate\View\View
+    {
+        $settings = Setting::pluck('value', 'key')->toArray();
+        $terms = $settings['ppdb_terms_and_conditions'] ?? 'Tidak ada syarat dan ketentuan yang ditetapkan.';
+        return view('public.applicants.terms', compact('terms'));
+    } 
 }

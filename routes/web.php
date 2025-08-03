@@ -61,6 +61,7 @@ Route::prefix('ppdb')->name('ppdb.')->group(function () {
     Route::get('/daftar', [ApplicantController::class, 'create'])->name('create');
     Route::post('/daftar', [ApplicantController::class, 'store'])->name('store');
     Route::get('/sukses', [ApplicantController::class, 'successPage'])->name('success');
+    Route::get('/status', [ApplicantController::class, 'statusPage']) ->name('status');
 });
 
 // --- NEW: Rute Galeri Publik ---

@@ -16,6 +16,7 @@
                 <h5 class="text-lg font-semibold mb-3">Tautan Penting</h5>
                 <ul class="space-y-2 text-sm">
                     <li><a href="{{ url('/ppdb/daftar') }}" class="hover:underline text-gray-300 hover:text-white transition">Pendaftaran PPDB</a></li>
+                    <li><a href="{{ url('/ppdb/status') }}" class="hover:underline text-gray-300 hover:text-white transition">Cek Status</a></li>
                     <li><a href="#" class="hover:underline text-gray-300 hover:text-white transition">Kebijakan Privasi</a></li>
                     <li><a href="#" class="hover:underline text-gray-300 hover:text-white transition">Syarat & Ketentuan</a></li>
                 </ul>
