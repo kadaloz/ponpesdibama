@@ -401,19 +401,23 @@ class ApplicantController extends Controller
      */
     public function statusPage(Request $request): \Illuminate\View\View
     {
-        $registrationNumber = $request->query('reg_num');
+            $registrationNumber = $request->query('reg_num');
 
         if (!$registrationNumber) {
-            abort(400, 'Nomor registrasi tidak disediakan.');
+            return view('public.applicants.status-form')->withErrors([
+                'reg_num' => 'Nomor registrasi harus diisi.'
+            ]);
         }
 
         $applicant = Applicant::where('registration_number', $registrationNumber)->first();
 
         if (!$applicant) {
-            return response()->view('public.applicant_not_found', [], 404);
+            return view('public.applicants.status-form')->withErrors([
+                'reg_num' => 'Nomor registrasi tidak ditemukan.'
+            ]);
         }
 
-        return view('public.applicants.status', compact('applicant'));
+        return view('public.applicants.status-result', compact('applicant'));
     }
     /**
      * Display the public registration terms and conditions.

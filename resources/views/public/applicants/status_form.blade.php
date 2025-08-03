@@ -1,10 +1,8 @@
 @extends('web.apps')
-
-@section('title', 'Status Pendaftaran - PonpesDIBAMA')
-@section('meta_description', 'Halaman Status Pendaftaran.')
-@section('meta_keywords', 'ppdb online, pendaftaran berhasil, pondok pesantren, pendidikan islam')
+@section('title', 'Cek Status Pendaftaran - PonpesDIBAMA')
+@section('meta_description', 'Cek status pendaftaran Anda di PonpesDIBAMA. Masukkan nomor pendaftaran untuk melihat status.')
+@section('meta_keywords', 'ppdb online, cek status pendaftaran, pondok pesantren, pendidikan islam')
 @section('meta_image', asset('storage/images/logo/pondok.png'))
-
 @section('main_content')
 <section class="py-24 md:py-40 bg-teal-600 text-white flex items-center justify-center min-h-[80vh] rounded-b-lg shadow-xl">
     <div class="container mx-auto text-center px-4">
