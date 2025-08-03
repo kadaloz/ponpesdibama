@@ -123,17 +123,18 @@
             <!-- Swiper Image Carousel -->
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
+                    <!-- Debug: Tampilkan path foto secara tekstual -->
+@foreach ($pondokPhotos as $photo)
+    <p class="text-sm text-gray-500">{{ $photo }}</p>
+@endforeach
+
                     <div class="swiper-wrapper">
                         @forelse ($pondokPhotos as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
                         @empty
-                        <!-- Debug: Tampilkan path foto secara tekstual -->
-@foreach ($pondokPhotos as $photo)
-    <p class="text-sm text-gray-500">{{ $photo }}</p>
-@endforeach
-
+                        
                             <div class="swiper-slide">
                                 <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
                             </div>
