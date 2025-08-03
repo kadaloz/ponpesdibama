@@ -115,7 +115,7 @@
     <div class="container mx-auto px-6">
         <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-extrabold text-teal-700 mb-14 drop-shadow-sm">
-            Profil Pondok Pesantren Diniyah Baitul Makmur Aikmel
+            Profil PonpesDIBAMA
         </h2>
 
         <!-- Content Grid -->
@@ -125,16 +125,16 @@
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <!-- Debug: Tampilkan path foto secara tekstual -->
                     <div class="swiper-wrapper">
-                        @forelse ($pondokPhotos as $photo)
+                        @if ($pondokPhotos as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
-                        @empty
+                        @else
                         
                             <div class="swiper-slide">
                                 <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
                             </div>
-                        @endforelse
+                        @endif
                     </div>
                     <!-- Pagination Dots -->
                     <div class="swiper-pagination mt-4"></div>
