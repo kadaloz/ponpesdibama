@@ -82,7 +82,7 @@
                                             <img src="{{ asset('storage/' . ltrim($photo, '/')) }}" alt="Foto Pondok"
                                                 class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
                                         </a>
-                                        <form action="" method="POST" class="absolute top-2 right-2">
+                                        <form action="{{ route('admin.settings.delete_photo') }}" method="POST" class="absolute top-2 right-2">
                                             @csrf
                                             @method('DELETE')
                                             <input type="hidden" name="photo_index" value="{{ $idx }}">
