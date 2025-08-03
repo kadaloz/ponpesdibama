@@ -75,18 +75,23 @@
                     <div class="mt-4">
                         <p class="text-sm font-medium text-gray-700 mb-2">Foto yang sudah ada:</p>
                         <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                            @foreach ($photos as $photo)
+                            @foreach ($photos as $idx => $photo)
                                 @if(is_string($photo))
                                     <div class="relative group rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 border border-gray-200 bg-gray-50">
-                                        <img src="{{ asset('storage/' . ltrim($photo, '/')) }}" alt="Foto Pondok"
-                                            class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
-                                        <div class="absolute inset-0 flex items-center justify-center transition duration-200 pointer-events-none">
-                                            <!-- Overlay removed to prevent black color on hover -->
-                                            <a href="{{ asset('storage/' . ltrim($photo, '/')) }}" target="_blank"
-                                                class="opacity-0 group-hover:opacity-100 text-white text-xs bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 transition pointer-events-auto">
-                                                Lihat
-                                            </a>
-                                        </div>
+                                        <a href="{{ asset('storage/' . ltrim($photo, '/')) }}" target="_blank" title="Lihat Gambar">
+                                            <img src="{{ asset('storage/' . ltrim($photo, '/')) }}" alt="Foto Pondok"
+                                                class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
+                                        </a>
+                                        <form action="{{ route('admin.settings.delete_photo') }}" method="POST" class="absolute top-2 right-2">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="photo_index" value="{{ $idx }}">
+                                            <button type="submit" onclick="return confirm('Hapus foto ini?')" class="bg-red-600 text-white rounded-full p-1 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" title="Hapus Gambar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </div>
                                 @endif
                             @endforeach
