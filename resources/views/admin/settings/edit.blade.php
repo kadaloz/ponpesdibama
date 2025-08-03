@@ -42,61 +42,57 @@
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-@php
-$rawPhotos = $settings['pondok_photos'] ?? '[]';
 
-try {
-    $decoded = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
-    $photos = is_array($decoded) ? $decoded : [];
-} catch (\Throwable $e) {
-    $photos = [];
-}
+            @php
+                $rawPhotos = $settings['pondok_photos'] ?? '[]';
+                try {
+                    $decoded = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
+                    $photos = is_array($decoded) ? $decoded : [];
+                } catch (\Throwable $e) {
+                    $photos = [];
+                }
+            @endphp
 
-@endphp
+            {{-- Foto Pondok --}}
+            <div>
+                <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
+                <div class="mt-1 flex items-center space-x-2">
+                    <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
+                        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
+                    @if (!empty($photos))
+                        <button type="submit" name="delete_photos" value="1"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
+                            class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                            Hapus Semua
+                        </button>
+                    @endif
+                </div>
+                @error('pondok_photos')
+                    <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
+                @enderror
 
-{{-- Foto Pondok --}}
-<div>
-    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
-
-    <div class="mt-1 flex items-center space-x-2">
-        <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
-            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-
-        @if (!empty($photos))
-            <button type="submit" name="delete_photos" value="1"
-                onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
-                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                Hapus Semua
-            </button>
-        @endif
-    </div>
-
-    @error('pondok_photos')
-        <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
-    @enderror
-
-    @if (!empty($photos))
-        <div class="mt-4">
-            <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
-            <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                @foreach ($photos as $photo)
-                    <div class="relative">
-                        @foreach ($photos as $photo)
-    @if(is_string($photo))
-        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
-             class="rounded-lg w-full h-32 object-cover shadow-md">
-    @endif
-@endforeach
-
-
+                @if (!empty($photos))
+                    <div class="mt-4">
+                        <p class="text-sm font-medium text-gray-700 mb-2">Foto yang sudah ada:</p>
+                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                            @foreach ($photos as $photo)
+                                @if(is_string($photo))
+                                    <div class="relative group rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 border border-gray-200 bg-gray-50">
+                                        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                                            class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
+                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition duration-200">
+                                            <a href="{{ asset('storage/' . $photo) }}" target="_blank"
+                                                class="opacity-0 group-hover:opacity-100 text-white text-xs bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 transition">
+                                                Lihat
+                                            </a>
+                                        </div>
+                                    </div>
+                                @endif
+                            @endforeach
+                        </div>
                     </div>
-                @endforeach
+                @endif
             </div>
-        </div>
-    @endif
-</div>
-
-
 
             {{-- Kontak --}}
             <h4 class="text-xl font-bold text-gray-800 pt-4 border-t border-gray-200">Informasi Kontak</h4>
@@ -107,7 +103,6 @@ try {
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
             <div>
                 <label for="contact_phone" class="block text-sm font-medium text-gray-700">Nomor Telepon/HP</label>
                 <input type="text" name="contact_phone" id="contact_phone" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('contact_phone', $settings['contact_phone'] ?? '') }}">
@@ -115,7 +110,6 @@ try {
                     <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
                 @enderror
             </div>
-
             <div>
                 <label for="contact_email" class="block text-sm font-medium text-gray-700">Alamat Email</label>
                 <input type="email" name="contact_email" id="contact_email" class="mt-1 block w-full border-gray-300 rounded-md shadow-sm focus:ring-teal-500 focus:border-teal-500" value="{{ old('contact_email', $settings['contact_email'] ?? '') }}">
@@ -139,70 +133,69 @@ try {
                 @endif
             </div>
 
-{{-- PPDB Tipe Pendaftaran --}}
-<div x-data="{ ppdbOpen: {{ old('is_ppdb_open', $settings['is_ppdb_open']) ? 'true' : 'false' }} }">
-    {{-- Toggle PPDB --}}
-    <div class="pt-4 border-t border-gray-200">
-        <label for="is_ppdb_open" class="block text-xl font-bold text-gray-800 mb-2">
-            Status Pendaftaran PSB
-        </label>
-        <div class="flex items-center space-x-3">
-            <input type="hidden" name="is_ppdb_open" value="0">
-            <input
-                type="checkbox"
-                name="is_ppdb_open"
-                id="is_ppdb_open"
-                value="1"
-                x-model="ppdbOpen"
-                class="h-5 w-5 text-teal-600 border-gray-300 rounded"
-                {{ old('is_ppdb_open', $settings['is_ppdb_open']) ? 'checked' : '' }}
-            >
-            <label for="is_ppdb_open" class="text-lg font-medium text-gray-700">
-                Aktifkan PSB Online
-            </label>
-        </div>
-    </div>
+            {{-- PPDB Tipe Pendaftaran --}}
+            <div x-data="{ ppdbOpen: {{ old('is_ppdb_open', $settings['is_ppdb_open']) ? 'true' : 'false' }} }">
+                {{-- Toggle PPDB --}}
+                <div class="pt-4 border-t border-gray-200">
+                    <label for="is_ppdb_open" class="block text-xl font-bold text-gray-800 mb-2">
+                        Status Pendaftaran PSB
+                    </label>
+                    <div class="flex items-center space-x-3">
+                        <input type="hidden" name="is_ppdb_open" value="0">
+                        <input
+                            type="checkbox"
+                            name="is_ppdb_open"
+                            id="is_ppdb_open"
+                            value="1"
+                            x-model="ppdbOpen"
+                            class="h-5 w-5 text-teal-600 border-gray-300 rounded"
+                            {{ old('is_ppdb_open', $settings['is_ppdb_open']) ? 'checked' : '' }}
+                        >
+                        <label for="is_ppdb_open" class="text-lg font-medium text-gray-700">
+                            Aktifkan PSB Online
+                        </label>
+                    </div>
+                </div>
 
-    {{-- Tipe Pendaftaran --}}
-    <div class="pt-4" x-show="ppdbOpen" x-transition>
-        <label class="block text-xl font-bold text-gray-800 mb-2">
-            Tipe Pendaftaran yang Dibuka
-        </label>
-        <div class="flex items-center space-x-6">
-            {{-- Asrama --}}
-            <div class="flex items-center space-x-2">
-                <input type="hidden" name="ppdb_asrama_open" value="0">
-                <input
-                    type="checkbox"
-                    name="ppdb_asrama_open"
-                    id="ppdb_asrama_open"
-                    value="1"
-                    class="h-5 w-5 text-teal-600 border-gray-300 rounded"
-                    {{ old('ppdb_asrama_open', $settings['ppdb_asrama_open']) ? 'checked' : '' }}
-                >
-                <label for="ppdb_asrama_open" class="text-lg font-medium text-gray-700">
-                    Asrama
-                </label>
+                {{-- Tipe Pendaftaran --}}
+                <div class="pt-4" x-show="ppdbOpen" x-transition>
+                    <label class="block text-xl font-bold text-gray-800 mb-2">
+                        Tipe Pendaftaran yang Dibuka
+                    </label>
+                    <div class="flex items-center space-x-6">
+                        {{-- Asrama --}}
+                        <div class="flex items-center space-x-2">
+                            <input type="hidden" name="ppdb_asrama_open" value="0">
+                            <input
+                                type="checkbox"
+                                name="ppdb_asrama_open"
+                                id="ppdb_asrama_open"
+                                value="1"
+                                class="h-5 w-5 text-teal-600 border-gray-300 rounded"
+                                {{ old('ppdb_asrama_open', $settings['ppdb_asrama_open']) ? 'checked' : '' }}
+                            >
+                            <label for="ppdb_asrama_open" class="text-lg font-medium text-gray-700">
+                                Asrama
+                            </label>
+                        </div>
+                        {{-- Pulang-Pergi --}}
+                        <div class="flex items-center space-x-2">
+                            <input type="hidden" name="ppdb_pulang_pergi_open" value="0">
+                            <input
+                                type="checkbox"
+                                name="ppdb_pulang_pergi_open"
+                                id="ppdb_pulang_pergi_open"
+                                value="1"
+                                class="h-5 w-5 text-teal-600 border-gray-300 rounded"
+                                {{ old('ppdb_pulang_pergi_open', $settings['ppdb_pulang_pergi_open']) ? 'checked' : '' }}
+                            >
+                            <label for="ppdb_pulang_pergi_open" class="text-lg font-medium text-gray-700">
+                                Pulang-Pergi
+                            </label>
+                        </div>
+                    </div>
+                </div>
             </div>
-
-            {{-- Pulang-Pergi --}}
-            <div class="flex items-center space-x-2">
-                <input type="hidden" name="ppdb_pulang_pergi_open" value="0">
-                <input
-                    type="checkbox"
-                    name="ppdb_pulang_pergi_open"
-                    id="ppdb_pulang_pergi_open"
-                    value="1"
-                    class="h-5 w-5 text-teal-600 border-gray-300 rounded"
-                    {{ old('ppdb_pulang_pergi_open', $settings['ppdb_pulang_pergi_open']) ? 'checked' : '' }}
-                >
-                <label for="ppdb_pulang_pergi_open" class="text-lg font-medium text-gray-700">
-                    Pulang-Pergi
-                </label>
-            </div>
-        </div>
-    </div>
-</div>
 
             {{-- Tahun Ajaran --}}
             <div class="pt-4 border-t border-gray-200">
