@@ -54,7 +54,7 @@
                             break;
                     }
                 @endphp
-                <span class="mt-2 inline-block px-4 py-1 rounded-full text-white text-sm font-bold {{ $statusColor }}">
+                <span class="mt-2 inline-block px-4 py-1 rounded-full text-red text-sm font-bold {{ $statusColor }}">
                     {{ $translatedStatus }}
                 </span>
             </div>
