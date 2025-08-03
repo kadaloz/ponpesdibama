@@ -95,7 +95,10 @@
 
 <!-- Pastikan $pondokPhotos tidak undefined -->
 @php
-    $pondokPhotos = $pondokPhotos ?? collect();
+    $pondokPhotos = $pondokPhotos ?? [];
+    $aboutUsContent = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel adalah lembaga pendidikan Islam yang berkomitmen untuk mencetak generasi Qurani dan berakhlak mulia.';
+    $missionQuote = $settings['mission_quote'] ?? 'Misi kami adalah membina santri menjadi pribadi yang berilmu, beradab, dan berakhlak mulia.';
+    $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? '2023/2024';
 @endphp
 
 <!-- About Us Section -->
