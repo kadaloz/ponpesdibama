@@ -33,7 +33,7 @@
                             $statusColor = 'bg-blue-600';
                             $translatedStatus = 'Daftar Ulang';
                             break;
-                        case 'under review':
+                        case 'under_review':
                             $statusColor = 'bg-yellow-600';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
