@@ -45,11 +45,11 @@ class StudentsExport implements
         return [
             ['Data Santri Pondok Pesantren DIBAMA'],
             [
-                'No', 'ID', 'NIS', 'Nama Lengkap', 'Jenis Kelamin', 'Tempat Lahir',
+                'No', 'NIS', 'Nama Lengkap', 'Jenis Kelamin', 'Tempat Lahir',
                 'Tanggal Lahir', 'Alamat Lengkap', 'Desa/Kelurahan', 'Kecamatan',
                 'Kabupaten/Kota', 'Provinsi', 'Nama Orang Tua/Wali', 'No. HP Orang Tua/Wali',
-                'Tahun Masuk', 'Status', 'Program', 'Tipe', 'Tanggal Dibuat',
-                'Tanggal Diperbarui', 'ID Pendaftar'
+                'Tahun Masuk', 'Status', 'Program', 'Tipe', 'Period', 'Tanggal Dibuat',
+                'Tanggal Diperbarui'
             ]
         ];
     }
@@ -58,7 +58,6 @@ class StudentsExport implements
     {
         return [
             $this->rowNumber++, // No urut
-            $student->id,
             $student->nis,
             $student->name,
             $student->gender,
@@ -75,9 +74,9 @@ class StudentsExport implements
             ucfirst($student->status),
             $student->program?->name ?? '-',
             $student->type,
+            $student->halaqoh_period ?? '-',
             optional($student->created_at)->format('d-m-Y H:i:s'),
             optional($student->updated_at)->format('d-m-Y H:i:s'),
-            $student->applicant_id,
         ];
     }
 
