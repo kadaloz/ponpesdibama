@@ -95,9 +95,9 @@
 
 <!-- Pastikan $pondokPhotos tidak undefined -->
 @php
-    $pondokPhoto = $pondokPhoto ?? [];
+    $pondokPhotos = $pondokPhotos ?? [];
     // Pastikan setiap $photo adalah path relatif dari storage/app/public, misal: 'images/pondok/1.jpg'
-    $pondokPhoto = array_filter($pondokPhoto, function($photo) {
+    $pondokPhotos = array_filter($pondokPhotos, function($photo) {
         return !empty($photo) && is_string($photo);
     });
     $aboutUsContent = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel adalah lembaga pendidikan Islam yang berkomitmen untuk mencetak generasi Qurani dan berakhlak mulia.';
@@ -119,7 +119,7 @@
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
-                        @forelse ($pondokPhoto as $photo)
+                        @forelse ($pondokPhotos as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
