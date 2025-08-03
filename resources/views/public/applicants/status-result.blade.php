@@ -17,36 +17,36 @@
                 <p class="text-lg font-semibold">Status Pendaftaran Saat Ini:</p>
                 @php
                     $status = strtolower($applicant->status);
-                    $statusColor = 'bg-gray-400';
+                    $statusColor = 'bg-gray-100';
                     $translatedStatus = 'Tidak Diketahui';
 
                     switch ($status) {
                         case 'submitted':
-                            $statusColor = 'bg-blue-500';
+                            $statusColor = 'bg-blue-100';
                             $translatedStatus = 'Telah Dikirim';
                             break;
                         case 'pending':
-                            $statusColor = 'bg-blue-500';
+                            $statusColor = 'bg-blue-100';
                             $translatedStatus = 'Menunggu';
                             break;
                         case 're-registered':
-                            $statusColor = 'bg-blue-500';
+                            $statusColor = 'bg-blue-100';
                             $translatedStatus = 'Daftar Ulang';
                             break;
                         case 'under review':
-                            $statusColor = 'bg-yellow-500';
+                            $statusColor = 'bg-yellow-100';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
                         case 'verified':
-                            $statusColor = 'bg-indigo-500';
+                            $statusColor = 'bg-indigo-100';
                             $translatedStatus = 'Terverifikasi';
                             break;
                         case 'accepted':
-                            $statusColor = 'bg-green-500';
+                            $statusColor = 'bg-green-100';
                             $translatedStatus = 'Diterima';
                             break;
                         case 'rejected':
-                            $statusColor = 'bg-red-500';
+                            $statusColor = 'bg-red-100';
                             $translatedStatus = 'Ditolak';
                             break;
                         default:
