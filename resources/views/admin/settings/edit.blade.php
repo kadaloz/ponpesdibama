@@ -82,22 +82,16 @@
                                             <img src="{{ asset('storage/' . ltrim($photo, '/')) }}" alt="Foto Pondok"
                                                 class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
                                         </a>
-<form action="{{ route('admin.settings.delete_photo', ['key' => $key]) }}" method="POST" class="{{ $class ?? '' }}">
-    @csrf
-    @method('DELETE')
-    <input type="hidden" name="photo_index" value="{{ $photoIndex }}">
-    <button type="submit" onclick="return confirm('Hapus foto ini?')" 
-            class="bg-red-600 text-white rounded-full p-1 hover:bg-red-700 
-                   focus:outline-none focus:ring-2 focus:ring-red-500" 
-            title="Hapus Gambar">
-        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" 
-             viewBox="0 0 24 24" stroke="currentColor">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
-                  d="M6 18L18 6M6 6l12 12" />
-        </svg>
-    </button>
-</form>
-
+                                        <form action="{{ route('admin.settings.delete_photo', ['key' => $idx]) }}" method="POST" class="absolute top-2 right-2">
+                                            @csrf
+                                            @method('DELETE')
+                                            <input type="hidden" name="photo_index" value="{{ $idx }}">
+                                            <button type="submit" onclick="return confirm('Hapus foto ini?')" class="bg-red-600 text-white rounded-full p-1 hover:bg-red-700 focus:outline-none focus:ring-2 focus:ring-red-500" title="Hapus Gambar">
+                                                <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                                                </svg>
+                                            </button>
+                                        </form>
                                     </div>
                                 @endif
                             @endforeach
