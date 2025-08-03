@@ -96,7 +96,7 @@
                     <label for="admission_year" class="block text-sm font-medium text-gray-700 mb-1">Tahun Masuk</label>
                     <select name="admission_year" id="admission_year" class="w-full px-4 py-2 border border-gray-300 rounded-lg shadow-sm focus:ring-teal-500 focus:border-teal-500 text-sm">
                         <option value="">Semua</option>
-                        @foreach ($admissionYears as $year)
+                        @foreach ($admissionYear as $year)
                             <option value="{{ $year }}" {{ request('admission_year') == $year ? 'selected' : '' }}>{{ $year }}</option>
                         @endforeach
                     </select>
