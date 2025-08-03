@@ -151,4 +151,31 @@ foreach ($oldPhotosPaths as $item) {
 
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan berhasil diperbarui!');
     }
+
+    /**
+     * Hapus foto pondok dari pengaturan.
+     */
+    public function deletePhoto($key)
+{
+    $setting = Setting::where('key', $key)->first();
+
+    if (!$setting) {
+        return back()->with('error', 'Foto tidak ditemukan.');
+    }
+
+    $paths = json_decode($setting->value, true) ?? [];
+
+    // Hapus file dari storage
+    foreach ($paths as $path) {
+        if (Storage::disk('public')->exists($path)) {
+            Storage::disk('public')->delete($path);
+        }
+    }
+
+    // Hapus entri dari database
+    $setting->delete();
+
+    return back()->with('success', 'Foto berhasil dihapus.');
+}
+
 }
