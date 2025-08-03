@@ -11,7 +11,7 @@
         body { font-family: 'Inter', sans-serif; }
         /* Optional: Add a subtle background image or pattern for the login page */
         .login-bg {
-            background-image: url('https://placehold.co/1920x1080/000000/FFFFFF?text=Login+Background+Ponpes'); /* Ganti dengan gambar latar belakang pondok */
+            background-color: #0d9488; /* teal-700 */
             background-size: cover;
             background-position: center;
         }
@@ -22,7 +22,7 @@
     <div class="w-full max-w-md bg-white rounded-xl shadow-2xl p-8 transform transition-all duration-300 hover:scale-105">
         <div class="text-center mb-8">
             {{-- Logo Ponpes --}}
-            <a href="{{ url('/') }}" class="text-4xl font-extrabold text-teal-700 block mb-2">PonpesDIBAMA<span class="text-2xl text-yellow-500">.com</span></a>
+            <a href="{{ asset('storage/images/logo/pondok.png') }}" class="text-4xl font-extrabold text-teal-700 block mb-2">PonpesDIBAMA<span class="text-2xl text-yellow-500">.com</span></a>
             <p class="text-gray-600 text-lg">Panel Login Admin</p>
         </div>
 
