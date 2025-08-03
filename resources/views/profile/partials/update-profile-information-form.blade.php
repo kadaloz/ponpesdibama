@@ -94,14 +94,16 @@
                 <img x-ref="image" :src="imageUrl" alt="Preview" class="block max-w-full h-auto rounded">
             </div>
             <div class="mt-4 flex justify-end gap-2">
-                <button type="button" @click="resetCropper()"
+                <button type="button" @click="cropImage()"
+                        class="px-4 py-2 text-sm text-white bg-teal-600 hover:bg-teal-700 rounded">
+                    Crop
+                </button>
+                <button type="button" @click="open = false"
                         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded">
-                    Batal
+                    Tutup
                 </button>
-                <button type="button" @click="applyCrop()"
-                        class="px-4 py-2 text-sm text-white bg-violet-600 hover:bg-violet-700 rounded">
-                    Crop & Simpan
-                </button>
+        
+
             </div>
         </div>
     </div>
