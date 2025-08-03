@@ -19,7 +19,7 @@
             </p>
         @endif
 
-        <form action="{{ route('applicant.status') }}" method="GET" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg">
+        <form action="{{ route('ppdb.applicant.status') }}" method="GET" class="max-w-md mx-auto bg-white p-6 rounded-xl shadow-lg">
             @csrf
             <div class="mb-6">
                 <label for="registration_number" class="block text-sm font-medium text-gray-700 mb-2">Nomor Pendaftaran</label>
