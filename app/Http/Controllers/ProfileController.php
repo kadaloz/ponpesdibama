@@ -29,18 +29,15 @@ class ProfileController extends Controller
     {
         $user = $request->user();
 
-        // 1. Tangani Unggahan Foto Profil (dari data Base64)
-        if ($request->filled('cropped_photo_data')) {
+        // 1. Tangani Unggahan Foto Profil
+        if ($request->hasFile('photo')) {
+            // Hapus foto lama jika ada
             if ($user->photo_path) {
                 Storage::disk('public')->delete($user->photo_path);
             }
-            $base64Image = $request->input('cropped_photo_data');
-            list($type, $base64Image) = explode(';', $base64Image);
-            list(, $base64Image) = explode(',', $base64Image);
-            $imageData = base64_decode($base64Image);
-            $fileName = 'profile-photos/' . uniqid() . '.png';
-            Storage::disk('public')->put($fileName, $imageData);
-            $user->photo_path = $fileName;
+            // Simpan foto baru dan update path
+            $path = $request->file('photo')->store('profile-photos', 'public');
+            $user->photo_path = $path;
         }
 
         // 2. Tangani Pembaruan Nama dan Email
@@ -50,6 +47,7 @@ class ProfileController extends Controller
         }
         $user->save();
 
+        // 3. Catat audit trail untuk pembaruan profil
         record_audit(
             'update_profile',
             'Profil dan foto berhasil diperbarui oleh ' . ($user->name ?? 'Guest'),
