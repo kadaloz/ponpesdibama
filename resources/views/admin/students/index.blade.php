@@ -8,6 +8,16 @@
     use App\Models\Program;
     $programOptions = \App\Models\Program::orderBy('name')->get();
     $periodOptions = ['Sore', 'Malam'];
+    $admissionYears = \App\Models\Student::selectRaw('YEAR(admission_date) as year')
+        ->distinct()
+        ->orderBy('year', 'desc')
+        ->pluck('year');
+    $admissionYears = $admissionYears->map(function ($year) {
+        return (string) $year; // Pastikan tahun dalam format string
+    });
+    $allStudents = $students->appends(request()->except('page')); // Menjaga query string saat paginasi
+    $period = request('period');
+    $type = request('type');
 @endphp
 
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
