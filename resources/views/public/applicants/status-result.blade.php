@@ -26,7 +26,7 @@
         </tr>
     </table>
 
-    <a href="{{ route('applicants.status') }}" class="mt-6 inline-block text-blue-600 hover:underline">
+    <a href="{{ route('ppdb.applicants.status') }}" class="mt-6 inline-block text-blue-600 hover:underline">
         Cek Nomor Lain
     </a>
 </div>
