@@ -45,10 +45,12 @@
 @php
 $rawPhotos = $settings['pondok_photos'] ?? '[]';
 
-try {
-    $decoded = is_array($rawPhotos) ? $rawPhotos : json_decode($rawPhotos, true);
+if (is_array($rawPhotos)) {
+    $photos = $rawPhotos;
+} elseif (is_string($rawPhotos) && !empty($rawPhotos)) {
+    $decoded = json_decode($rawPhotos, true);
     $photos = is_array($decoded) ? $decoded : [];
-} catch (\Throwable $e) {
+} else {
     $photos = [];
 }
 @endphp
@@ -74,10 +76,9 @@ try {
                             <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
                                 class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
                         </a>
-                        <form action="{{ route('admin.settings.delete_photo') }}" method="POST" class="absolute top-2 right-2">
+                        <form action="{{ route('admin.settings.delete_photo', ['key' => $idx]) }}" method="POST" class="absolute top-2 right-2">
                             @csrf
                             @method('DELETE')
-                            <input type="hidden" name="photo_index" value="{{ $idx }}">
                             <button type="submit"
                                 onclick="return confirm('Hapus foto ini?')"
                                 class="bg-red-600 bg-opacity-80 hover:bg-opacity-100 text-white rounded-full p-1 shadow focus:outline-none focus:ring-2 focus:ring-red-400"
