@@ -9,7 +9,7 @@
     <div class="container mx-auto px-4 max-w-2xl">
         <div class="bg-white p-8 md:p-10 rounded-xl shadow-lg border border-gray-200">
             <div class="text-center mb-6">
-                <h2 class="text-3xl font-bold text-gray-100 mb-2">Status Pendaftaran</h2>
+                <h2 class="text-3xl font-bold text-white mb-2">Status Pendaftaran</h2>
                 <p class="text-gray-600">Informasi pendaftaran Anda di Ponpes DIBAMA.</p>
             </div>
 
@@ -22,31 +22,31 @@
 
                     switch ($status) {
                         case 'submitted':
-                            $statusColor = 'bg-blue-100';
+                            $statusColor = 'bg-blue-700';
                             $translatedStatus = 'Telah Dikirim';
                             break;
                         case 'pending':
-                            $statusColor = 'bg-blue-100';
+                            $statusColor = 'bg-blue-700';
                             $translatedStatus = 'Menunggu';
                             break;
                         case 're-registered':
-                            $statusColor = 'bg-blue-100';
+                            $statusColor = 'bg-blue-700';
                             $translatedStatus = 'Daftar Ulang';
                             break;
                         case 'under review':
-                            $statusColor = 'bg-yellow-100';
+                            $statusColor = 'bg-yellow-700';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
                         case 'verified':
-                            $statusColor = 'bg-indigo-100';
+                            $statusColor = 'bg-indigo-700';
                             $translatedStatus = 'Terverifikasi';
                             break;
                         case 'accepted':
-                            $statusColor = 'bg-green-100';
+                            $statusColor = 'bg-green-700';
                             $translatedStatus = 'Diterima';
                             break;
                         case 'rejected':
-                            $statusColor = 'bg-red-100';
+                            $statusColor = 'bg-red-700';
                             $translatedStatus = 'Ditolak';
                             break;
                         default:
