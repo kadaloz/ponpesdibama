@@ -130,6 +130,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
 <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet" />
 
+{{-- Kode Alpine.js untuk komponen cropper --}}
 <script>
     function profilePhotoCropper() {
         return {
@@ -138,7 +139,7 @@
             cropper: null,
 
             init() {
-                // Optional: bisa isi init kalau mau
+                // Optional
             },
 
             handleFileChange(event) {
@@ -176,12 +177,11 @@
                     this.cropper.destroy();
                     this.cropper = null;
                 }
-                // Tidak reset file input agar tetap terkirim
+                document.getElementById('photo').value = '';
             }
         }
     }
 </script>
-
 
 </body>
 </html>
