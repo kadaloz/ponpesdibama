@@ -115,7 +115,7 @@
     <div class="container mx-auto px-6">
         <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-extrabold text-teal-700 mb-14 drop-shadow-sm">
-            Profil Pondok Pesantren
+            Profil Pondok Pesantren Diniyah Baitul Makmur Aikmel
         </h2>
 
         <!-- Content Grid -->
