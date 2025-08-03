@@ -34,7 +34,7 @@
                             $translatedStatus = 'Daftar Ulang';
                             break;
                         case 'under_review':
-                            $statusColor = 'bg-yellow-100';
+                            $statusColor = 'bg-yellow-400';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
                         case 'verified':
@@ -54,7 +54,7 @@
                             break;
                     }
                 @endphp
-                <span class="mt-2 inline-block px-4 py-1 rounded-full text-red text-sm font-bold {{ $statusColor }}">
+                <span class="mt-2 inline-block px-4 py-1 rounded-full text-white text-sm font-bold {{ $statusColor }}">
                     {{ $translatedStatus }}
                 </span>
             </div>
