@@ -19,7 +19,7 @@
                     <label for="reg_num" class="block mb-2 text-lg font-medium text-gray-700">
                         Nomor Registrasi
                     </label>
-                    <input type="text" name="reg_num" id="reg_num" placeholder="Contoh: PPDB-12345"
+                    <input type="text" name="reg_num" id="reg_num" placeholder="Contoh: PPDB-1234-ABCD"
                            class="w-full p-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-teal-500" 
                            value="{{ old('reg_num') }}" required>
                     @error('reg_num')
