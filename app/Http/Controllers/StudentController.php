@@ -406,7 +406,7 @@ public function export(Request $request)
     }
 
     // 📥 Ambil Data
-    $students = $query->orderBy('name')->get();
+    $students = $query->orderBy('nis')->get();
 
     // 📁 Nama File Dinamis
     $filename = 'Data-Santri-DIBAMA-' . now()->format('d-m-Y_H-i-s') . '.xlsx';

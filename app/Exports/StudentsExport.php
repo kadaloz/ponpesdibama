@@ -91,11 +91,11 @@ class StudentsExport implements
     {
         return [
             AfterSheet::class => function (AfterSheet $event) {
-                $event->sheet->mergeCells('A1:V1'); // A1 sampai V1 (22 kolom)
+                $event->sheet->mergeCells('A1:V1'); // A1 sampai S1 (19 kolom)
                 $event->sheet->getStyle('A1')->getAlignment()->setHorizontal('center');
 
                 $lastRow = 2 + $this->students->count(); // header + data
-                $event->sheet->getStyle("A2:V{$lastRow}")->applyFromArray([
+                $event->sheet->getStyle("A2:S{$lastRow}")->applyFromArray([
                     'borders' => [
                         'allBorders' => [
                             'borderStyle' => \PhpOffice\PhpSpreadsheet\Style\Border::BORDER_THIN,
