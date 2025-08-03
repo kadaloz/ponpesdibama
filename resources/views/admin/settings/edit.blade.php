@@ -78,11 +78,12 @@
                             @foreach ($photos as $photo)
                                 @if(is_string($photo))
                                     <div class="relative group rounded-lg overflow-hidden shadow hover:shadow-lg transition-shadow duration-200 border border-gray-200 bg-gray-50">
-                                        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                                        <img src="{{ asset('storage/' . ltrim($photo, '/')) }}" alt="Foto Pondok"
                                             class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
-                                        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-40 flex items-center justify-center transition duration-200">
-                                            <a href="{{ asset('storage/' . $photo) }}" target="_blank"
-                                                class="opacity-0 group-hover:opacity-100 text-white text-xs bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 transition">
+                                        <div class="absolute inset-0 flex items-center justify-center transition duration-200 pointer-events-none">
+                                            <!-- Overlay removed to prevent black color on hover -->
+                                            <a href="{{ asset('storage/' . ltrim($photo, '/')) }}" target="_blank"
+                                                class="opacity-0 group-hover:opacity-100 text-white text-xs bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 transition pointer-events-auto">
                                                 Lihat
                                             </a>
                                         </div>
