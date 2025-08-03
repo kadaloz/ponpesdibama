@@ -19,8 +19,8 @@ class StudentController extends Controller
 public function index(Request $request)
 {
     // 🔍 Query Params
-    $sortBy = $request->query('sort_by', 'created_at');
-    $sortOrder = $request->query('sort_order', 'desc');
+    $sortBy = $request->query('sort_by', 'nis');
+    $sortOrder = $request->query('sort_order', 'asc');
     $perPage = $request->query('per_page', 10);
     $search = $request->query('search');
     $genderFilter = $request->query('gender_filter');
