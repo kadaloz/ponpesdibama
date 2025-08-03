@@ -92,20 +92,12 @@
     </ul>
 </nav>
 
-
-<!-- Pastikan $pondokPhotos tidak undefined -->
 @php
     // Ambil data dari setting
     $pondokPhotosRaw = \App\Models\Setting::where('key', 'pondok_photos')->value('value') ?? '[]';
     $pondokPhotos = json_decode($pondokPhotosRaw, true);
-
-    // Pastikan hasil decode adalah array
     $pondokPhotos = is_array($pondokPhotos) ? $pondokPhotos : [];
-
-    // Filter agar hanya path gambar valid yang dipakai
-    $pondokPhotos = array_values(array_filter($pondokPhotos, function($photo) {
-        return !empty($photo) && is_string($photo);
-    }));
+    $pondokPhotos = array_values(array_filter($pondokPhotos, fn($photo) => !empty($photo) && is_string($photo)));
 
     // Konten backup jika setting belum tersedia
     $aboutUsContent = $aboutUsContent ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel adalah lembaga pendidikan Islam yang berkomitmen untuk mencetak generasi Qurani dan berakhlak mulia.';
@@ -113,49 +105,38 @@
     $ppdbAcademicYear = $ppdbAcademicYear ?? '2023/2024';
 @endphp
 
-
-
 <!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
     <div class="container mx-auto px-6">
-        <!-- Heading -->
         <h2 class="text-center text-3xl md:text-4xl font-extrabold text-teal-700 mb-14 drop-shadow-sm">
             Profil PonpesDIBAMA
         </h2>
-
-        <!-- Content Grid -->
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <!-- Swiper Image Carousel -->
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
-                    <!-- Debug: Tampilkan path foto secara tekstual -->
                     <div class="swiper-wrapper">
-    @forelse ($pondokPhotos as $photo)
-        <div class="swiper-slide">
-            <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="img-fluid">
-        </div>
-    @empty
-        <div class="swiper-slide">
-            <div class="text-muted">Belum ada foto pondok yang ditampilkan.</div>
-        </div>
-    @endforelse
-</div>
-
-                    <!-- Pagination Dots -->
+                        @forelse ($pondokPhotos as $photo)
+                            <div class="swiper-slide">
+                                <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="img-fluid">
+                            </div>
+                        @empty
+                            <div class="swiper-slide">
+                                <div class="text-muted">Belum ada foto pondok yang ditampilkan.</div>
+                            </div>
+                        @endforelse
+                    </div>
                     <div class="swiper-pagination mt-4"></div>
                 </div>
             </div>
-
             <!-- Text Content -->
             <div class="text-lg leading-relaxed text-gray-700">
                 <div class="mb-6 prose max-w-none">
                     {!! $aboutUsContent !!}
                 </div>
-
                 <blockquote class="pl-5 border-l-4 border-teal-600 italic text-teal-800 font-semibold mb-8">
                     {{ $missionQuote }}
                 </blockquote>
-
                 <a href="#kontak"
                    class="inline-flex items-center gap-2 px-8 py-4 rounded-full bg-teal-600 text-white font-semibold text-base shadow-lg hover:bg-teal-700 hover:scale-105 transition-all focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-teal-500">
                     <span>Bergabung Bersama Kami</span>
