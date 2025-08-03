@@ -77,6 +77,7 @@
             <x-input-error class="mt-2" :messages="$errors->get('email')" />
         </div>
 
+        {{-- Hidden untuk base64 --}}
         <input type="hidden" name="cropped_photo_data" id="cropped_photo_data">
 
         <div class="flex items-center gap-4">
