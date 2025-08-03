@@ -51,51 +51,95 @@ try {
 } catch (\Throwable $e) {
     $photos = [];
 }
-
 @endphp
 
 {{-- Foto Pondok --}}
 <div>
-    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
-
-    <div class="mt-1 flex items-center space-x-2">
-        <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
-            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-
+    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700 mb-1">Foto Pondok (Maksimal 5)</label>
+    <div class="flex items-center space-x-2">
+        <input
+            type="file"
+            name="pondok_photos[]"
+            id="pondok_photos"
+            multiple
+            accept="image/*"
+            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100"
+        >
         @if (!empty($photos))
-            <button type="submit" name="delete_photos" value="1"
+            <button
+                type="submit"
+                name="delete_photos"
+                value="1"
                 onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
-                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500"
+            >
                 Hapus Semua
             </button>
         @endif
     </div>
-
     @error('pondok_photos')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
     @enderror
 
     @if (!empty($photos))
         <div class="mt-4">
-            <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
-            <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+            <p class="text-sm font-medium text-gray-700 mb-2">Foto yang sudah ada:</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 @foreach ($photos as $photo)
-                    <div class="relative">
-                        @foreach ($photos as $photo)
-    @if(is_string($photo))
-        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
-             class="rounded-lg w-full h-32 object-cover shadow-md">
-    @endif
-@endforeach
-
-
-                    </div>
+                    @if(is_string($photo))
+                        <div class="relative group">
+                            <img
+                                src="{{ asset('storage/' . $photo) }}"
+                                alt="Foto Pondok"
+                                class="rounded-lg w-full h-32 object-cover shadow-md cursor-pointer transition-transform duration-200 group-hover:scale-105"
+                                onclick="openImageModal('{{ asset('storage/' . $photo) }}')"
+                            >
+                            <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-30 transition duration-200 rounded-lg flex items-center justify-center opacity-0 group-hover:opacity-100">
+                                <button
+                                    type="button"
+                                    onclick="openImageModal('{{ asset('storage/' . $photo) }}')"
+                                    class="text-white bg-teal-600 px-3 py-1 rounded shadow hover:bg-teal-700 text-xs"
+                                >
+                                    Lihat Gambar
+                                </button>
+                            </div>
+                        </div>
+                    @endif
                 @endforeach
             </div>
         </div>
+        {{-- Modal for image preview --}}
+        <div id="imageModal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black bg-opacity-60">
+            <div class="relative bg-white rounded-lg shadow-lg max-w-3xl w-full mx-4">
+                <button
+                    type="button"
+                    onclick="closeImageModal()"
+                    class="absolute top-2 right-2 text-gray-600 hover:text-red-500 text-2xl font-bold focus:outline-none"
+                >&times;</button>
+                <img id="modalImage" src="" alt="Preview" class="w-full max-h-[80vh] object-contain rounded-lg">
+            </div>
+        </div>
+        <script>
+            function openImageModal(src) {
+                document.getElementById('modalImage').src = src;
+                document.getElementById('imageModal').classList.remove('hidden');
+                document.body.classList.add('overflow-hidden');
+            }
+            function closeImageModal() {
+                document.getElementById('imageModal').classList.add('hidden');
+                document.getElementById('modalImage').src = '';
+                document.body.classList.remove('overflow-hidden');
+            }
+            // Optional: close modal on ESC or click outside
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape') closeImageModal();
+            });
+            document.getElementById('imageModal').addEventListener('click', function(e) {
+                if (e.target === this) closeImageModal();
+            });
+        </script>
     @endif
 </div>
-
 
 
             {{-- Kontak --}}
