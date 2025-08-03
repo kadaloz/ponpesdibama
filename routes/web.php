@@ -66,11 +66,11 @@ Route::get('/', function () {
     $contactEmail        = $settings['contact_email'] ?? 'info@ponpesdibama.com';
 
     // Perbaikan: Ambil array foto pondok, pastikan hasilnya array, bukan collection kosong jika tidak ada foto
-    $pondokPhoto = [];
+    $pondokPhotos = [];
     if (!empty($settings['pondok_photos'])) {
         $decoded = json_decode($settings['pondok_photos'], true);
         if (is_array($decoded)) {
-            $pondokPhoto = $decoded;
+            $pondokPhotos = $decoded;
         }
     }
 
@@ -91,7 +91,7 @@ Route::get('/', function () {
         'contactAddress',
         'contactPhone',
         'contactEmail',
-        'pondokPhoto',
+        'pondokPhotos',
         'locationMapUrl',
         'isPpdbOpen',
         'ppdbAcademicYear',
