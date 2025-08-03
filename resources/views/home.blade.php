@@ -14,7 +14,7 @@
 
     <!-- Background Text (Responsive) -->
     <div class="absolute inset-0 flex items-center justify-center text-center select-none pointer-events-none z-0">
-        <h1 class="text-[9vw] sm:text-[7vw] md:text-[5vw] lg:text-[4vw] font-extrabold tracking-wider text-white opacity-10 blur-sm whitespace-nowrap">
+        <h1 class="text-[9vw] sm:text-[7vw] md:text-[5vw] lg:text-[4vw] font-extrabold tracking-wider text-white opacity-60 blur-sm whitespace-nowrap">
             @Bait El Makmur
         </h1>
     </div>
@@ -113,7 +113,7 @@
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <!-- Swiper Image Carousel -->
-            <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200 overflow-hidden">
+            <div class="relative rounded-2xl shadow-2xl border-8 border-yellow-400 overflow-hidden">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
                         @forelse ($pondokPhotos as $photo)

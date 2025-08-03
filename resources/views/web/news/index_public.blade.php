@@ -8,7 +8,7 @@
 
 @section('main_content')
     <!-- Hero Section -->
-    <section class="py-20 md:py-28 bg-gradient-to-r from-teal-700 to-green-600 text-white rounded-b-3xl shadow-xl">
+    <section class="py-20 md:py-28 bg-teal-700 text-white rounded-b-3xl shadow-xl">
         <div class="container mx-auto px-4 text-center">
             <h1 class="text-4xl md:text-5xl font-extrabold mb-4 drop-shadow-lg">Semua Berita & Pengumuman</h1>
             <p class="text-xl md:text-2xl opacity-90 max-w-2xl mx-auto">
