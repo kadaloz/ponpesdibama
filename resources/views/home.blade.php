@@ -95,8 +95,12 @@
 
 <!-- Pastikan $pondokPhotos tidak undefined -->
 @php
-    // Pastikan $pondokPhotos terdefinisi sebagai array
-    $pondokPhotos = isset($pondokPhotos) && is_array($pondokPhotos) ? $pondokPhotos : [];
+    // Ambil data dari setting
+    $pondokPhotosRaw = \App\Models\Setting::where('key', 'pondok_photos')->value('value') ?? '[]';
+    $pondokPhotos = json_decode($pondokPhotosRaw, true);
+
+    // Pastikan hasil decode adalah array
+    $pondokPhotos = is_array($pondokPhotos) ? $pondokPhotos : [];
 
     // Filter agar hanya path gambar valid yang dipakai
     $pondokPhotos = array_values(array_filter($pondokPhotos, function($photo) {
@@ -108,6 +112,7 @@
     $missionQuote = $missionQuote ?? 'Misi kami adalah membina santri menjadi pribadi yang berilmu, beradab, dan berakhlak mulia.';
     $ppdbAcademicYear = $ppdbAcademicYear ?? '2023/2024';
 @endphp
+
 
 
 <!-- About Us Section -->
@@ -125,16 +130,16 @@
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <!-- Debug: Tampilkan path foto secara tekstual -->
                     <div class="swiper-wrapper">
-                        
+                        @forelse ($pondokPhotos as $photo)
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/settings_images/X6SGcpa14K09uZwV632iftB3l4kC8UHjU4SAoYCC.jpg') }}" alt="Foto Pondok" />
                             </div>
-                   
+                        @empty
                         
                             <div class="swiper-slide">
                                 <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
                             </div>
-                  
+                        @endforelse
                     </div>
                     <!-- Pagination Dots -->
                     <div class="swiper-pagination mt-4"></div>
