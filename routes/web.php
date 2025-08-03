@@ -318,7 +318,7 @@ Route::get('/api/available-students', function (Request $request) {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit')->middleware('permission:manage own profile');
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update')->middleware('permission:manage own profile');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy')->middleware('permission:manage own profile');
-    Route::post('/profile/delete-photo', [ProfileController::class, 'deletePhoto'])->name('profile.delete_photo')->middleware('permission:manage own profile');
+    Route::post('/profile/deletePhoto', [ProfileController::class, 'deletePhoto'])->name('profile.deletePhoto')->middleware('permission:manage own profile');
 
 });
 
