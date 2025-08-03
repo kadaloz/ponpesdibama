@@ -63,11 +63,11 @@ try {
             class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
 
         @if (!empty($photos))
-            <button type="submit" name="delete_photos" value="1"
+            <a href="{{ route('admin.settings.delete_all_photos') }}"
                 onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
                 class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
                 Hapus Semua
-            </button>
+            </a>
         @endif
     </div>
 
@@ -80,23 +80,22 @@ try {
             <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
             <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
                 @foreach ($photos as $photo)
-                    <div class="relative">
-                        @foreach ($photos as $photo)
-    @if(is_string($photo))
-        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
-             class="rounded-lg w-full h-32 object-cover shadow-md">
-    @endif
-@endforeach
-
-
+                    <div class="relative group">
+                        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                            class="rounded-lg w-full h-32 object-cover shadow-md">
+                        <a href="{{ route('admin.settings.delete_photo', ['key' => $photo]) }}"
+                            onclick="return confirm('Apakah Anda yakin ingin menghapus foto ini?')"
+                            class="absolute top-1 right-1 p-1 bg-red-500 text-white rounded-full opacity-0 group-hover:opacity-100 transition-opacity">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </a>
                     </div>
                 @endforeach
             </div>
         </div>
     @endif
 </div>
-
-
 
             {{-- Kontak --}}
             <h4 class="text-xl font-bold text-gray-800 pt-4 border-t border-gray-200">Informasi Kontak</h4>

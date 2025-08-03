@@ -152,63 +152,41 @@ foreach ($oldPhotosPaths as $item) {
         return redirect()->route('admin.settings.edit')->with('success', 'Pengaturan berhasil diperbarui!');
     }
 
-    /**
-     * Hapus foto pondok dari pengaturan.
-     */
-    public function deletePhoto($key)
+public function deletePhoto($key)
 {
-    $setting = Setting::where('key', $key)->first();
+    // Ambil semua foto yang tersimpan
+    $settings = Setting::pluck('value', 'key');
+    $photos = json_decode($settings['pondok_photos'] ?? '[]', true);
 
-    if (!$setting) {
-        return back()->with('error', 'Foto tidak ditemukan.');
+    // Hapus foto dari array dan storage
+    if (($index = array_search($key, $photos)) !== false) {
+        unset($photos[$index]);
+        Storage::delete('public/' . $key);
+
+        // Update settings di database
+        Setting::updateOrCreate(['key' => 'pondok_photos'], ['value' => json_encode(array_values($photos))]);
+
+        return redirect()->back()->with('success', 'Foto berhasil dihapus.');
     }
 
-    $paths = json_decode($setting->value, true) ?? [];
-
-    // Hapus file dari storage
-    foreach ($paths as $path) {
-        if (Storage::disk('public')->exists($path)) {
-            Storage::disk('public')->delete($path);
-        }
-    }
-
-    // Hapus entri dari database
-    $setting->delete();
-
-    return back()->with('success', 'Foto berhasil dihapus.');
+    return redirect()->back()->with('error', 'Foto tidak ditemukan.');
 }
 
+public function deleteAllPhotos()
+{
+    // Ambil semua foto dari database
+    $settings = Setting::pluck('value', 'key');
+    $photos = json_decode($settings['pondok_photos'] ?? '[]', true);
 
-    public function destroy(Request $request)
-    {
-        // Hapus semua file foto pondok jika ada
-        $pondokPhotos = Setting::where('key', 'pondok_photos')->first();
-        if ($pondokPhotos) {
-            $paths = json_decode($pondokPhotos->value, true) ?? [];
-            foreach ($paths as $path) {
-                if (Storage::disk('public')->exists($path)) {
-                    Storage::disk('public')->delete($path);
-                }
-            }
-        }
-
-        // Hapus semua entri pengaturan
-        Setting::truncate();
-
-        // Catat audit trail jika ada
-        if (function_exists('record_audit')) {
-            record_audit(
-                'delete_settings',
-                'Semua pengaturan berhasil dihapus oleh ' . (auth()->user()->name ?? 'Guest'),
-                auth()->user()->id ?? null,
-                auth()->user()->name ?? 'Guest',
-                $request->ip(),
-                $request->userAgent()
-            );
-        }
-
-        return redirect()->route('admin.settings.edit')->with('success', 'Semua pengaturan berhasil dihapus.');
+    // Hapus semua foto dari storage
+    foreach ($photos as $photo) {
+        Storage::delete('public/' . $photo);
     }
 
+    // Hapus data foto di database
+    Setting::updateOrCreate(['key' => 'pondok_photos'], ['value' => '[]']);
+
+    return redirect()->back()->with('success', 'Semua foto berhasil dihapus.');
+}
 
 }
