@@ -160,7 +160,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Rute untuk Pengaturan Website
     Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit')->middleware('permission:manage settings');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:manage settings');
-    Route::delete('settings/delete-photo/{key}', [SettingController::class, 'deletePhoto'])->name('settings.delete_photo');
+    Route::delete('settings/delete-photo/{key}', [SettingController::class, 'deletePhoto'])->name('admin.settings.delete_photo');
 
 
     // Rute resource untuk Santri
