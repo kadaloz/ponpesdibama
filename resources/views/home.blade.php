@@ -124,10 +124,6 @@
             <div class="relative rounded-2xl shadow-2xl border-8 border-teal-200">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <!-- Debug: Tampilkan path foto secara tekstual -->
-@foreach ($pondokPhotos as $photo)
-    <p class="text-sm text-gray-500">{{ $photo }}</p>
-@endforeach
-
                     <div class="swiper-wrapper">
                         @forelse ($pondokPhotos as $photo)
                             <div class="swiper-slide">
