@@ -76,7 +76,8 @@ if (is_array($rawPhotos)) {
                             <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
                                 class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
                         </a>
-                        <form action="{{ route('admin.settings.delete_photo', ['key' => $idx]) }}" method="POST" class="absolute top-2 right-2">
+                        <form action="{{ route('settings.delete_photo', ['key' => 'pondok_photos']) }}" method="POST" class="absolute top-2 right-2">
+                         <input type="hidden" name="photo_index" value="{{ $idx }}">
                             @csrf
                             @method('DELETE')
                             <button type="submit"
