@@ -163,6 +163,11 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     Route::delete('settings/delete-photo/{key}', [SettingController::class, 'deletePhoto'])
         ->name('settings.delete_photo')
         ->middleware('permission:manage settings');
+    
+    Route::delete('settings/delete-all-photos', [SettingController::class, 'deleteAllPhotos'])
+        ->name('settings.delete_all_photos')
+        ->middleware('permission:manage settings');
+    
 
 
     // Rute resource untuk Santri
