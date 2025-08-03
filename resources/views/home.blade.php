@@ -95,15 +95,20 @@
 
 <!-- Pastikan $pondokPhotos tidak undefined -->
 @php
-    $pondokPhotos = $pondokPhotos ?? [];
-    // Pastikan setiap $photo adalah path relatif dari storage/app/public, misal: 'images/pondok/1.jpg'
-    $pondokPhotos = array_filter($pondokPhotos, function($photo) {
+    // Pastikan $pondokPhotos terdefinisi sebagai array
+    $pondokPhotos = isset($pondokPhotos) && is_array($pondokPhotos) ? $pondokPhotos : [];
+
+    // Filter agar hanya path gambar valid yang dipakai
+    $pondokPhotos = array_values(array_filter($pondokPhotos, function($photo) {
         return !empty($photo) && is_string($photo);
-    });
-    $aboutUsContent = $settings['about_us_content'] ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel adalah lembaga pendidikan Islam yang berkomitmen untuk mencetak generasi Qurani dan berakhlak mulia.';
-    $missionQuote = $settings['mission_quote'] ?? 'Misi kami adalah membina santri menjadi pribadi yang berilmu, beradab, dan berakhlak mulia.';
-    $ppdbAcademicYear = $settings['ppdb_academic_year'] ?? '2023/2024';
+    }));
+
+    // Konten backup jika setting belum tersedia
+    $aboutUsContent = $aboutUsContent ?? 'Pondok Pesantren Diniyah Baitul Makmur Aikmel adalah lembaga pendidikan Islam yang berkomitmen untuk mencetak generasi Qurani dan berakhlak mulia.';
+    $missionQuote = $missionQuote ?? 'Misi kami adalah membina santri menjadi pribadi yang berilmu, beradab, dan berakhlak mulia.';
+    $ppdbAcademicYear = $ppdbAcademicYear ?? '2023/2024';
 @endphp
+
 
 <!-- About Us Section -->
 <section id="tentang" class="py-20 md:py-32 bg-white rounded-3xl shadow-xl mx-auto max-w-7xl my-16">
