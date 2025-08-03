@@ -34,7 +34,7 @@
                             $translatedStatus = 'Daftar Ulang';
                             break;
                         case 'under_review':
-                            $statusColor = 'bg-yellow-600';
+                            $statusColor = 'bg-yellow-100';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
                         case 'verified':
