@@ -160,15 +160,10 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Rute untuk Pengaturan Website
     Route::get('settings', [SettingController::class, 'edit'])->name('settings.edit')->middleware('permission:manage settings');
     Route::put('settings', [SettingController::class, 'update'])->name('settings.update')->middleware('permission:manage settings');
-    Route::delete('settings/delete-photo/{key}', [SettingController::class, 'deletePhoto'])
-        ->name('settings.delete_photo')
-        ->middleware('permission:manage settings');
+    // Tambahkan ini di dalam group 'admin'
+    Route::get('/settings/delete-photo/{key}', [SettingController::class, 'deletePhoto'])->name('admin.settings.delete_photo')  ->middleware('permission:manage settings');
+    Route::get('/settings/delete-all-photos', [SettingController::class, 'deleteAllPhotos'])->name('admin.settings.delete_all_photos')  ->middleware('permission:manage settings');
     
-    Route::delete('settings/delete-all-photos', [SettingController::class, 'deleteAllPhotos'])
-        ->name('settings.delete_all_photos')
-        ->middleware('permission:manage settings');
-    
-
 
     // Rute resource untuk Santri
      Route::get('students/export/', [StudentController::class, 'export'])->name('students.export')->middleware('permission:export students');
