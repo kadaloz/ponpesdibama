@@ -129,6 +129,11 @@
                                 <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok" class="w-full h-full object-cover" />
                             </div>
                         @empty
+                        <!-- Debug: Tampilkan path foto secara tekstual -->
+@foreach ($pondokPhotos as $photo)
+    <p class="text-sm text-gray-500">{{ $photo }}</p>
+@endforeach
+
                             <div class="swiper-slide">
                                 <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
                             </div>
