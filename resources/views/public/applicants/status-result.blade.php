@@ -74,7 +74,7 @@
                 </div>
                 <div class="flex flex-col md:flex-row md:justify-between border-b pb-2">
                     <span class="font-semibold text-gray-600 md:w-1/3">PPDB Tipe</span>
-                    <span class="text-lg font-medium md:w-2/3 md:text-right">{{ $applicant->ppdbType ?? 'Tidak Diketahui' }}</span>
+                    <span class="text-lg font-medium md:w-2/3 md:text-right">{{ $applicant->ppdb_type ?? 'Tidak Diketahui' }}</span>
                 </div>
                 <div class="flex flex-col md:flex-row md:justify-between border-b pb-2">
                     <span class="font-semibold text-gray-600 md:w-1/3">Tanggal Pendaftaran</span>
