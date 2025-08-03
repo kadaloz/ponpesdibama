@@ -7,7 +7,7 @@
 <div class="max-w-xl mx-auto mt-10">
     <h2 class="text-xl font-bold mb-4">Cek Status Pendaftaran</h2>
 
-    <form method="GET" action="{{ route('applicants.status') }}">
+    <form method="GET" action="{{ route('ppdb.applicants.status') }}">
         <label for="reg_num" class="block mb-2 font-medium">Nomor Registrasi</label>
         <input type="text" name="reg_num" id="reg_num"
                class="w-full p-2 border rounded" value="{{ old('reg_num') }}">
