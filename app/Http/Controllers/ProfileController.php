@@ -25,55 +25,42 @@ class ProfileController extends Controller
     /**
      * Update the user's profile information, including photo.
      */
-public function update(ProfileUpdateRequest $request): RedirectResponse
-{
-    $user = $request->user();
-    
-    // 1. Tangani Unggahan Foto Profil (dari data Base64)
-    if ($request->filled('cropped_photo_data')) {
-        // Hapus foto lama jika ada
-        if ($user->photo_path) {
-            Storage::disk('public')->delete($user->photo_path);
+    public function update(ProfileUpdateRequest $request): RedirectResponse
+    {
+        $user = $request->user();
+
+        // 1. Tangani Unggahan Foto Profil (dari data Base64)
+        if ($request->filled('cropped_photo_data')) {
+            if ($user->photo_path) {
+                Storage::disk('public')->delete($user->photo_path);
+            }
+            $base64Image = $request->input('cropped_photo_data');
+            list($type, $base64Image) = explode(';', $base64Image);
+            list(, $base64Image) = explode(',', $base64Image);
+            $imageData = base64_decode($base64Image);
+            $fileName = 'profile-photos/' . uniqid() . '.png';
+            Storage::disk('public')->put($fileName, $imageData);
+            $user->photo_path = $fileName;
         }
 
-        // Ambil data gambar Base64
-        $base64Image = $request->input('cropped_photo_data');
-        // Pisahkan header data dari data sebenarnya
-        list($type, $base64Image) = explode(';', $base64Image);
-        list(, $base64Image)      = explode(',', $base64Image);
+        // 2. Tangani Pembaruan Nama dan Email
+        $user->fill($request->validated());
+        if ($user->isDirty('email')) {
+            $user->email_verified_at = null;
+        }
+        $user->save();
 
-        // Decode data Base64 menjadi file
-        $imageData = base64_decode($base64Image);
-        
-        // Buat nama file unik dan path penyimpanan
-        $fileName = 'profile-photos/' . uniqid() . '.png';
-        
-        // Simpan file ke storage
-        Storage::disk('public')->put($fileName, $imageData);
-        
-        // Update path di database
-        $user->photo_path = $fileName;
+        record_audit(
+            'update_profile',
+            'Profil dan foto berhasil diperbarui oleh ' . ($user->name ?? 'Guest'),
+            $user->id ?? null,
+            $user->name ?? 'Guest',
+            $request->ip(),
+            $request->userAgent()
+        );
+
+        return Redirect::route('admin.profile.edit')->with('success', 'Profile updated successfully.');
     }
-
-    // 2. Tangani Pembaruan Nama dan Email (logika yang sama)
-    $user->fill($request->validated());
-    if ($user->isDirty('email')) {
-        $user->email_verified_at = null;
-    }
-    $user->save();
-
-    // 3. Catat audit trail untuk pembaruan profil
-    record_audit(
-        'update_profile',
-        'Profil dan foto berhasil diperbarui oleh ' . ($user->name ?? 'Guest'),
-        $user->id ?? null,
-        $user->name ?? 'Guest',
-        $request->ip(),
-        $request->userAgent()
-    );
-
-    return Redirect::route('admin.profile.edit')->with('success', 'Profile updated successfully.');
-}
 
     /**
      * Delete the user's profile photo.
