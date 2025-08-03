@@ -18,6 +18,7 @@ class StudentController extends Controller
      */
 public function index(Request $request)
 {
+    // 🔍 Query Params
     $sortBy = $request->query('sort_by', 'created_at');
     $sortOrder = $request->query('sort_order', 'desc');
     $perPage = $request->query('per_page', 10);
@@ -25,13 +26,15 @@ public function index(Request $request)
     $genderFilter = $request->query('gender_filter');
     $status = $request->query('status');
     $type = $request->query('type');
-    $halaqoh_period = $request->query('halaqoh_period'); // Tambah period
+    $halaqoh_period = $request->query('halaqoh_period');
     $admissionYear = $request->query('admission_year');
 
+    // ✅ Validasi
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
         $sortBy = 'created_at';
     }
+
     if (!in_array($sortOrder, ['asc', 'desc'])) {
         $sortOrder = 'desc';
     }
@@ -41,9 +44,10 @@ public function index(Request $request)
         $perPage = 10;
     }
 
+    // 🔎 Build Query
     $query = Student::query();
 
-    // 🔐 Filter berdasarkan peran Mudabbir
+    // 🧑‍🏫 Role Mudabbir
     if (auth()->user()->hasRole('mudabbir')) {
         $teacher = auth()->user()->teacher;
         if ($teacher) {
@@ -55,7 +59,7 @@ public function index(Request $request)
         }
     }
 
-    // 🔍 Pencarian
+    // 🔍 Pencarian Umum
     if ($search) {
         $query->where(function($q) use ($search) {
             $q->where('name', 'like', '%' . $search . '%')
@@ -65,44 +69,47 @@ public function index(Request $request)
         });
     }
 
-    // 👦🏻 Filter gender
+    // 👦🏻 Gender
     if ($genderFilter && in_array($genderFilter, ['Laki-laki', 'Perempuan'])) {
         $query->where('gender', $genderFilter);
     }
 
-    // 🟢 Filter status
+    // 🟢 Status
     if ($status && in_array($status, ['aktif', 'non-aktif', 'lulus'])) {
         $query->where('status', $status);
     }
 
-    // 📘 Filter Type
+    // 📘 Type & Period
     if ($type && in_array($type, ['Asrama', 'Pulang-Pergi'])) {
         $query->where('type', $type);
 
-        // Tambahkan filter period jika type Pulang-Pergi
         if ($type === 'Pulang-Pergi' && $halaqoh_period && in_array($halaqoh_period, ['Sore', 'Malam'])) {
             $query->where('halaqoh_period', $halaqoh_period);
         }
     }
 
-    // 📅 Filter Tahun Masuk
+    // 📅 Tahun Masuk
     if ($admissionYear && is_numeric($admissionYear) && strlen($admissionYear) === 4) {
         $query->where('admission_year', $admissionYear);
     }
-    
 
-    // 🔃 Sorting & Pagination
+    // 🔃 Pagination
     $allStudents = $query->orderBy($sortBy, $sortOrder)
                          ->paginate($perPage)
-                         ->appends($request->query()); // Keep query params in pagination links
+                         ->appends($request->query());
 
+    // 📦 Data Dropdown
+    $halaqohPeriods = ['Sore', 'Malam'];
+    $admissionYears = Student::pluck('admission_year')->filter()->unique()->sortDesc()->values();
+
+    // 🖼️ Kirim ke View
     return view('admin.students.index', compact(
         'allStudents', 'sortBy', 'sortOrder', 'perPage',
-        'search', 'genderFilter', 'status', 'type', 'halaqoh_period', 'admissionYear'
+        'search', 'genderFilter', 'status', 'type',
+        'halaqoh_period', 'admissionYear',
+        'halaqohPeriods', 'admissionYears'
     ));
 }
-
-
 
     /**
      * Show the form for creating a new resource.
