@@ -132,24 +132,23 @@
 
 {{-- Kode Alpine.js untuk komponen cropper --}}
 <script>
-function profilePhotoCropper() {
-    return {
-        open: false,
-        imageUrl: '',
-        cropper: null,
+    function profilePhotoCropper() {
+        return {
+            open: false,
+            imageUrl: '',
+            cropper: null,
 
-        init() {
-            // bisa ditambahkan jika diperlukan
-        },
+            init() {
+                // Optional
+            },
 
-        handleFileChange(event) {
-            const file = event.target.files[0];
-            if (!file) return;
+            handleFileChange(event) {
+                const file = event.target.files[0];
+                if (!file || !file.type.startsWith('image/')) return;
 
-            this.open = true;
-            const reader = new FileReader();
-            reader.onload = (e) => {
-                this.imageUrl = e.target.result;
+                this.imageUrl = URL.createObjectURL(file);
+                this.open = true;
+
                 this.$nextTick(() => {
                     if (this.cropper) {
                         this.cropper.destroy();
@@ -157,33 +156,32 @@ function profilePhotoCropper() {
                     this.cropper = new Cropper(this.$refs.image, {
                         aspectRatio: 1,
                         viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
                     });
                 });
-            };
-            reader.readAsDataURL(file);
-        },
+            },
 
-        applyCrop() {
-            if (!this.cropper) return;
-            const canvas = this.cropper.getCroppedCanvas({
-                width: 400,
-                height: 400,
-            });
-            document.getElementById('cropped_photo_data').value = canvas.toDataURL();
-            this.open = false;
-        },
+            applyCrop() {
+                const canvas = this.cropper.getCroppedCanvas({ width: 256, height: 256 });
+                const croppedImage = canvas.toDataURL('image/png');
+                document.getElementById('cropped_photo_data').value = croppedImage;
 
-        resetCropper() {
-            this.open = false;
-            if (this.cropper) {
-                this.cropper.destroy();
-                this.cropper = null;
+                this.resetCropper();
+            },
+
+            resetCropper() {
+                this.open = false;
+                this.imageUrl = '';
+                if (this.cropper) {
+                    this.cropper.destroy();
+                    this.cropper = null;
+                }
+                document.getElementById('photo').value = '';
             }
-        },
-    };
-}
+        }
+    }
 </script>
-
 
 </body>
 </html>
