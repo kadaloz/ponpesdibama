@@ -26,27 +26,27 @@
                             $translatedStatus = 'Telah Dikirim';
                             break;
                         case 'pending':
-                            $statusColor = 'bg-blue-500';
+                            $statusColor = 'bg-blue-200';
                             $translatedStatus = 'Menunggu';
                             break;
                         case 're-registered':
-                            $statusColor = 'bg-blue-500';
+                            $statusColor = 'bg-blue-200';
                             $translatedStatus = 'Daftar Ulang';
                             break;
                         case 'under review':
-                            $statusColor = 'bg-yellow-500';
+                            $statusColor = 'bg-yellow-200';
                             $translatedStatus = 'Sedang Ditinjau';
                             break;
                         case 'verified':
-                            $statusColor = 'bg-indigo-500';
+                            $statusColor = 'bg-indigo-200';
                             $translatedStatus = 'Terverifikasi';
                             break;
                         case 'accepted':
-                            $statusColor = 'bg-green-500';
+                            $statusColor = 'bg-green-200';
                             $translatedStatus = 'Diterima';
                             break;
                         case 'rejected':
-                            $statusColor = 'bg-red-500';
+                            $statusColor = 'bg-red-200';
                             $translatedStatus = 'Ditolak';
                             break;
                         default:
