@@ -51,25 +51,13 @@ try {
 } catch (\Throwable $e) {
     $photos = [];
 }
-
 @endphp
 
 {{-- Foto Pondok --}}
 <div>
-    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700">Foto Pondok (Maksimal 5)</label>
-
-    <div class="mt-1 flex items-center space-x-2">
-        <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
-            class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
-
-        @if (!empty($photos))
-            <button type="submit" name="delete_photos" value="1"
-                onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
-                class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
-                Hapus Semua
-            </button>
-        @endif
-    </div>
+    <label for="pondok_photos[]" class="block text-sm font-medium text-gray-700 mb-1">Foto Pondok (Maksimal 5)</label>
+    <input type="file" name="pondok_photos[]" id="pondok_photos" multiple accept="image/*"
+        class="block w-full text-sm text-gray-500 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-teal-50 file:text-teal-700 hover:file:bg-teal-100">
 
     @error('pondok_photos')
         <p class="text-red-500 text-xs mt-1">{{ $message }}</p>
@@ -77,26 +65,46 @@ try {
 
     @if (!empty($photos))
         <div class="mt-4">
-            <p class="text-sm font-medium text-gray-700">Foto yang sudah ada:</p>
-            <div class="mt-2 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                @foreach ($photos as $photo)
-                    <div class="relative">
-                        @foreach ($photos as $photo)
-    @if(is_string($photo))
-        <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
-             class="rounded-lg w-full h-32 object-cover shadow-md">
-    @endif
-@endforeach
-
-
+            <p class="text-sm font-medium text-gray-700 mb-2">Foto yang sudah ada:</p>
+            <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+                @foreach ($photos as $idx => $photo)
+                    @if(is_string($photo))
+                    <div class="relative group border rounded-lg overflow-hidden shadow hover:shadow-lg transition">
+                        <a href="{{ asset('storage/' . $photo) }}" target="_blank">
+                            <img src="{{ asset('storage/' . $photo) }}" alt="Foto Pondok"
+                                class="w-full h-32 object-cover transition-transform duration-200 group-hover:scale-105">
+                        </a>
+                        <form action="{{ route('admin.settings.delete_photo') }}" method="POST" class="absolute top-2 right-2">
+                            @csrf
+                            @method('DELETE')
+                            <input type="hidden" name="photo_index" value="{{ $idx }}">
+                            <button type="submit"
+                                onclick="return confirm('Hapus foto ini?')"
+                                class="bg-red-600 bg-opacity-80 hover:bg-opacity-100 text-white rounded-full p-1 shadow focus:outline-none focus:ring-2 focus:ring-red-400"
+                                title="Hapus Foto">
+                                <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" fill="none"
+                                    viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                                        d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                            </button>
+                        </form>
                     </div>
+                    @endif
                 @endforeach
             </div>
+            <form action="{{ route('admin.settings.delete_all_photos') }}" method="POST" class="mt-4">
+                @csrf
+                @method('DELETE')
+                <button type="submit"
+                    onclick="return confirm('Apakah Anda yakin ingin menghapus semua foto?')"
+                    class="inline-flex items-center px-3 py-2 border border-transparent text-sm leading-4 font-medium rounded-md text-red-700 bg-red-100 hover:bg-red-200 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500">
+                    Hapus Semua Foto
+                </button>
+            </form>
         </div>
     @endif
 </div>
-
-
 
             {{-- Kontak --}}
             <h4 class="text-xl font-bold text-gray-800 pt-4 border-t border-gray-200">Informasi Kontak</h4>
