@@ -86,22 +86,24 @@
         </div>
     </form>
 
-   <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" x-show="open" x-cloak>
-    <div class="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
-        <h3 class="text-lg font-bold mb-4">Crop Foto</h3>
-        <div class="max-h-96 overflow-hidden">
-            <img x-ref="image" :src="imageUrl" alt="Preview" class="block max-w-full h-auto rounded">
-        </div>
-        <div class="mt-4 flex justify-end gap-2">
-            <button type="button" @click="applyCrop()"
-                    class="px-4 py-2 text-sm text-white bg-violet-600 hover:bg-violet-700 rounded">
-                Crop & Simpan
-            </button>
-            <button type="button" @click="resetCropper()"
-                    class="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded">
-                Batal
-            </button>
+    {{-- Modal Crop --}}
+    <div class="fixed inset-0 bg-black/50 z-50 flex items-center justify-center p-4" x-show="open" x-cloak>
+        <div class="bg-white p-6 rounded-lg shadow-xl max-w-lg w-full mx-4">
+            <h3 class="text-lg font-bold mb-4">Crop Foto</h3>
+            <div class="max-h-96 overflow-hidden">
+                <img x-ref="image" :src="imageUrl" alt="Preview" class="block max-w-full h-auto rounded">
+            </div>
+            <div class="mt-4 flex justify-end gap-2">
+                
+                <button type="button" @click="resetCropper()"
+                        class="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded">
+                    Batal
+                </button>
+                <button type="button" @click="applyCrop()"
+                        class="px-4 py-2 text-sm text-white bg-teal-700 hover:bg-teal-200 rounded">
+                    Crop
+                </button>
+            </div>
         </div>
     </div>
-</div>
 </section>
