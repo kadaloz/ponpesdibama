@@ -83,21 +83,21 @@ Route::get('/', function () {
     $galleries = Gallery::published()->latest()->limit(3)->get();
 
     // Kirim ke view
-    return view('home', compact(
-        'latestNews',
-        'programs',
-        'aboutUsContent',
-        'missionQuote',
-        'contactAddress',
-        'contactPhone',
-        'contactEmail',
-        'pondokPhotos',
-        'locationMapUrl',
-        'isPpdbOpen',
-        'ppdbAcademicYear',
-        'ctaEnrollmentHeading',
-        'galleries'
-    ));
+    dd(view('home', compact(
+    'latestNews',
+    'programs',
+    'aboutUsContent',
+    'missionQuote',
+    'contactAddress',
+    'contactPhone',
+    'contactEmail',
+    'pondokPhotos',
+    'locationMapUrl',
+    'isPpdbOpen',
+    'ppdbAcademicYear',
+    'ctaEnrollmentHeading',
+    'galleries'
+)));
 })->name('home');
 
 // Route untuk menampilkan daftar semua berita publik (dengan filter dan pencarian)
