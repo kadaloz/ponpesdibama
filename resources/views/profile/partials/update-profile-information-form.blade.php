@@ -17,10 +17,22 @@
         <div class="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded-lg my-4">
             {{ session('error') }}
         </div>
-    </div>
     @endif
 
-    <form method="post" action="{{ route('admin.profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data" x-data="{ open: false, imageUrl: '', cropper: null }">
+    <form method="post" action="{{ route('admin.profile.update') }}" class="mt-6 space-y-6" enctype="multipart/form-data" x-data="{ 
+        open: false, 
+        imageUrl: '', 
+        cropper: null,
+        resetCropper() {
+            this.open = false;
+            this.imageUrl = '';
+            if (this.cropper) {
+                this.cropper.destroy();
+                this.cropper = null;
+            }
+            document.getElementById('photo').value = '';
+        }
+    }">
         @csrf
         @method('patch')
 
@@ -53,7 +65,7 @@
                                 open = true;
                                 $nextTick(() => {
                                     cropper = new Cropper($refs.image, {
-                                        aspectRatio: 1, // Rasio 1:1 untuk foto profil
+                                        aspectRatio: 1,
                                         viewMode: 1,
                                         autoCropArea: 0.8,
                                         movable: false,
@@ -110,20 +122,13 @@
             <img x-ref="image" :src="imageUrl" alt="Crop Image" class="block max-w-full h-auto">
         </div>
         <div class="mt-4 flex justify-end gap-2">
-            <button type="button" @click="
-                open = false;
-                imageUrl = '';
-                cropper.destroy();
-                document.getElementById('photo').value = '';
-            " class="px-4 py-2 text-sm font-semibold rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300">
+            <button type="button" @click="resetCropper()" class="px-4 py-2 text-sm font-semibold rounded-md text-gray-700 bg-gray-200 hover:bg-gray-300">
                 Batal
             </button>
             <button type="button" @click="
                 const croppedData = cropper.getCroppedCanvas({ width: 256, height: 256 }).toDataURL();
                 document.getElementById('cropped_photo_data').value = croppedData;
-                open = false;
-                imageUrl = '';
-                cropper.destroy();
+                resetCropper();
             " class="px-4 py-2 text-sm font-semibold rounded-md text-white bg-violet-600 hover:bg-violet-700">
                 Crop & Simpan
             </button>
