@@ -113,7 +113,7 @@
         </h2>
         <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
             <!-- Swiper Image Carousel -->
-            <div class="relative rounded-2xl shadow-2xl border-8 border-yellow-200 overflow-hidden">
+            <div class="relative rounded-2xl shadow-2xl border-8 border-teal-100 bg-teal-50/60 overflow-hidden">
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <div class="swiper-wrapper">
                         @forelse ($pondokPhotos as $photo)
