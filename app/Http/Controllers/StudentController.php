@@ -443,7 +443,7 @@ public function getAvailableStudents(Request $request)
 {
     $students = Student::whereDoesntHave('currentPlacement')
                 ->where('status', 'aktif')
-                ->orderBy('name')
+                ->orderBy('nis')
                 ->select('id', 'name', 'nis', 'gender')
                 ->get();
 
