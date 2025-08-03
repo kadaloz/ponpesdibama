@@ -178,4 +178,37 @@ foreach ($oldPhotosPaths as $item) {
     return back()->with('success', 'Foto berhasil dihapus.');
 }
 
+
+    public function destroy(Request $request)
+    {
+        // Hapus semua file foto pondok jika ada
+        $pondokPhotos = Setting::where('key', 'pondok_photos')->first();
+        if ($pondokPhotos) {
+            $paths = json_decode($pondokPhotos->value, true) ?? [];
+            foreach ($paths as $path) {
+                if (Storage::disk('public')->exists($path)) {
+                    Storage::disk('public')->delete($path);
+                }
+            }
+        }
+
+        // Hapus semua entri pengaturan
+        Setting::truncate();
+
+        // Catat audit trail jika ada
+        if (function_exists('record_audit')) {
+            record_audit(
+                'delete_settings',
+                'Semua pengaturan berhasil dihapus oleh ' . (auth()->user()->name ?? 'Guest'),
+                auth()->user()->id ?? null,
+                auth()->user()->name ?? 'Guest',
+                $request->ip(),
+                $request->userAgent()
+            );
+        }
+
+        return redirect()->route('admin.settings.edit')->with('success', 'Semua pengaturan berhasil dihapus.');
+    }
+
+
 }
