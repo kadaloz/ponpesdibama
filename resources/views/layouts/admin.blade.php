@@ -127,62 +127,61 @@
 <script src="https://cdn.jsdelivr.net/npm/tom-select@2.2.2/dist/js/tom-select.complete.min.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js" defer></script>
 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css">
 <script src="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.js"></script>
-
+<link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.6.1/cropper.min.css" rel="stylesheet" />
 
 <script>
-function profilePhotoCropper() {
-    return {
-        open: false,
-        imageUrl: '',
-        cropper: null,
+    function profilePhotoCropper() {
+        return {
+            open: false,
+            imageUrl: '',
+            cropper: null,
 
-        init() {
-            this.resetCropper();
-        },
+            init() {
+                // Optional: bisa isi init kalau mau
+            },
 
-        handleFileChange(event) {
-            const file = event.target.files[0];
-            if (!file || !file.type.startsWith('image/')) {
-                alert('Mohon unggah file gambar yang valid.');
-                return;
-            }
+            handleFileChange(event) {
+                const file = event.target.files[0];
+                if (!file || !file.type.startsWith('image/')) return;
 
-            this.imageUrl = URL.createObjectURL(file);
-            this.open = true;
+                this.imageUrl = URL.createObjectURL(file);
+                this.open = true;
 
-            this.$nextTick(() => {
-                if (this.cropper) this.cropper.destroy();
-                this.cropper = new Cropper(this.$refs.image, {
-                    aspectRatio: 1,
-                    viewMode: 1,
-                    autoCropArea: 0.8,
-                    movable: false,
-                    zoomable: false,
+                this.$nextTick(() => {
+                    if (this.cropper) {
+                        this.cropper.destroy();
+                    }
+                    this.cropper = new Cropper(this.$refs.image, {
+                        aspectRatio: 1,
+                        viewMode: 1,
+                        autoCropArea: 1,
+                        responsive: true,
+                    });
                 });
-            });
-        },
+            },
 
-        applyCrop() {
-            const canvas = this.cropper.getCroppedCanvas({ width: 256, height: 256 });
-            const base64 = canvas.toDataURL('image/png');
-            document.getElementById('cropped_photo_data').value = base64;
-            this.resetCropper();
-        },
+            applyCrop() {
+                const canvas = this.cropper.getCroppedCanvas({ width: 256, height: 256 });
+                const croppedImage = canvas.toDataURL('image/png');
+                document.getElementById('cropped_photo_data').value = croppedImage;
 
-        resetCropper() {
-            this.open = false;
-            this.imageUrl = '';
-            if (this.cropper) {
-                this.cropper.destroy();
-                this.cropper = null;
+                this.resetCropper();
+            },
+
+            resetCropper() {
+                this.open = false;
+                this.imageUrl = '';
+                if (this.cropper) {
+                    this.cropper.destroy();
+                    this.cropper = null;
+                }
+                // Tidak reset file input agar tetap terkirim
             }
-            document.getElementById('photo').value = '';
         }
     }
-}
 </script>
+
 
 </body>
 </html>
