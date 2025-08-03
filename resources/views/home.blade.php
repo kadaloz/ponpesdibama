@@ -125,16 +125,16 @@
                 <div class="swiper mySwiper rounded-xl overflow-hidden">
                     <!-- Debug: Tampilkan path foto secara tekstual -->
                     <div class="swiper-wrapper">
-                        @forelse ($pondokPhotos as $photo)
+                        
                             <div class="swiper-slide">
                                 <img src="{{ asset('storage/settings_images/X6SGcpa14K09uZwV632iftB3l4kC8UHjU4SAoYCC.jpg') }}" alt="Foto Pondok" />
                             </div>
-                        @empty
+                   
                         
                             <div class="swiper-slide">
                                 <img src="https://placehold.co/600x400/AED6F1/000000?text=Gambar+Pondok+Utama" alt="Default" class="w-full h-full object-cover" />
                             </div>
-                        @endforelse
+                  
                     </div>
                     <!-- Pagination Dots -->
                     <div class="swiper-pagination mt-4"></div>
