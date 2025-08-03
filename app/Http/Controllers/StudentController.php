@@ -26,6 +26,7 @@ public function index(Request $request)
     $status = $request->query('status');
     $type = $request->query('type');
     $halaqoh_period = $request->query('halaqoh_period'); // Tambah period
+    $admissionYear = $request->query('admission_year');
 
     $validSortColumns = ['id', 'nis', 'name', 'gender', 'admission_year', 'status', 'category', 'type', 'created_at'];
     if (!in_array($sortBy, $validSortColumns)) {
@@ -84,6 +85,12 @@ public function index(Request $request)
         }
     }
 
+    // 📅 Filter Tahun Masuk
+    if ($admissionYear && is_numeric($admissionYear) && strlen($admissionYear) === 4) {
+        $query->where('admission_year', $admissionYear);
+    }
+    
+
     // 🔃 Sorting & Pagination
     $allStudents = $query->orderBy($sortBy, $sortOrder)
                          ->paginate($perPage)
@@ -91,7 +98,7 @@ public function index(Request $request)
 
     return view('admin.students.index', compact(
         'allStudents', 'sortBy', 'sortOrder', 'perPage',
-        'search', 'genderFilter', 'status', 'type', 'halaqoh_period'
+        'search', 'genderFilter', 'status', 'type', 'halaqoh_period', 'admissionYear'
     ));
 }
 
