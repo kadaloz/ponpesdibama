@@ -364,10 +364,10 @@ public function destroy(Student $student)
      */
 public function export(Request $request)
 {
-    // Query untuk mendapatkan data santri  
     $query = Student::query()
         ->with(['applicant', 'program', 'halaqohs', 'placements']);
 
+    // 🔍 Pencarian Umum
     if ($request->filled('search')) {
         $query->where(function ($q) use ($request) {
             $q->where('name', 'like', '%' . $request->search . '%')
@@ -377,30 +377,44 @@ public function export(Request $request)
         });
     }
 
-    if ($request->filled('status')) {
-        $query->where('status', $request->status);
-    }
-
-    if ($request->filled('gender_filter')) {
+    // 👦🏻 Gender
+    if ($request->filled('gender_filter') && in_array($request->gender_filter, ['Laki-laki', 'Perempuan'])) {
         $query->where('gender', $request->gender_filter);
     }
 
-    if ($request->filled('type')) {
+    // 🟢 Status
+    if ($request->filled('status') && in_array($request->status, ['aktif', 'non-aktif', 'lulus'])) {
+        $query->where('status', $request->status);
+    }
+
+    // 📘 Type & Period
+    if ($request->filled('type') && in_array($request->type, ['Asrama', 'Pulang-Pergi'])) {
         $query->where('type', $request->type);
 
-        // Jika Pulang-Pergi, cek filter period
-        if ($request->type === 'Pulang-Pergi' && $request->filled('halaqoh_period')) {
+        if ($request->type === 'Pulang-Pergi' &&
+            $request->filled('halaqoh_period') &&
+            in_array($request->halaqoh_period, ['Sore', 'Malam'])) {
             $query->where('halaqoh_period', $request->halaqoh_period);
         }
     }
 
+    // 📅 Tahun Masuk
+    if ($request->filled('admission_year') &&
+        is_numeric($request->admission_year) &&
+        strlen($request->admission_year) === 4) {
+        $query->where('admission_year', $request->admission_year);
+    }
+
+    // 📥 Ambil Data
     $students = $query->orderBy('name')->get();
 
-    // Format tanggal Indonesia: 2024-06-11 14:30:00 => 11-06-2024_14-30-00
+    // 📁 Nama File Dinamis
     $filename = 'Data-Santri-DIBAMA-' . now()->format('d-m-Y_H-i-s') . '.xlsx';
 
+    // 🚀 Ekspor Excel
     return Excel::download(new StudentsExport($students), $filename);
 }
+
     /**
      * Import students data from Excel.
      */
