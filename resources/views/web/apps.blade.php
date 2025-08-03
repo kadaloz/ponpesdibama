@@ -19,7 +19,7 @@
     <meta property="og:title" content="@yield('title', 'Pondok Pesantren Dibama - Pendidikan Islam Unggul')"/>
     <meta property="og:description" content="@yield('meta_description')"/>
     {{-- Ensure 'og-default.jpg' exists in public/storage/images/ --}}
-    <meta property="og:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
+    <meta property="og:image" content="@yield('meta_image', asset('storage/images/og-default.png'))"/>
     <meta property="og:url" content="{{ url()->current() }}"/>
     <meta property="og:type" content="website"/>
 
@@ -27,7 +27,7 @@
     <meta name="twitter:card" content="summary_large_image"/>
     <meta name="twitter:title" content="@yield('title')"/>
     <meta name="twitter:description" content="@yield('meta_description')"/>
-    <meta name="twitter:image" content="@yield('meta_image', asset('storage/images/og-default.jpg'))"/>
+    <meta name="twitter:image" content="@yield('meta_image', asset('storage/images/og-default.png'))"/>
 
     {{-- Favicon: Provide multiple sizes for better compatibility --}}
     {{-- Ensure 'dibama.ico' and 'dibama.png' exist in public/storage/images/logo/ --}}
@@ -44,7 +44,7 @@
             '@type' => 'EducationalOrganization',
             'name' => 'Pondok Pesantren Diniyah Baitul Makmur Aikmel',
             'url' => url('/'),
-            'logo' => asset('storage/images/logo/dibama.png'),
+            'logo' => asset('storage/images/logo/dibama.ico'),
             'description' => 'Website resmi Pondok Pesantren DIBAMA Aikmel, lembaga pendidikan Islam unggul membina generasi Qur\'ani dan berakhlak mulia.',
             'contactPoint' => [
                 '@type' => 'ContactPoint',
