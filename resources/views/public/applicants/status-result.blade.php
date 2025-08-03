@@ -9,7 +9,7 @@
     <div class="container mx-auto px-4 max-w-2xl">
         <div class="bg-white p-8 md:p-10 rounded-xl shadow-lg border border-gray-200">
             <div class="text-center mb-6">
-                <h2 class="text-3xl font-bold text-teal mb-2">Status Pendaftaran</h2>
+                <h2 class="text-3xl font-bold text-teal-700 mb-2">Status Pendaftaran</h2>
                 <p class="text-gray-600">Informasi pendaftaran Anda di Ponpes DIBAMA.</p>
             </div>
 
