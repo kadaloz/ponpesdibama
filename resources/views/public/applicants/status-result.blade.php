@@ -75,7 +75,7 @@
             </div>
 
             <div class="mt-8 flex justify-center">
-                <a href="{{ route('ppdb.applicants.status.form') }}" class="px-6 py-3 bg-teal-600 text-white font-semibold rounded-full shadow-lg hover:bg-teal-700 transition-colors">
+                <a href="{{ route('ppdb.applicants.status-form') }}" class="px-6 py-3 bg-teal-600 text-white font-semibold rounded-full shadow-lg hover:bg-teal-700 transition-colors">
                     Cek Nomor Lain
                 </a>
             </div>
