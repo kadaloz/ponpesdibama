@@ -47,9 +47,8 @@ class StudentsExport implements
             [
                 'No', 'NIS', 'Nama Lengkap', 'Jenis Kelamin', 'Tempat Lahir',
                 'Tanggal Lahir', 'Alamat Lengkap', 'Desa/Kelurahan', 'Kecamatan',
-                'Kabupaten/Kota', 'Provinsi', 'Nama Orang Tua/Wali', 'No. HP Orang Tua/Wali',
-                'Tahun Masuk', 'Status', 'Program', 'Tipe', 'Period', 'Tanggal Dibuat',
-                'Tanggal Diperbarui'
+                'Kabupaten/Kota', 'Provinsi', 'Nama Orang Tua/Wali', 'Pekerjaan Orang Tua/Wali', 'No. HP Orang Tua/Wali',
+                'Tahun Masuk', 'Status', 'Program', 'Tipe', 'Periode Halaqoh'
             ]
         ];
     }
@@ -69,14 +68,14 @@ class StudentsExport implements
             $student->city ?? '-',
             $student->province ?? '-',
             $student->parent_name,
+            $student->parent_occupation ?? '-',
             $student->parent_phone,
             $student->admission_year,
             ucfirst($student->status),
             $student->program?->name ?? '-',
             $student->type,
             $student->halaqoh_period ?? '-',
-            optional($student->created_at)->format('d-m-Y H:i:s'),
-            optional($student->updated_at)->format('d-m-Y H:i:s'),
+
         ];
     }
 
