@@ -102,7 +102,10 @@
                         class="px-4 py-2 text-sm text-gray-700 bg-gray-200 hover:bg-gray-300 rounded">
                     Batal
                 </button>
-
+                 <button type="button" @click="applyCrop()"
+                        class="px-4 py-2 text-sm text-white bg-violet-600 hover:bg-violet-700 rounded">
+                    Crop & Simpan
+                </button>
 
             </div>
         </div>
