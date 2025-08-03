@@ -7,14 +7,7 @@
 @php
     use App\Models\Program;
     $programOptions = \App\Models\Program::orderBy('name')->get();
-    $periodOptions = ['Sore', 'Malam'];
-    $admissionYears = \App\Models\Student::selectRaw('YEAR(admission_year) as year')
-        ->distinct()
-        ->orderBy('year', 'desc')
-        ->pluck('year');
-    $admissionYears = $admissionYears->map(function ($year) {
-        return (string) $year; // Pastikan tahun dalam format string
-    });
+
 @endphp
 
 <div class="bg-white overflow-hidden shadow-sm sm:rounded-lg">
