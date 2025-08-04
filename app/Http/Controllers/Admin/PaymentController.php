@@ -135,7 +135,15 @@ class PaymentController extends Controller
 
     public function printReceipt(Payment $payment)
 {
-    $pdf = Pdf::loadView('admin.payments.receipt', compact('payment'));
-    return $pdf->stream('struk_pembayaran_'.$payment->id.'.pdf');
+    // Buat QR code dalam bentuk PNG (base64)
+    $qr = base64_encode(
+        QrCode::format('png')
+            ->size(200)
+            ->generate(url('/verifikasi/pembayaran/' . $payment->id))
+    );
+
+    // Kirim $qr ke view
+    return Pdf::loadView('admin.payments.receipt', compact('payment', 'qr'))
+              ->stream('struk_pembayaran_' . $payment->id . '.pdf');
 }
 }
