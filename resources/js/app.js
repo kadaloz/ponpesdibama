@@ -18,6 +18,8 @@ Alpine.start();
 import flatpickr from "flatpickr";
 import "flatpickr/dist/flatpickr.min.css";
 import { Indonesian } from "flatpickr/dist/l10n/id.js";
+import monthSelectPlugin from "flatpickr/dist/plugins/monthSelect";
+import "flatpickr/dist/plugins/monthSelect/style.css";
 flatpickr.localize(Indonesian);
 
 // Swiper
@@ -37,6 +39,18 @@ document.addEventListener("DOMContentLoaded", () => {
         altInput: true,
         altFormat: "d F Y",
         maxDate: new Date(new Date().setFullYear(new Date().getFullYear() - 7)),
+        locale: Indonesian,
+    });
+
+    flatpickr("#month_picker", {
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: false,
+                dateFormat: "F Y", // Misal: Januari 2025
+                altFormat: "F Y",
+                theme: "light",
+            }),
+        ],
         locale: Indonesian,
     });
 

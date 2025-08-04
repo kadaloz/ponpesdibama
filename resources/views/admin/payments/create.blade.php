@@ -53,16 +53,16 @@
         </div>
 
         {{-- Bulan (jika perlu) --}}
-        <div class="mb-4">
-            <label for="month" class="block font-medium text-sm text-gray-700">Bulan (opsional)</label>
-            <input type="text" name="month" id="month" placeholder="Misal: Januari 2025"
-                   class="form-input w-full border-gray-300 rounded mt-1"
-                   value="{{ old('month') }}">
-            {{-- Tampilkan pesan error di bawah field --}}
-             @error('month')
-                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
-             @enderror
-        </div>
+<div class="mb-4">
+    <label for="month" class="block font-medium text-sm text-gray-700">Bulan (opsional)</label>
+    <input type="text" name="month" id="month_picker" placeholder="Misal: Januari 2025"
+           class="form-input w-full border-gray-300 rounded mt-1"
+           value="{{ old('month', $payment->month ?? '') }}">
+    @error('month')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
         {{-- Nominal --}}
         <div class="mb-4">
