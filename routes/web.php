@@ -317,6 +317,7 @@ Route::get('/api/available-students', function (Request $request) {
 
     Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit')->middleware('permission:edit payments');
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update')->middleware('permission:edit payments');
+    Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show')->middleware('permission:view payments');
 
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete payments');
 

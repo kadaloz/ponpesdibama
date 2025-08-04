@@ -97,6 +97,10 @@
                             <a href="{{ route('admin.payments.receipt', $payment->id) }}"
                                 class="text-sm text-teal-600 hover:underline" target="_blank">🧾 Cetak Struk
                             </a>
+                            {{-- Tombol Detail --}}
+                            <a href="{{ route('admin.payments.show', $payment->id) }}"
+                                class="text-sm text-blue-600 hover:underline">Detail
+                            </a> 
 
                             @can('edit payments')
                                 <a href="{{ route('admin.payments.edit', $payment) }}"
