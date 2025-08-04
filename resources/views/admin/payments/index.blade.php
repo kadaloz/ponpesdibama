@@ -148,11 +148,43 @@
 
 <div class="flex justify-between items-center mt-6">
     @if ($payments->count())
-        <div class="text-lg font-semibold text-gray-700">
-            Total Seluruhnya: <span class="text-teal-600">Rp {{ number_format($total, 0, ',', '.') }}</span>
+        <div class="flex items-center text-lg font-semibold text-gray-700">
+            Total Seluruhnya:
+            <span id="totalAmount" class="text-teal-600 font-bold ml-2 blur-sm transition-all duration-300">
+                Rp {{ number_format($total, 0, ',', '.') }}
+            </span>
+            <button id="toggleTotal" class="ml-2 text-gray-400 hover:text-gray-600 focus:outline-none transition-colors">
+                <svg id="eyeOpenIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                  <circle cx="12" cy="12" r="3"/>
+                </svg>
+                <svg id="eyeClosedIcon" xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 hidden" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M17.94 17.94A10.07 10.07 0 0112 20c-7 0-11-8-11-8a18.45 18.45 0 015.06-5.94M9.9 4.24A1.9 1.9 0 0112 4c7 0 11 8 11 8a18.45 18.45 0 01-2.92 5.06M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                  <line x1="1" y1="1" x2="23" y2="23"/>
+                </svg>
+            </button>
         </div>
     @endif
     {{ $payments->withQueryString()->links() }}
 </div>
 
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const toggleButton = document.getElementById('toggleTotal');
+        const totalAmountSpan = document.getElementById('totalAmount');
+        const eyeOpenIcon = document.getElementById('eyeOpenIcon');
+        const eyeClosedIcon = document.getElementById('eyeClosedIcon');
+
+        if (toggleButton && totalAmountSpan && eyeOpenIcon && eyeClosedIcon) {
+            toggleButton.addEventListener('click', function() {
+                // Mengganti kelas blur pada teks total
+                totalAmountSpan.classList.toggle('blur-sm');
+
+                // Mengganti ikon mata
+                eyeOpenIcon.classList.toggle('hidden');
+                eyeClosedIcon.classList.toggle('hidden');
+            });
+        }
+    });
+</script>
 @endsection
