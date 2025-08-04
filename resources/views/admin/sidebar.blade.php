@@ -129,7 +129,7 @@
                 @can('view payments')
                     <li>
                         <a href="{{ route('admin.payments.index') }}" class="flex items-center px-4 py-2 rounded-lg hover:bg-teal-700 hover:shadow-md {{ request()->routeIs('admin.payments.*') ? 'bg-teal-700 text-white shadow-md' : 'text-teal-100' }}">
-                            <x-heroicon-o-cash class="w-5 h-5 mr-2" /> Manajemen Pembayaran
+                            <x-heroicon-o-banknotes class="w-5 h-5 mr-2" /> Manajemen Pembayaran
                         </a>
                     </li>
                 @endcan
