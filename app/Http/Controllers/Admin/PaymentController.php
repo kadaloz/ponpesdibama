@@ -44,19 +44,33 @@ class PaymentController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'student_id' => 'required|exists:students,id',
-            'category_id' => 'required|exists:payment_categories,id',
-            'month' => 'nullable|string|max:20',
-            'paid_at' => 'required|date',
-            'amount' => 'required|numeric|min:1000',
-            'method' => 'nullable|string|max:50',
-            'note' => 'nullable|string',
+        'student_id' => 'required|exists:students,id',
+        'category_id' => 'required|exists:payment_categories,id',
+        'month' => 'nullable|string|max:20',
+        'paid_at' => 'required|date',
+        'amount' => 'required|numeric|min:1000',
+        'method' => 'nullable|string|max:50',
+        'note' => 'nullable|string',
+    ]);
+
+    // ✅ Cek duplikat berdasarkan student + category + month
+    $exists = Payment::where('student_id', $validated['student_id'])
+        ->where('category_id', $validated['category_id'])
+        ->when($validated['month'], function ($query, $month) {
+            $query->where('month', $month);
+        })
+        ->exists();
+
+    if ($exists) {
+        throw ValidationException::withMessages([
+            'month' => 'Pembayaran untuk kategori dan bulan ini sudah pernah dilakukan oleh santri yang sama.',
         ]);
+    }
 
-        Payment::create($validated);
+    Payment::create($validated);
 
-        return redirect()->route('admin.payments.index')
-            ->with('success', 'Pembayaran berhasil ditambahkan.');
+    return redirect()->route('admin.payments.index')
+        ->with('success', 'Pembayaran berhasil ditambahkan.');
     }
 
     public function show(Payment $payment)
@@ -74,7 +88,7 @@ class PaymentController extends Controller
 
     public function update(Request $request, Payment $payment)
     {
-        $validated = $request->validate([
+       $validated = $request->validate([
         'student_id' => 'required|exists:students,id',
         'category_id' => 'required|exists:payment_categories,id',
         'month' => 'nullable|string|max:20',
@@ -83,6 +97,21 @@ class PaymentController extends Controller
         'method' => 'nullable|string|max:50',
         'note' => 'nullable|string',
     ]);
+
+    // ✅ Cek duplikat — abaikan record ini sendiri
+    $exists = Payment::where('id', '!=', $payment->id) // exclude record yg sedang diupdate
+        ->where('student_id', $validated['student_id'])
+        ->where('category_id', $validated['category_id'])
+        ->when($validated['month'], function ($query, $month) {
+            $query->where('month', $month);
+        })
+        ->exists();
+
+    if ($exists) {
+        throw ValidationException::withMessages([
+            'month' => 'Pembayaran untuk kategori dan bulan ini sudah pernah dilakukan oleh santri yang sama.',
+        ]);
+    }
 
     $payment->update($validated);
 

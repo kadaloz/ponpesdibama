@@ -20,17 +20,22 @@
         @csrf
 
         {{-- Pilih Santri --}}
-        <div class="mb-4">
-            <label for="student_id" class="block font-medium text-sm text-gray-700">Santri</label>
-            <select name="student_id" id="student_id" required class="form-select w-full border-gray-300 rounded mt-1">
-                <option value="">-- Pilih Santri --</option>
-                @foreach ($students as $student)
-                    <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
-                        {{ $student->name }} ({{ $student->nis ?? 'NIS-' . $student->id }})
-                    </option>
-                @endforeach
-            </select>
-        </div>
+<div class="mb-4">
+    <label for="student_id" class="block font-medium text-sm text-gray-700">Santri</label>
+    <select id="student_id" name="student_id" class="tomselect w-full" required>
+        <option value="">-- Pilih Santri --</option>
+        @foreach ($students as $student)
+            <option value="{{ $student->id }}" {{ old('student_id') == $student->id ? 'selected' : '' }}>
+                {{ $student->name }} ({{ $student->nis ?? 'NIS-' . $student->id }})
+            </option>
+        @endforeach
+    </select>
+
+    @error('student_id')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
         {{-- Kategori Pembayaran --}}
         <div class="mb-4">
@@ -51,6 +56,10 @@
             <input type="text" name="month" id="month" placeholder="Misal: Januari 2025"
                    class="form-input w-full border-gray-300 rounded mt-1"
                    value="{{ old('month') }}">
+            {{-- Tampilkan pesan error di bawah field --}}
+             @error('month')
+                 <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+             @enderror
         </div>
 
         {{-- Nominal --}}
@@ -95,3 +104,14 @@
     </form>
 </div>
 @endsection
+
+@push('scripts')
+<script>
+    new TomSelect('#student_id', {
+        placeholder: 'Cari santri...',
+        allowEmptyOption: true,
+        maxOptions: 20,
+    });
+</script>
+@endpush
+
