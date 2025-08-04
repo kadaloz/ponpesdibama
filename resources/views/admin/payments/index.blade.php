@@ -55,6 +55,12 @@
                 </a>
             </div>
         </form>
+<a href="{{ route('admin.payments.export', request()->query()) }}"
+   class="inline-flex items-center px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
+   📥 Export Excel
+</a>
+
+
     </div>
 </div>
 

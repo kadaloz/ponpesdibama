@@ -168,7 +168,7 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     
 
     // Rute resource untuk Santri
-     Route::get('students/export/', [StudentController::class, 'export'])->name('students.export')->middleware('permission:export students');
+    Route::get('students/export/', [StudentController::class, 'export'])->name('students.export')->middleware('permission:export students');
     Route::post('students/import/', [StudentController::class, 'import'])->name('students.import')->middleware('permission:import students');
     Route::resource('students', StudentController::class)->middleware('permission:view students|create students|edit students|delete students|export students|import students');
    
@@ -320,6 +320,9 @@ Route::get('/api/available-students', function (Request $request) {
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show')->middleware('permission:view payments');
 
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete payments');
+    Route::get('payments/export', [PaymentController::class, 'export'])
+    ->middleware(['auth', 'permission:export payment'])
+    ->name('payments.export');
 
     Route::get('payments/{payment}/receipt', [PaymentController::class, 'printReceipt'])
     ->name('payments.receipt')

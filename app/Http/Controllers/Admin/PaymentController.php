@@ -9,6 +9,8 @@ use App\Models\Student;
 use App\Models\PaymentCategory;
 use Barryvdh\DomPDF\Facade\Pdf;
 use SimpleSoftwareIO\QrCode\Facades\QrCode;
+use App\Exports\PaymentsExport;
+use Maatwebsite\Excel\Facades\Excel;
 
 
 class PaymentController extends Controller
@@ -146,4 +148,18 @@ class PaymentController extends Controller
     return Pdf::loadView('admin.payments.receipt', compact('payment', 'qr'))
               ->stream('struk_pembayaran_' . $payment->id . '.pdf');
 }
+
+public function export(Request $request)
+{
+    $filters = [
+        'category' => $request->category_id,
+        'student' => $request->student_id,
+        'month' => $request->month,
+        'search' => $request->search,
+    ];
+
+    return Excel::download(new PaymentsExport($filters), 'laporan_pembayaran_' . now()->format('Ymd_His') . '.xlsx');
+}
+
+
 }
