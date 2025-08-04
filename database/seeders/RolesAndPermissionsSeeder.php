@@ -139,7 +139,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'manage own profile',
             'view halaqohs', 'create halaqohs', 'edit halaqohs', 'delete halaqohs', 'assign students to halaqoh', 'edit ppdb requirements',
             'view payment categories', 'create payment categories', 'edit payment categories', 'delete payment categories',
-            'view payments', 'create payments', 'edit payments', 'delete payments', 'export payment', 'print payment receipt',
+            'view payments', 'create payments', 'edit payments', 'delete payments', 'export payment',
             // Tambahkan izin Rooms & Placements jika Sekretaris perlu melihatnya
             // 'view rooms',
             // 'view placements',

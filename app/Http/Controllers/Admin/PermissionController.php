@@ -65,7 +65,7 @@ class PermissionController extends Controller
             } elseif (Str::startsWith($permission->name, ['view rooms', 'create rooms', 'edit rooms', 'delete rooms', 'view placements', 'create placements', 'edit placements', 'delete placements', 'view placements history', 'manage placements', 'view placements in room', 'view items', 'create items', 'edit items', 'delete items', 'assign items to room', 'assign items to student'])) {
                 $categorizedPermissions['Manajemen Asrama & Inventaris'][] = $permission;
             }
-            elseif (Str::startsWith($permission->name, ['view payments', 'create payments', 'edit payments', 'delete payments', 'export payments', 'print payment receipt'])) {
+            elseif (Str::startsWith($permission->name, ['view payments', 'create payments', 'edit payments', 'delete payments', 'export payments'])) {
                 $categorizedPermissions['Manajemen Payments'][] = $permission; // NEW: Kategori untuk pembayaran
             }
             // --- END NEW CATEGORY LOGIC ---
