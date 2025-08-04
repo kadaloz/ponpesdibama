@@ -153,7 +153,7 @@ public function export(Request $request)
 {
     $filters = [
         'category' => $request->category_id,
-        'student' => $request->student_id,
+        'student_name' => $request->student_name,
         'month' => $request->month,
         'search' => $request->search,
     ];
