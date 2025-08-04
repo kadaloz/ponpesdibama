@@ -4,6 +4,8 @@ import Alpine from "alpinejs";
 import collapse from "@alpinejs/collapse"; // ✅ Import plugin collapse
 import ppdbForm from "./components/ppdb-form";
 import "./components/wilayah";
+import TomSelect from "tom-select";
+import "tom-select/dist/css/tom-select.css";
 
 // Register Alpine & Plugin
 Alpine.plugin(collapse); // ✅ Aktifkan collapse plugin
@@ -54,6 +56,24 @@ document.addEventListener("DOMContentLoaded", () => {
                 nextEl: ".swiper-button-next",
                 prevEl: ".swiper-button-prev",
             },
+        });
+    }
+    // ✅ TomSelect for Santri
+    const santriSelect = document.querySelector("#student_id");
+    if (santriSelect) {
+        new TomSelect(santriSelect, {
+            placeholder: "Cari santri...",
+            allowEmptyOption: true,
+            maxOptions: 20,
+        });
+    }
+
+    // ✅ Tambahan jika ingin untuk kategori juga
+    const categorySelect = document.querySelector("#category_id");
+    if (categorySelect) {
+        new TomSelect(categorySelect, {
+            placeholder: "Pilih kategori...",
+            allowEmptyOption: true,
         });
     }
 });

@@ -23,11 +23,11 @@
         {{-- Pilih Santri --}}
 <div class="mb-4">
     <label for="student_id" class="block font-medium text-sm text-gray-700">Santri</label>
-    <select id="student_id" name="student_id" class="tomselect w-full" required>
+    <select name="student_id" id="student_id" required class="w-full">
         <option value="">-- Pilih Santri --</option>
         @foreach ($students as $student)
             <option value="{{ $student->id }}"
-                {{ old('student_id', $payment->student_id) == $student->id ? 'selected' : '' }}>
+                {{ old('student_id', $payment->student_id ?? '') == $student->id ? 'selected' : '' }}>
                 {{ $student->name }} ({{ $student->nis ?? 'NIS-' . $student->id }})
             </option>
         @endforeach
@@ -38,8 +38,7 @@
     @enderror
 </div>
 
-
-        {{-- Kategori Pembayaran --}}
+     {{-- Kategori Pembayaran --}}
         <div class="mb-4">
             <label for="category_id" class="block font-medium text-sm text-gray-700">Kategori Pembayaran</label>
             <select name="category_id" id="category_id" required class="form-select w-full border-gray-300 rounded mt-1">
