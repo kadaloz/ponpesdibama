@@ -320,9 +320,7 @@ Route::get('/api/available-students', function (Request $request) {
     Route::get('payments/{payment}', [PaymentController::class, 'show'])->name('payments.show')->middleware('permission:view payments');
 
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete payments');
-    Route::get('payments/export', [PaymentController::class, 'export'])
-    ->middleware(['auth', 'permission:export payment'])
-    ->name('payments.export');
+    Route::get('payments/export', [PaymentController::class, 'export'])->name('payments.export')->middleware('permission:export payment');
 
     Route::get('payments/{payment}/receipt', [PaymentController::class, 'printReceipt'])
     ->name('payments.receipt')

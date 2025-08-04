@@ -78,7 +78,7 @@
 
 
         {{-- Tanggal Bayar --}}
-        <<div class="mb-4">
+    <div class="mb-4">
     <label for="paid_at_picker" class="block font-medium text-sm text-gray-700">Tanggal Bayar</label>
     <input type="text" name="paid_at" id="paid_at_picker" required
            class="form-input w-full border-gray-300 rounded mt-1"
