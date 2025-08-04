@@ -41,6 +41,9 @@
     {{-- Tabel Info Pembayaran --}}
     <table>
         <tr>
+            <th>Nomor Induk Santri</th>
+            <td>{{ $payment->student->nis }}</td>
+        <tr>
             <th>Nama Santri</th>
             <td>{{ $payment->student->name }}</td>
         </tr>
