@@ -85,7 +85,7 @@
         </div>
 
         <div class="flex justify-end">
-            <a href="{{ route('payments.index') }}"
+            <a href="{{ route('admin.payments.index') }}"
                class="mr-4 px-4 py-2 bg-gray-200 text-gray-700 rounded hover:bg-gray-300">Batal</a>
             <button type="submit"
                     class="px-4 py-2 bg-teal-600 text-white rounded hover:bg-teal-700">
