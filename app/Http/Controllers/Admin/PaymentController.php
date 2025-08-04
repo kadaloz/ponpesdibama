@@ -45,7 +45,7 @@ class PaymentController extends Controller
     {
         $validated = $request->validate([
             'student_id' => 'required|exists:students,id',
-            'category' => 'required|string|max:100',
+            'category_id' => 'required|exists:payment_categories,id',
             'month' => 'nullable|string|max:20',
             'paid_at' => 'required|date',
             'amount' => 'required|numeric|min:1000',
