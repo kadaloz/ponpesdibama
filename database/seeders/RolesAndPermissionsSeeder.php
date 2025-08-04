@@ -119,7 +119,7 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'edit payment categories']);
         Permission::firstOrCreate(['name' => 'delete payment categories']);
         Permission::firstOrCreate(['name' => 'view payment history']); // Izin untuk melihat riwayat pembayaran santri
-        Permission::firstOrCreate(['name' => 'export payment']); // Izin untuk mengekspor data pembayaran
+        Permission::firstOrCreate(['name' => 'export payments']); // Izin untuk mengekspor data pembayaran
 
 
 
@@ -139,7 +139,7 @@ class RolesAndPermissionsSeeder extends Seeder
             'manage own profile',
             'view halaqohs', 'create halaqohs', 'edit halaqohs', 'delete halaqohs', 'assign students to halaqoh', 'edit ppdb requirements',
             'view payment categories', 'create payment categories', 'edit payment categories', 'delete payment categories',
-            'view payments', 'create payments', 'edit payments', 'delete payments', 'export payment',
+            'view payments', 'create payments', 'edit payments', 'delete payments', 'export payments',
             // Tambahkan izin Rooms & Placements jika Sekretaris perlu melihatnya
             // 'view rooms',
             // 'view placements',
