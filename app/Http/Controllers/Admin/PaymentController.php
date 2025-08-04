@@ -13,9 +13,9 @@ class PaymentController extends Controller
     /**
      * Display a listing of the resource.
      */
-     public function index()
+     public function index(Request $request)
     {
-        $query = Payment::with(['student', 'category'])->latest();
+       $query = Payment::with(['student', 'category'])->latest();
 
     if ($request->filled('category_id')) {
         $query->where('category_id', $request->category_id);
