@@ -20,7 +20,7 @@
 
     <div class="flex gap-2">
         <a href="{{ route('admin.payments.index') }}" class="btn btn-secondary">← Kembali</a>
-        <a href="{{ route('admin.payments.print', $payment) }}" target="_blank" class="btn btn-primary">🧾 Cetak Struk</a>
+        <a href="{{ route('admin.payments.receipt', $payment) }}" target="_blank" class="btn btn-primary">🧾 Cetak Struk</a>
     </div>
 </div>
 @endsection
