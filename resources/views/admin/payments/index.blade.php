@@ -15,18 +15,33 @@
     </div>
 @endif
 
-<div class="flex flex-col md:flex-row md:justify-between items-start md:items-center mb-6 gap-4">
-    @can('create payments')
-        <a href="{{ route('admin.payments.create') }}"
-           class="w-full md:w-auto px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+{{-- Wrapper untuk Tombol Aksi dan Filter --}}
+<div class="flex flex-col md:flex-row md:justify-between md:items-center mb-6 gap-4">
+
+    {{-- Grup Tombol Aksi --}}
+    <div class="flex gap-4 w-full md:w-auto">
+        @can('create payments')
+            <a href="{{ route('admin.payments.create') }}"
+               class="w-full md:w-auto px-6 py-3 bg-teal-600 text-white font-semibold rounded-lg shadow-md hover:bg-teal-700 transition-colors flex items-center justify-center gap-2">
+               <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                 <path d="M12 5v14M5 12h14"/>
+               </svg>
+                Tambah Pembayaran
+            </a>
+        @endcan
+
+        {{-- Tombol Export Excel --}}
+        <a href="{{ route('admin.payments.export', request()->query()) }}"
+           class="w-full md:w-auto px-6 py-3 bg-green-600 text-white font-semibold rounded-lg shadow-md hover:bg-green-700 transition-colors flex items-center justify-center gap-2">
            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-             <path d="M12 5v14M5 12h14"/>
+             <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
            </svg>
-            Tambah Pembayaran
+           Export Excel
         </a>
-    @endcan
+    </div>
     
-    <div class="w-full md:w-auto">
+    {{-- Form Filter --}}
+    <div class="w-full md:w-auto mt-4 md:mt-0">
         <form method="GET" class="flex flex-wrap items-center gap-4">
             <select name="category_id" class="form-select border-gray-300 rounded-lg shadow-sm w-full md:w-auto">
                 <option value="">Semua Kategori</option>
@@ -55,12 +70,6 @@
                 </a>
             </div>
         </form>
-<a href="{{ route('admin.payments.export', request()->query()) }}"
-   class="inline-flex items-center px-3 py-2 bg-green-600 text-white text-sm rounded hover:bg-green-700">
-   📥 Export Excel
-</a>
-
-
     </div>
 </div>
 
@@ -93,7 +102,6 @@
                             <div class="flex items-center justify-center gap-2">
                                 <a href="{{ route('admin.payments.show', $payment->id) }}"
                                    class="text-blue-600 hover:text-blue-800 transition-colors" title="Detail">
-                                    {{-- Heroicon: Eye --}}
                                     <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                       <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
                                       <circle cx="12" cy="12" r="3"/>
@@ -102,7 +110,6 @@
                                 @can('edit payments')
                                     <a href="{{ route('admin.payments.edit', $payment) }}"
                                        class="text-green-600 hover:text-green-800 transition-colors" title="Edit">
-                                       {{-- Heroicon: Pencil --}}
                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                          <path d="M17 3a2.828 2.828 0 114 4L7.5 20.5 2 22l1.5-5.5L17 3z"/>
                                        </svg>
@@ -114,7 +121,6 @@
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-red-600 hover:text-red-800 transition-colors" title="Hapus">
-                                           {{-- Heroicon: Trash --}}
                                            <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                              <path d="M3 6h18M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2M10 11v6M14 11v6"/>
                                            </svg>
@@ -123,7 +129,6 @@
                                 @endcan
                                 <a href="{{ route('admin.payments.receipt', $payment->id) }}"
                                    class="text-gray-600 hover:text-gray-800 transition-colors" title="Cetak Struk" target="_blank">
-                                   {{-- Heroicon: Printer --}}
                                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
                                       <path d="M6 9V2h12v7M6 18H4a2 2 0 01-2-2v-5a2 2 0 012-2h16a2 2 0 012 2v5a2 2 0 01-2 2h-2M6 14h12M6 22h12v-5H6v5z"/>
                                     </svg>
