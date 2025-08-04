@@ -32,7 +32,7 @@
 
     {{-- Header dan Logo --}}
 <div class="center">
-    <img src="{{ public_path('storage/images/logo/pondok.png') }}" alt="Logo Pondok" class="logo">
+    <img src="{{ public_path('images/logo/pondok.png') }}" alt="Logo Pondok" class="logo">
     <h2>Struk Pembayaran</h2>
     <p><strong>Pondok Pesantren DIBAMA</strong></p>
 </div>
@@ -74,10 +74,11 @@
     <p style="text-align:right; margin-top:30px;">Petugas: {{ auth()->user()->name }}</p>
 
     {{-- QR Code --}}
-    <div class="center" style="margin-top: 30px;">
-        <p>Scan untuk verifikasi pembayaran:</p>
-        {!! QrCode::size(100)->generate(url('/verifikasi/pembayaran/'.$payment->id)) !!}
-    </div>
+<div class="center" style="margin-top: 30px;">
+    <p>Scan untuk verifikasi pembayaran:</p>
+    <img src="data:image/png;base64,{{ $qr }}" alt="QR Code" style="margin-top: 10px;">
+</div>
+
 
 </body>
 </html>
