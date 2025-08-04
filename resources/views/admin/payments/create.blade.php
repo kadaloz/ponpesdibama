@@ -65,28 +65,47 @@
 
 
         {{-- Nominal --}}
-        <div class="mb-4">
-            <label for="amount" class="block font-medium text-sm text-gray-700">Jumlah Bayar</label>
-            <input type="number" name="amount" id="amount" required min="1000"
-                   class="form-input w-full border-gray-300 rounded mt-1"
-                   value="{{ old('amount') }}">
-        </div>
+<div class="mb-4">
+    <label for="amount" class="block font-medium text-sm text-gray-700">Jumlah Bayar</label>
+    <input type="text" name="amount" id="amount" required
+           class="form-input w-full border-gray-300 rounded mt-1 text-right"
+           value="{{ old('amount') }}"
+           placeholder="Contoh: 400.000">
+    @error('amount')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
         {{-- Tanggal Bayar --}}
-        <div class="mb-4">
-            <label for="paid_at" class="block font-medium text-sm text-gray-700">Tanggal Bayar</label>
-            <input type="date" name="paid_at" id="paid_at" required
-                   class="form-input w-full border-gray-300 rounded mt-1"
-                   value="{{ old('paid_at', now()->toDateString()) }}">
-        </div>
+        <<div class="mb-4">
+    <label for="paid_at_picker" class="block font-medium text-sm text-gray-700">Tanggal Bayar</label>
+    <input type="text" name="paid_at" id="paid_at_picker" required
+           class="form-input w-full border-gray-300 rounded mt-1"
+           placeholder="Pilih tanggal bayar..."
+           value="{{ old('paid_at', now()->toDateString()) }}">
+    @error('paid_at')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
 
         {{-- Metode --}}
-        <div class="mb-4">
-            <label for="method" class="block font-medium text-sm text-gray-700">Metode Pembayaran</label>
-            <input type="text" name="method" id="method" placeholder="Contoh: Tunai / Transfer / QRIS"
-                   class="form-input w-full border-gray-300 rounded mt-1"
-                   value="{{ old('method') }}">
-        </div>
+<div class="mb-4">
+    <label for="method" class="block font-medium text-sm text-gray-700">Metode Pembayaran</label>
+    <select name="method" id="method" class="form-select w-full border-gray-300 rounded mt-1" required>
+        <option value="">-- Pilih Metode --</option>
+        <option value="Tunai" {{ old('method') == 'Tunai' ? 'selected' : '' }}>Tunai</option>
+        <option value="Transfer" {{ old('method') == 'Transfer' ? 'selected' : '' }}>Transfer</option>
+        <option value="QRIS" {{ old('method') == 'QRIS' ? 'selected' : '' }}>QRIS</option>
+        <option value="Bank" {{ old('method') == 'Bank' ? 'selected' : '' }}>Bank</option>
+        <option value="E-Wallet" {{ old('method') == 'E-Wallet' ? 'selected' : '' }}>E-Wallet</option>
+    </select>
+
+    @error('method')
+        <p class="text-red-500 text-sm mt-1">{{ $message }}</p>
+    @enderror
+</div>
+
 
         {{-- Catatan --}}
         <div class="mb-6">

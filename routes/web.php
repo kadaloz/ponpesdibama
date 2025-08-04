@@ -319,6 +319,11 @@ Route::get('/api/available-students', function (Request $request) {
     Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update')->middleware('permission:edit payments');
 
     Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete payments');
+
+    Route::get('/payments/{payment}/receipt', [PaymentController::class, 'printReceipt'])
+    ->name('admin.payments.receipt')
+    ->middleware(['permission:view payments']);
+
     
     // Rute tambahan untuk melihat detail penempatan spesifik
     // Route::get('/students/{student}/placements', [StudentPlacementController::class, 'showStudentPlacement'])->name('students.placements.history')  ->middleware('permission:view placements history');

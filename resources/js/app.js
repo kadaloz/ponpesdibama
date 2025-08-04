@@ -42,11 +42,32 @@ document.addEventListener("DOMContentLoaded", () => {
         locale: Indonesian,
     });
 
+    flatpickr("#paid_at_picker", {
+        dateFormat: "Y-m-d", // Format yang dikirim ke server
+        altInput: true,
+        altFormat: "d F Y", // Format yang dilihat user
+        locale: Indonesian,
+        maxDate: "today",
+        allowInput: true,
+    });
+
     flatpickr("#month_picker", {
         plugins: [
             new monthSelectPlugin({
                 shorthand: false,
                 dateFormat: "F Y", // Misal: Januari 2025
+                altFormat: "F Y",
+                theme: "light",
+            }),
+        ],
+        locale: Indonesian,
+    });
+
+    flatpickr("#month_filter", {
+        plugins: [
+            new monthSelectPlugin({
+                shorthand: false,
+                dateFormat: "F Y", // value yang dikirim ke server
                 altFormat: "F Y",
                 theme: "light",
             }),
@@ -88,6 +109,22 @@ document.addEventListener("DOMContentLoaded", () => {
         new TomSelect(categorySelect, {
             placeholder: "Pilih kategori...",
             allowEmptyOption: true,
+        });
+    }
+
+    const amountInput = document.getElementById("amount");
+
+    if (amountInput) {
+        // Format angka saat diketik
+        amountInput.addEventListener("input", function (e) {
+            const value = this.value.replace(/\D/g, "");
+            const formatted = new Intl.NumberFormat("id-ID").format(value);
+            this.value = formatted;
+        });
+
+        // Pastikan angka yang dikirim bersih
+        amountInput.form?.addEventListener("submit", function () {
+            amountInput.value = amountInput.value.replace(/\D/g, "");
         });
     }
 });

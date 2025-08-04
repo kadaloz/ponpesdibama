@@ -7,6 +7,9 @@ use Illuminate\Http\Request;
 use App\Models\Payment;
 use App\Models\Student;
 use App\Models\PaymentCategory;
+use Barryvdh\DomPDF\Facade\Pdf;
+use SimpleSoftwareIO\QrCode\Facades\QrCode;
+
 
 class PaymentController extends Controller
 {
@@ -26,11 +29,16 @@ class PaymentController extends Controller
             $q->where('name', 'like', '%' . $request->student_name . '%');
         });
     }
+        if ($request->filled('month')) {
+        $query->where('month', $request->month);
+    }
 
     $payments = $query->paginate(20)->withQueryString();
     $categories = \App\Models\PaymentCategory::orderBy('name')->get();
+    $total = (clone $query)->sum('amount');
 
-    return view('admin.payments.index', compact('payments', 'categories'));
+
+    return view('admin.payments.index', compact('payments', 'categories', 'total'));
     }
 
     public function create()
@@ -124,4 +132,10 @@ class PaymentController extends Controller
         $payment->delete();
         return back()->with('success', 'Pembayaran dihapus.');
     }
+
+    public function printReceipt(Payment $payment)
+{
+    $pdf = Pdf::loadView('admin.payments.receipt', compact('payment'));
+    return $pdf->stream('struk_pembayaran_'.$payment->id.'.pdf');
+}
 }
