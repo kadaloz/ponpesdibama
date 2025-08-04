@@ -16,7 +16,7 @@
         </div>
     @endif
 
-    <form method="POST" action="{{ route('payments.store') }}">
+    <form method="POST" action="{{ route('admin.payments.store') }}">
         @csrf
 
         {{-- Pilih Santri --}}
