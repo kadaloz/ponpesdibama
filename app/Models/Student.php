@@ -72,6 +72,15 @@ public function program()
     }
 
     /**
+     * Relasi ke pembayaran (semua riwayat pembayaran).
+     */
+    public function payments()
+    {
+        return $this->hasMany(Payment::class);
+    }
+    
+
+    /**
      * Relasi ke penempatan kamar (semua riwayat penempatan).
      */
     public function placements()

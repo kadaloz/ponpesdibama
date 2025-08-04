@@ -109,6 +109,18 @@ class RolesAndPermissionsSeeder extends Seeder
         Permission::firstOrCreate(['name' => 'assign items to room']); // Izin untuk menetapkan item ke kamar
         Permission::firstOrCreate(['name' => 'assign items to student']); // Izin untuk menetapkan item ke santri
 
+        // NEW: Izin untuk Manajemen Pembayaran
+        Permission::firstOrCreate(['name' => 'view payments']);
+        Permission::firstOrCreate(['name' => 'create payments']);
+        Permission::firstOrCreate(['name' => 'edit payments']);
+        Permission::firstOrCreate(['name' => 'delete payments']);
+        Permission::firstOrCreate(['name' => 'view payment categories']);
+        Permission::firstOrCreate(['name' => 'create payment categories']);
+        Permission::firstOrCreate(['name' => 'edit payment categories']);
+        Permission::firstOrCreate(['name' => 'delete payment categories']);
+        Permission::firstOrCreate(['name' => 'view payment history']); // Izin untuk melihat riwayat pembayaran santri
+
+
 
         // --- 2. Buat Roles (Peran) dan Beri Izin (Permissions) ---
 
@@ -125,6 +137,8 @@ class RolesAndPermissionsSeeder extends Seeder
             'view general management',
             'manage own profile',
             'view halaqohs', 'create halaqohs', 'edit halaqohs', 'delete halaqohs', 'assign students to halaqoh', 'edit ppdb requirements',
+            'view payment categories', 'create payment categories', 'edit payment categories', 'delete payment categories',
+            'view payments', 'create payments', 'edit payments', 'delete payments',
             // Tambahkan izin Rooms & Placements jika Sekretaris perlu melihatnya
             // 'view rooms',
             // 'view placements',

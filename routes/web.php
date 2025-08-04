@@ -22,6 +22,7 @@ use App\Http\Controllers\Admin\AuditTrailController; // NEW: Import AuditLogCont
 use App\Http\Controllers\Admin\RoomController;
 use App\Http\Controllers\Admin\StudentPlacementController; // NEW: Import StudentPlacementController
 use App\Http\Controllers\Admin\ItemController; // <<< ADD '/Admin' HERE
+use App\Http\Controllers\Admin\PaymentController; // NEW: Import PaymentController
 use App\Models\News;
 use App\Models\Setting;
 use App\Models\Student;
@@ -307,6 +308,17 @@ Route::get('/api/available-students', function (Request $request) {
     Route::get('/placements/{placement}/edit', [StudentPlacementController::class, 'edit'])->name('placements.edit')    ->middleware('permission:edit placements');
     Route::put('/placements/{placement}', [StudentPlacementController::class, 'update'])->name('placements.update') ->middleware('permission:edit placements');
     Route::delete('/placements/{placement}/remove', [StudentPlacementController::class, 'removePlacement'])->name('placements.remove') ->middleware('permission:manage placements'); // Aksi khusus hapus
+    
+    //Rute Payments
+    // Diperbarui: Menggunakan middleware 'permission' untuk izin terkait pembayaran
+    Route::get('payments', [PaymentController::class, 'index'])->name('payments.index')->middleware('permission:view payments');
+    Route::get('payments/create', [PaymentController::class, 'create'])->name('payments.create')->middleware('permission:create payments');
+    Route::post('payments', [PaymentController::class, 'store'])->name('payments.store')->middleware('permission:create payments');
+
+    Route::get('payments/{payment}/edit', [PaymentController::class, 'edit'])->name('payments.edit')->middleware('permission:edit payments');
+    Route::put('payments/{payment}', [PaymentController::class, 'update'])->name('payments.update')->middleware('permission:edit payments');
+
+    Route::delete('payments/{payment}', [PaymentController::class, 'destroy'])->name('payments.destroy')->middleware('permission:delete payments');
     
     // Rute tambahan untuk melihat detail penempatan spesifik
     // Route::get('/students/{student}/placements', [StudentPlacementController::class, 'showStudentPlacement'])->name('students.placements.history')  ->middleware('permission:view placements history');
